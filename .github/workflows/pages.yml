@@ -32,12 +32,10 @@ jobs:
       - name: Depoyu al
         uses: actions/checkout@v4
 
+      # Not: Pages'i iş akışı kendi etkinleştiremez (GITHUB_TOKEN'ın
+      # "create Pages site" izni yoktur). Ayar bir kez elle açılmalıdır.
       - name: Pages yapılandırmasını hazırla
         uses: actions/configure-pages@v5
-        with:
-          # Pages henüz açılmamışsa API üzerinden etkinleştirmeyi dener,
-          # böylece depo ayarlarından elle açmak gerekmez.
-          enablement: true
 
       - name: Site dosyalarını paketle
         uses: actions/upload-pages-artifact@v3
