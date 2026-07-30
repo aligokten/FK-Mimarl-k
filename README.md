@@ -83,15 +83,39 @@ python3 -m http.server 8000
 
 ## Yayınlama
 
-Depo kök dizini doğrudan yayınlanabilir.
+Depo kök dizini doğrudan yayınlanabilir; derleme adımı yoktur.
+Tüm sayfalar göreli yol kullandığı için site hem alan adının kökünde
+(`ornek.com/`) hem de alt klasörde (`ornek.com/site/`) sorunsuz çalışır.
 
-- **GitHub Pages:** Settings → Pages → Branch: `main`, klasör `/ (root)`.
+### GitHub Pages
+
+`.github/workflows/pages.yml` iş akışı, `main` dalına her gönderimde siteyi
+yayınlar. **Tek seferlik ayar:** Depo → Settings → Pages → *Build and
+deployment* → Source: **GitHub Actions**.
+
+Adres: `https://<kullanıcı-adı>.github.io/FK-Mimarl-k/`
+
+Alternatif olarak iş akışı silinip Source: *Deploy from a branch* → `main` /
+`(root)` da seçilebilir; sonuç aynıdır.
+
+### Özel alan adı
+
+`fatmakocaovamimarlik.com` adresinde yayınlamak için:
+
+1. Alan adı sağlayıcısında DNS kaydı ekleyin
+   (`A` kayıtları `185.199.108–111.153` veya `www` için `CNAME` →
+   `<kullanıcı-adı>.github.io`).
+2. Settings → Pages → *Custom domain* alanına alan adını yazın —
+   GitHub `CNAME` dosyasını depoya kendisi ekler.
+3. *Enforce HTTPS* seçeneğini işaretleyin.
+
+> `CNAME` dosyasını DNS kayıtları yayılmadan eklemeyin; site geçici olarak
+> erişilemez hale gelir.
+
+### Diğer seçenekler
+
 - **Netlify / Vercel:** Build komutu yok, publish directory `.`.
 - **Klasik hosting:** Tüm dosyaları `public_html` altına kopyalayın.
-
-> Site alt klasörde yayınlanacaksa (`ornek.com/site/` gibi) `404.html`
-> içindeki `/assets/...` ve `/` bağlantılarını göreli hale getirin.
-> Diğer tüm sayfalar zaten göreli yol kullanır.
 
 ---
 
