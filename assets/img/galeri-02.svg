@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Proje galeri gorseli" preserveAspectRatio="xMidYMid slice">
+  <title>Proje galeri gorseli</title>
+  <defs>
+    <linearGradient id="sky52" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e7e1d4"/>
+      <stop offset="100%" stop-color="#f5f2ec"/>
+    </linearGradient>
+    <linearGradient id="light52" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+    </linearGradient>
+  <filter id="grain52" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="52" result="n"/>
+    <feColorMatrix in="n" type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.14"/></feComponentTransfer>
+  </filter>
+  </defs>
+  <rect width="1200" height="900" fill="url(#sky52)"/>
+  <rect x="605" y="514" width="595" height="386" fill="#b6a992" opacity="0.55"/>
+  <rect x="147" y="174" width="860" height="726" fill="#ded5c3"/>
+  <line x1="147" y1="229" x2="1007" y2="229" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="284" x2="1007" y2="284" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="339" x2="1007" y2="339" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="394" x2="1007" y2="394" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="449" x2="1007" y2="449" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="504" x2="1007" y2="504" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="559" x2="1007" y2="559" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="614" x2="1007" y2="614" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="669" x2="1007" y2="669" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="724" x2="1007" y2="724" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="779" x2="1007" y2="779" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="834" x2="1007" y2="834" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <line x1="147" y1="889" x2="1007" y2="889" stroke="#b6a992" stroke-width="1" opacity="0.28"/>
+  <rect x="135" y="174" width="885" height="25" fill="#efe9dc"/>
+  <rect x="135" y="199" width="885" height="8" fill="#b6a992" opacity="0.5"/>
+  <rect x="280.8" y="258.2" width="122.2" height="119.3" fill="#443a30" opacity="0.85"/>
+  <rect x="277.8" y="255.2" width="128.2" height="125.3" fill="none" stroke="#efe9dc" stroke-width="3" opacity="0.7"/>
+  <line x1="341.9" y1="258.2" x2="341.9" y2="377.5" stroke="#efe9dc" stroke-width="1.5" opacity="0.5"/>
+  <rect x="515.9" y="258.2" width="122.2" height="119.3" fill="#443a30" opacity="0.85"/>
+  <rect x="512.9" y="255.2" width="128.2" height="125.3" fill="none" stroke="#efe9dc" stroke-width="3" opacity="0.7"/>
+  <line x1="577.0" y1="258.2" x2="577.0" y2="377.5" stroke="#efe9dc" stroke-width="1.5" opacity="0.5"/>
+  <rect x="750.9" y="258.2" width="122.2" height="119.3" fill="#443a30" opacity="0.85"/>
+  <rect x="747.9" y="255.2" width="128.2" height="125.3" fill="none" stroke="#efe9dc" stroke-width="3" opacity="0.7"/>
+  <line x1="812.1" y1="258.2" x2="812.1" y2="377.5" stroke="#efe9dc" stroke-width="1.5" opacity="0.5"/>
+  <rect x="280.8" y="450.6" width="122.2" height="119.3" fill="#443a30" opacity="0.85"/>
+  <rect x="277.8" y="447.6" width="128.2" height="125.3" fill="none" stroke="#efe9dc" stroke-width="3" opacity="0.7"/>
+  <line x1="341.9" y1="450.6" x2="341.9" y2="569.9" stroke="#efe9dc" stroke-width="1.5" opacity="0.5"/>
+  <rect x="515.9" y="450.6" width="122.2" height="119.3" fill="#443a30" opacity="0.85"/>
+  <rect x="512.9" y="447.6" width="128.2" height="125.3" fill="none" stroke="#efe9dc" stroke-width="3" opacity="0.7"/>
+  <line x1="577.0" y1="450.6" x2="577.0" y2="569.9" stroke="#efe9dc" stroke-width="1.5" opacity="0.5"/>
+  <rect x="750.9" y="450.6" width="122.2" height="119.3" fill="#443a30" opacity="0.85"/>
+  <rect x="747.9" y="447.6" width="128.2" height="125.3" fill="none" stroke="#efe9dc" stroke-width="3" opacity="0.7"/>
+  <line x1="812.1" y1="450.6" x2="812.1" y2="569.9" stroke="#efe9dc" stroke-width="1.5" opacity="0.5"/>
+  <path d="M280.8,780.7 L280.8,691.8 A61.1,61.1 0 0 1 403.1,691.8 L403.1,780.7 Z" fill="#443a30" opacity="0.88"/>
+  <path d="M280.8,780.7 L280.8,691.8 A61.1,61.1 0 0 1 403.1,691.8 L403.1,780.7 Z" fill="none" stroke="#efe9dc" stroke-width="2.5" opacity="0.75"/>
+  <path d="M515.9,780.7 L515.9,691.8 A61.1,61.1 0 0 1 638.1,691.8 L638.1,780.7 Z" fill="#443a30" opacity="0.88"/>
+  <path d="M515.9,780.7 L515.9,691.8 A61.1,61.1 0 0 1 638.1,691.8 L638.1,780.7 Z" fill="none" stroke="#efe9dc" stroke-width="2.5" opacity="0.75"/>
+  <path d="M750.9,780.7 L750.9,691.8 A61.1,61.1 0 0 1 873.2,691.8 L873.2,780.7 Z" fill="#443a30" opacity="0.88"/>
+  <path d="M750.9,780.7 L750.9,691.8 A61.1,61.1 0 0 1 873.2,691.8 L873.2,780.7 Z" fill="none" stroke="#efe9dc" stroke-width="2.5" opacity="0.75"/>
+  <rect x="0" y="846" width="1200" height="54" fill="#cbc0ad"/>
+  <rect width="1200" height="900" fill="url(#light52)" style="mix-blend-mode:soft-light"/>
+  <rect width="1200" height="900" filter="url(#grain52)" opacity="0.6"/>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 900" width="1920" height="900" role="img" aria-label="Proje arsivi gorseli" preserveAspectRatio="xMidYMid slice">
+  <title>Proje arsivi gorseli</title>
+  <defs>
+    <linearGradient id="sky23" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b241d"/>
+      <stop offset="100%" stop-color="#4a3d30"/>
+    </linearGradient>
+    <linearGradient id="light23" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+    </linearGradient>
+  <filter id="grain23" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="23" result="n"/>
+    <feColorMatrix in="n" type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.14"/></feComponentTransfer>
+  </filter>
+  </defs>
+  <rect width="1920" height="900" fill="url(#sky23)"/>
+  <rect x="984" y="369" width="936" height="531" fill="#3a2f25" opacity="0.55"/>
+  <rect x="311" y="243" width="1222" height="657" fill="#5c4c3c"/>
+  <line x1="311" y1="284" x2="1533" y2="284" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="325" x2="1533" y2="325" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="366" x2="1533" y2="366" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="407" x2="1533" y2="407" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="448" x2="1533" y2="448" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="489" x2="1533" y2="489" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="530" x2="1533" y2="530" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="571" x2="1533" y2="571" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="612" x2="1533" y2="612" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="653" x2="1533" y2="653" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="694" x2="1533" y2="694" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="735" x2="1533" y2="735" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="776" x2="1533" y2="776" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="817" x2="1533" y2="817" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="858" x2="1533" y2="858" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <line x1="311" y1="899" x2="1533" y2="899" stroke="#3a2f25" stroke-width="1" opacity="0.28"/>
+  <rect x="300" y="243" width="1244" height="22" fill="#7a6650"/>
+  <rect x="300" y="265" width="1244" height="7" fill="#3a2f25" opacity="0.5"/>
+  <rect x="501.1" y="331.2" width="173.7" height="162.3" fill="#17120e" opacity="0.85"/>
+  <rect x="498.1" y="328.2" width="179.7" height="168.3" fill="none" stroke="#7a6650" stroke-width="3" opacity="0.7"/>
+  <line x1="588.0" y1="331.2" x2="588.0" y2="493.4" stroke="#7a6650" stroke-width="1.5" opacity="0.5"/>
+  <rect x="835.2" y="331.2" width="173.7" height="162.3" fill="#17120e" opacity="0.85"/>
+  <rect x="832.2" y="328.2" width="179.7" height="168.3" fill="none" stroke="#7a6650" stroke-width="3" opacity="0.7"/>
+  <line x1="922.0" y1="331.2" x2="922.0" y2="493.4" stroke="#7a6650" stroke-width="1.5" opacity="0.5"/>
+  <rect x="1169.2" y="331.2" width="173.7" height="162.3" fill="#17120e" opacity="0.85"/>
+  <rect x="1166.2" y="328.2" width="179.7" height="168.3" fill="none" stroke="#7a6650" stroke-width="3" opacity="0.7"/>
+  <line x1="1256.0" y1="331.2" x2="1256.0" y2="493.4" stroke="#7a6650" stroke-width="1.5" opacity="0.5"/>
+  <path d="M501.1,780.3 L501.1,663.0 A86.8,86.8 0 0 1 674.8,663.0 L674.8,780.3 Z" fill="#17120e" opacity="0.88"/>
+  <path d="M501.1,780.3 L501.1,663.0 A86.8,86.8 0 0 1 674.8,663.0 L674.8,780.3 Z" fill="none" stroke="#7a6650" stroke-width="2.5" opacity="0.75"/>
+  <path d="M835.2,780.3 L835.2,663.0 A86.8,86.8 0 0 1 1008.8,663.0 L1008.8,780.3 Z" fill="#17120e" opacity="0.88"/>
+  <path d="M835.2,780.3 L835.2,663.0 A86.8,86.8 0 0 1 1008.8,663.0 L1008.8,780.3 Z" fill="none" stroke="#7a6650" stroke-width="2.5" opacity="0.75"/>
+  <path d="M1169.2,780.3 L1169.2,663.0 A86.8,86.8 0 0 1 1342.9,663.0 L1342.9,780.3 Z" fill="#17120e" opacity="0.88"/>
+  <path d="M1169.2,780.3 L1169.2,663.0 A86.8,86.8 0 0 1 1342.9,663.0 L1342.9,780.3 Z" fill="none" stroke="#7a6650" stroke-width="2.5" opacity="0.75"/>
+  <rect x="0" y="846" width="1920" height="54" fill="#241d17"/>
+  <rect width="1920" height="900" fill="url(#light23)" style="mix-blend-mode:soft-light"/>
+  <line x1="419" y1="243" x2="419" y2="846" stroke="#c49a6f" stroke-width="1.5" stroke-dasharray="6 7" opacity="0.65"/>
+  <rect width="1920" height="900" filter="url(#grain23)" opacity="0.6"/>
+</svg>
