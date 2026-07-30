@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /gizlilik.html
+
+Sitemap: https://fatmakocaovamimarlik.com/sitemap.xml

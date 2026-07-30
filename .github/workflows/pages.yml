@@ -1,0 +1,45 @@
+# Siteyi GitHub Pages üzerinde yayınlar.
+#
+# Tek seferlik ayar: Depo > Settings > Pages > Build and deployment >
+# Source alanını "GitHub Actions" olarak seçin.
+#
+# Derleme adımı yoktur; depo kökü olduğu gibi yayınlanır.
+
+name: GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Aynı anda tek yayın çalışsın; sıradaki beklesin (devam eden yayın iptal edilmez)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+
+      - name: Pages yapılandırmasını hazırla
+        uses: actions/configure-pages@v5
+
+      - name: Site dosyalarını paketle
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Yayınla
+        id: deployment
+        uses: actions/deploy-pages@v4
