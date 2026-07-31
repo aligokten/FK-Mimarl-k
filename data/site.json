@@ -23,7 +23,7 @@
     "bolgeSatiri": "İzmir · Türkiye"
   },
   "form": {
-    "servisAdresi": "",
+    "servisAdresi": "d28dd096-592f-4f67-bdf2-177f89217216",
     "not": "Boş bırakılırsa form ziyaretçinin e-posta uygulamasını açar (mailto). Web3Forms/Formspree adresi girilirse form doğrudan oraya gönderilir."
   }
 }
