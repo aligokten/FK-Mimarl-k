@@ -32,6 +32,11 @@ jobs:
       - name: Depoyu al
         uses: actions/checkout@v4
 
+      # data/*.json -> HTML. Yönetim paneli yalnızca JSON'a yazdığı için
+      # sayfalar burada yeniden üretilir.
+      - name: İçeriği derle
+        run: python3 tools/build.py
+
       # Not: Pages'i iş akışı kendi etkinleştiremez (GITHUB_TOKEN'ın
       # "create Pages site" izni yoktur). Ayar bir kez elle açılmalıdır.
       - name: Pages yapılandırmasını hazırla

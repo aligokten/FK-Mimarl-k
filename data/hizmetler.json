@@ -1,0 +1,55 @@
+[
+  {
+    "no": "01",
+    "id": "tarihi-yapilar",
+    "baslik": "Tarihi Yapılar",
+    "kisa": "Rölöve, restitüsyon ve restorasyon projeleri; çevre parselinde tasarım ve teknik danışmanlık.",
+    "metin": "Tescilli yapıların belgelenmesi, korunması ve yeniden kullanıma kazandırılması. Rölöve, restitüsyon ve restorasyon projeleri; yapının çevre parsellerinde tasarım ve süreç boyunca teknik danışmanlık.",
+    "ikon": "<path d=\"M6 42V14l18-8 18 8v28\"/><path d=\"M6 42h36\"/><path d=\"M16 42V26h16v16\"/><path d=\"M24 6v8\"/>",
+    "etiketler": [
+      "Rölöve",
+      "Restitüsyon",
+      "Restorasyon projesi",
+      "Çevre parselinde yapı tasarımı",
+      "Teknik danışmanlık"
+    ]
+  },
+  {
+    "no": "02",
+    "id": "kazi-alanlari",
+    "baslik": "Kazı Alanları",
+    "kisa": "Kazı alanlarında belgeleme çalışmaları ve alanın gerektirdiği yapı tasarımı.",
+    "metin": "Arkeolojik ve kentsel kazı alanlarında belgeleme çalışmaları; kazı sonrasında alanın gerektirdiği yapı tasarımının yürütülmesi.",
+    "ikon": "<path d=\"M4 40h40\"/><path d=\"M10 40l6-16h16l6 16\"/><path d=\"M18 24l3-10h6l3 10\"/>",
+    "etiketler": [
+      "Belgeleme",
+      "Yerine bina tasarımı"
+    ]
+  },
+  {
+    "no": "03",
+    "id": "mimari-projeler",
+    "baslik": "Mimari Projeler",
+    "kisa": "Ruhsat ve uygulama projeleri; üç boyutlu görselleştirme ve animasyon.",
+    "metin": "Yeni yapılar için ruhsat ve uygulama projeleri; tasarımın karar aşamasında anlaşılmasını sağlayan üç boyutlu görselleştirme ve animasyon çalışmaları.",
+    "ikon": "<path d=\"M10 42V10h28v32\"/><path d=\"M6 42h36\"/><path d=\"M10 22h28M10 32h28\"/><path d=\"M20 10v32\"/>",
+    "etiketler": [
+      "Ruhsat projesi",
+      "Uygulama projesi",
+      "Görselleştirme",
+      "Animasyon"
+    ]
+  },
+  {
+    "no": "04",
+    "id": "imar-planlari",
+    "baslik": "İmar Planları",
+    "kisa": "Koruma amaçlı imar planı süreçlerinde teknik danışmanlık.",
+    "metin": "Koruma amaçlı imar planı süreçlerinde teknik danışmanlık; plan kararlarının koruma ilkeleriyle uyumunun değerlendirilmesi.",
+    "ikon": "<path d=\"M8 8h32v32H8z\"/><path d=\"M8 20h32M8 30h32M20 8v32M30 8v32\"/>",
+    "etiketler": [
+      "Koruma amaçlı imar planı",
+      "Teknik danışmanlık"
+    ]
+  }
+]

@@ -1,0 +1,432 @@
+#!/usr/bin/env python3
+"""Site üretici — data/*.json dosyalarından HTML üretir.
+
+Site statik kalır; bu betik yalnızca HTML içindeki işaretli bölgeleri
+yeniden yazar. Böylece sayfalar elle de düzenlenebilir, yönetim paneli
+de yalnızca JSON'a dokunarak içeriği güncelleyebilir.
+
+İşaret biçimi:
+
+    <!-- OTO:projeler -->
+    ... bu bölge her derlemede yeniden üretilir ...
+    <!-- /OTO:projeler -->
+
+Kullanım:
+    python3 tools/build.py            # üret
+    python3 tools/build.py --kontrol  # üretilen çıktı güncel mi (CI için)
+
+Blog yazıları için ayrıca blog-<slug>.html sayfaları ve sitemap.xml
+yeniden üretilir.
+"""
+
+from __future__ import annotations
+
+import html
+import json
+import os
+import re
+import sys
+
+KOK = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+VERI = os.path.join(KOK, "data")
+
+ALAN_ADI = "https://fatmakocaovamimarlik.com"
+
+
+# ---------------------------------------------------------------- yardımcı
+def veri(ad):
+    with open(os.path.join(VERI, ad + ".json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def kacis(s):
+    """Metni HTML'e güvenli biçimde gömer."""
+    return html.escape(str(s), quote=True)
+
+
+def slugla(metin):
+    tr = str.maketrans("çğıöşüÇĞİÖŞÜ", "cgiosucgiosu")
+    s = metin.translate(tr).lower()
+    s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+    return s or "yazi"
+
+
+def bolge_yaz(html_metni, ad, icerik):
+    """<!-- OTO:ad --> ... <!-- /OTO:ad --> arasını değiştirir."""
+    desen = re.compile(
+        r"(<!-- OTO:" + re.escape(ad) + r" -->)(.*?)(<!-- /OTO:" + re.escape(ad) + r" -->)",
+        re.S,
+    )
+    if not desen.search(html_metni):
+        return html_metni, False
+    return desen.sub(lambda m: m.group(1) + "\n" + icerik + m.group(3), html_metni), True
+
+
+# ================================================================ parçalar
+def parca_footer_liste(s):
+    i = s["iletisim"]
+    return f"""        <ul class="footer-list">
+          <li><a class="link-underline" href="mailto:{kacis(i['eposta'])}">{kacis(i['eposta'])}</a></li>
+          <li><a class="link-underline" href="tel:{kacis(i['telefonHam'])}">{kacis(i['telefon'])}</a></li>
+          <li>{kacis(i['adresSatir1'])}<br>{kacis(i['adresSatir2'])}</li>
+        </ul>
+"""
+
+
+def parca_footer_marka(s):
+    f = s["footer"]
+    return f"""        <p class="footer-brand__mark">{f['marka']}</p>
+        <p class="footer-brand__text">
+          {kacis(f['metin'])}
+        </p>
+"""
+
+
+def parca_footer_alt(s):
+    f = s["footer"]
+    return f"""      <span>© <span data-year>2026</span> {kacis(f['telifSatiri'])}</span>
+      <span>{kacis(f['bolgeSatiri'])}</span>
+"""
+
+
+def parca_mobil_iletisim(s):
+    i = s["iletisim"]
+    return f"""    <a href="mailto:{kacis(i['eposta'])}">{kacis(i['eposta'])}</a>
+    <a href="tel:{kacis(i['telefonHam'])}">{kacis(i['telefon'])}</a>
+    <span>{kacis(i['adresSatir1'])}, {kacis(i['adresSatir2'])}</span>
+"""
+
+
+def parca_iletisim_kartlari(s):
+    i = s["iletisim"]
+    return f"""          <div class="contact-item">
+            <p class="contact-item__label">E-posta</p>
+            <p class="contact-item__value">
+              <a class="link-underline" href="mailto:{kacis(i['eposta'])}">{kacis(i['eposta'])}</a>
+            </p>
+          </div>
+
+          <div class="contact-item">
+            <p class="contact-item__label">Telefon</p>
+            <p class="contact-item__value">
+              <a class="link-underline" href="tel:{kacis(i['telefonHam'])}">{kacis(i['telefon'])}</a>
+            </p>
+          </div>
+
+          <div class="contact-item">
+            <p class="contact-item__label">Adres</p>
+            <p class="contact-item__value">{kacis(i['adresSatir1'])}<br>{kacis(i['adresSatir2'])}</p>
+          </div>
+
+          <div class="contact-item">
+            <p class="contact-item__label">Çalışma Saatleri</p>
+            <p class="contact-item__value">{kacis(i['calismaSaatleri'])}</p>
+          </div>
+"""
+
+
+def parca_form_etiketi(s):
+    """İletişim formunun açılış etiketi.
+
+    site.json içinde bir servis adresi tanımlıysa form doğrudan oraya
+    gönderilir; boşsa JavaScript e-posta uygulamasını açar (mailto).
+    """
+    adres = (s.get("form") or {}).get("servisAdresi", "").strip()
+    eposta = s["iletisim"]["eposta"]
+    if adres:
+        return (f'          <form class="form" action="{kacis(adres)}" method="POST"\n'
+                f'                data-contact-form data-mailto="{kacis(eposta)}" novalidate>\n')
+    return (f'          <form class="form" data-contact-form '
+            f'data-mailto="{kacis(eposta)}" novalidate>\n')
+
+
+def parca_wa(s):
+    n = s["iletisim"]["whatsappHam"]
+    return f"""<a class="wa-float" href="https://wa.me/{kacis(n)}" target="_blank" rel="noopener" aria-label="WhatsApp ile yazın">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.39a9.86 9.86 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.19 8.19 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.23-8.23 2.2 0 4.26.86 5.82 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.21-8.23 8.21Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.02s.87 2.34 1 2.5c.12.16 1.72 2.63 4.17 3.69.58.25 1.04.4 1.39.51.58.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
+</a>
+"""
+
+
+def parca_hizmet_kartlari(hizmetler):
+    ok = ('<svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">'
+          '<path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>')
+    parcalar = []
+    for h in hizmetler:
+        parcalar.append(f"""        <a class="service" href="hizmetler.html#{kacis(h['id'])}" data-reveal="stagger">
+          <span class="service__index">/ {kacis(h['no'])}</span>
+          <svg class="service__icon" viewBox="0 0 48 48" aria-hidden="true">
+            {h['ikon']}
+          </svg>
+          <h3 class="service__title">{kacis(h['baslik'])}</h3>
+          <p class="service__text">{kacis(h['kisa'])}</p>
+          <span class="service__more">Detay
+            {ok}
+          </span>
+        </a>""")
+    return "\n\n".join(parcalar) + "\n"
+
+
+def parca_hizmet_satirlari(hizmetler):
+    parcalar = []
+    for h in hizmetler:
+        et = "\n            ".join(f"<li>{kacis(e)}</li>" for e in h["etiketler"])
+        parcalar.append(f"""      <article class="service-row" id="{kacis(h['id'])}" data-reveal>
+        <div class="service-row__num">/ {kacis(h['no'])}</div>
+        <div>
+          <h2 class="service-row__title">{kacis(h['baslik'])}</h2>
+        </div>
+        <div class="service-row__body">
+          <p>{kacis(h['metin'])}</p>
+          <ul class="tag-list">
+            {et}
+          </ul>
+        </div>
+      </article>""")
+    return "\n\n".join(parcalar) + "\n"
+
+
+def parca_projeler(projeler, sadece_one_cikan=False, link=None):
+    kayitlar = [p for p in projeler if p.get("oneCikan")] if sadece_one_cikan else projeler
+    parcalar = []
+    for p in kayitlar:
+        etiket, ek = ("a", f' href="{link}"') if link else ("article", "")
+        baslik_etiket = "h3" if link else "h2"
+        notu = (f'\n            <p class="kayit__ozet">{kacis(p["not"])}</p>'
+                if p.get("not") else "")
+        parcalar.append(f"""        <{etiket} class="kayit"{ek} data-category="{kacis(p['turSlug'])}" data-reveal="stagger">
+          <p class="kayit__tarih">{kacis(p['yil'])}</p>
+          <p class="kayit__tur">{kacis(p['tur'])}</p>
+          <div>
+            <{baslik_etiket} class="kayit__baslik">{kacis(p['baslik'])}</{baslik_etiket}>{notu}
+          </div>
+          <p class="kayit__yer">{kacis(p['yer'])}</p>
+        </{etiket}>""")
+    return "\n".join(parcalar) + "\n"
+
+
+def parca_proje_filtreleri(projeler):
+    gorulen = []
+    for p in projeler:
+        cift = (p["turSlug"], p["tur"])
+        if cift not in gorulen:
+            gorulen.append(cift)
+    dugmeler = ['        <button class="filter-btn is-active" type="button" '
+                'data-filter="all" aria-pressed="true">Tümü</button>']
+    for slug, ad in gorulen:
+        dugmeler.append(f'        <button class="filter-btn" type="button" '
+                        f'data-filter="{kacis(slug)}" aria-pressed="false">{kacis(ad)}</button>')
+    return "\n".join(dugmeler) + "\n"
+
+
+def parca_haberler(haberler):
+    if not haberler:
+        return """        <div class="bos-durum">
+          <p>Henüz kayıt yok.</p>
+        </div>
+"""
+    parcalar = []
+    for h in haberler:
+        ozet = f'\n            <p class="kayit__ozet">{kacis(h["ozet"])}</p>' if h.get("ozet") else ""
+        parcalar.append(f"""        <article class="kayit" data-reveal="stagger">
+          <p class="kayit__tarih">{kacis(h['yil'])}</p>
+          <p class="kayit__tur">{kacis(h['tur'])}</p>
+          <div>
+            <h2 class="kayit__baslik">{kacis(h['baslik'])}</h2>{ozet}
+          </div>
+          <p class="kayit__yer">{kacis(h['yer'])}</p>
+        </article>""")
+    return "\n".join(parcalar) + "\n"
+
+
+def yayindaki_yazilar(blog):
+    return [y for y in blog if y.get("yayinda", True)]
+
+
+def parca_blog_listesi(blog):
+    yazilar = yayindaki_yazilar(blog)
+    if not yazilar:
+        return """      <div class="bos-durum" data-reveal>
+        <p style="font-size:var(--fs-lg);color:var(--ink);margin-bottom:.75rem">
+          İlk yazılar hazırlanıyor.
+        </p>
+        <p style="max-width:52ch;margin-inline:auto">
+          Malzeme, yöntem ve koruma kuramı üzerine notlar ile saha araştırmaları
+          yakında burada yayımlanacak. Bu arada ofisin katıldığı etkinlikler için
+          <a class="link-underline" href="haberler.html">haberler</a> sayfasına
+          göz atabilirsiniz.
+        </p>
+      </div>
+"""
+    parcalar = ['      <div class="kayitlar">']
+    for y in yazilar:
+        parcalar.append(f"""        <a class="kayit" href="blog-{kacis(y['slug'])}.html" data-reveal="stagger">
+          <p class="kayit__tarih">{kacis(y['ay'])} {kacis(y['yil'])}</p>
+          <p class="kayit__tur">{kacis(y['kategori'])}</p>
+          <div>
+            <h2 class="kayit__baslik">{kacis(y['baslik'])}</h2>
+            <p class="kayit__ozet">{kacis(y['ozet'])}</p>
+          </div>
+          <p class="kayit__yer">{kacis(y.get('sure', ''))}</p>
+        </a>""")
+    parcalar.append("      </div>\n")
+    return "\n".join(parcalar)
+
+
+def bloklari_ciz(bloklar):
+    cikti = []
+    for b in bloklar:
+        tip = b.get("tip", "p")
+        metin = b.get("metin", "")
+        if tip == "baslik":
+            cikti.append(f"        <h2>{kacis(metin)}</h2>")
+        elif tip == "altbaslik":
+            cikti.append(f"        <h3>{kacis(metin)}</h3>")
+        elif tip == "alinti":
+            cikti.append(f"        <blockquote>{kacis(metin)}</blockquote>")
+        elif tip == "liste":
+            ogeler = "\n".join(f"          <li>{kacis(x.strip())}</li>"
+                               for x in metin.split("\n") if x.strip())
+            cikti.append(f"        <ul>\n{ogeler}\n        </ul>")
+        else:
+            cikti.append(f"        <p>{kacis(metin)}</p>")
+    return "\n\n".join(cikti)
+
+
+# ============================================================ blog sayfası
+def blog_sayfasi(y, kalip):
+    govde = f"""
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow eyebrow--invert">{kacis(y['kategori'])}</span>
+      <h1 class="page-hero__title">{kacis(y['baslik'])}</h1>
+      <p class="page-hero__text">{kacis(y['ozet'])}</p>
+      <ol class="breadcrumb">
+        <li><a href="index.html">Anasayfa</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li aria-current="page">{kacis(y['baslik'])}</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <article class="makale" data-reveal>
+
+        <div class="makale-kunye">
+          <span>{kacis(y['ay'])} {kacis(y['yil'])}</span>
+          <span>{kacis(y['kategori'])}</span>
+          <span>{kacis(y.get('sure', ''))}</span>
+          <span>Fatma Kocaova</span>
+        </div>
+
+{bloklari_ciz(y.get('bloklar', []))}
+
+      </article>
+
+      <nav class="pager" aria-label="Yazı gezinmesi" style="margin-top:clamp(2.5rem,5vw,4rem)">
+        <a class="link-underline" href="blog.html">← Tüm yazılar</a>
+        <a class="link-underline" href="iletisim.html">Soru sorun →</a>
+      </nav>
+    </div>
+  </section>
+"""
+    s = kalip
+    s = s.replace("@@BASLIK@@", kacis(y["baslik"]))
+    s = s.replace("@@ACIKLAMA@@", kacis(y["ozet"]))
+    s = s.replace("@@SLUG@@", kacis(y["slug"]))
+    s = s.replace("@@GOVDE@@", govde)
+    return s
+
+
+# ==================================================================== ana
+def uret():
+    s = veri("site")
+    hizmetler = veri("hizmetler")
+    projeler = veri("projeler")
+    haberler = veri("haberler")
+    blog = veri("blog")
+
+    bolgeler = {
+        "footer-liste": parca_footer_liste(s),
+        "footer-marka": parca_footer_marka(s),
+        "footer-alt": parca_footer_alt(s),
+        "mobil-iletisim": parca_mobil_iletisim(s),
+        "iletisim-kartlari": parca_iletisim_kartlari(s),
+        "wa": parca_wa(s),
+        "form-etiketi": parca_form_etiketi(s),
+        "hizmet-kartlari": parca_hizmet_kartlari(hizmetler),
+        "hizmet-satirlari": parca_hizmet_satirlari(hizmetler),
+        "projeler": parca_projeler(projeler),
+        "proje-filtreleri": parca_proje_filtreleri(projeler),
+        "secili-projeler": parca_projeler(projeler, True, "projeler.html"),
+        "haberler": parca_haberler(haberler),
+        "blog-listesi": parca_blog_listesi(blog),
+    }
+
+    degisen = []
+    for dosya in sorted(f for f in os.listdir(KOK) if f.endswith(".html")):
+        yol = os.path.join(KOK, dosya)
+        with open(yol, encoding="utf-8") as f:
+            metin = f.read()
+        orj = metin
+        for ad, icerik in bolgeler.items():
+            metin, _ = bolge_yaz(metin, ad, icerik)
+        if metin != orj:
+            with open(yol, "w", encoding="utf-8") as f:
+                f.write(metin)
+            degisen.append(dosya)
+
+    # ---- blog yazı sayfaları
+    kalip_yolu = os.path.join(KOK, "tools", "kalip-yazi.html")
+    yazilar = yayindaki_yazilar(blog)
+    if os.path.exists(kalip_yolu):
+        with open(kalip_yolu, encoding="utf-8") as f:
+            kalip = f.read()
+        for y in yazilar:
+            hedef = os.path.join(KOK, f"blog-{y['slug']}.html")
+            icerik = blog_sayfasi(y, kalip)
+            eski = open(hedef, encoding="utf-8").read() if os.path.exists(hedef) else None
+            if eski != icerik:
+                with open(hedef, "w", encoding="utf-8") as f:
+                    f.write(icerik)
+                degisen.append(os.path.basename(hedef))
+
+    # artık yayında olmayan yazı sayfalarını temizle
+    gecerli = {f"blog-{y['slug']}.html" for y in yazilar}
+    for f in os.listdir(KOK):
+        if f.startswith("blog-") and f.endswith(".html") and f not in gecerli:
+            os.remove(os.path.join(KOK, f))
+            degisen.append(f + " (silindi)")
+
+    # ---- sitemap
+    adresler = ["", "hakkimizda.html", "hizmetler.html", "projeler.html",
+                "haberler.html", "blog.html"]
+    adresler += [f"blog-{y['slug']}.html" for y in yazilar]
+    adresler.append("iletisim.html")
+    satirlar = ['<?xml version="1.0" encoding="UTF-8"?>',
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for a in adresler:
+        oncelik = "1.0" if a == "" else ("0.9" if a in ("projeler.html", "hizmetler.html") else "0.7")
+        satirlar += ["  <url>", f"    <loc>{ALAN_ADI}/{a}</loc>",
+                     "    <changefreq>monthly</changefreq>",
+                     f"    <priority>{oncelik}</priority>", "  </url>"]
+    satirlar.append("</urlset>")
+    yeni_sitemap = "\n".join(satirlar) + "\n"
+    sm_yolu = os.path.join(KOK, "sitemap.xml")
+    if not os.path.exists(sm_yolu) or open(sm_yolu, encoding="utf-8").read() != yeni_sitemap:
+        with open(sm_yolu, "w", encoding="utf-8") as f:
+            f.write(yeni_sitemap)
+        degisen.append("sitemap.xml")
+
+    return degisen
+
+
+if __name__ == "__main__":
+    kontrol = "--kontrol" in sys.argv
+    degisen = uret()
+    if kontrol and degisen:
+        print("Üretilen dosyalar güncel değil:", ", ".join(degisen))
+        print("Yerelde `python3 tools/build.py` çalıştırıp sonucu işleyin.")
+        sys.exit(1)
+    print("güncellendi:", ", ".join(degisen) if degisen else "değişiklik yok")

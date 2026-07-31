@@ -1,0 +1,619 @@
+/* ==========================================================================
+   Yönetim paneli
+
+   İçerik depodaki data/*.json dosyalarında tutulur. Panel bu dosyaları
+   GitHub Contents API üzerinden okur ve yazar. Yazma işlemi main dalına bir
+   commit oluşturur; bu da GitHub Actions iş akışını tetikler ve site
+   yeniden üretilip yayınlanır (bkz. tools/build.py).
+
+   Sunucu yoktur: erişim anahtarı yalnızca tarayıcıda (localStorage)
+   saklanır ve doğrudan api.github.com'a gönderilir.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var API = "https://api.github.com";
+  var DOSYALAR = ["site", "hizmetler", "projeler", "haberler", "blog"];
+
+  var ayar = {};      // { token, sahip, repo, dal }
+  var veri = {};      // { projeler: [...], ... }
+  var sha = {};       // dosya adı -> son bilinen sha
+  var kirli = {};     // dosya adı -> değişti mi
+
+  /* ------------------------------------------------------------ yardımcı */
+  function $(s, k) { return (k || document).querySelector(s); }
+  function el(tag, sinif, metin) {
+    var e = document.createElement(tag);
+    if (sinif) e.className = sinif;
+    if (metin !== undefined) e.textContent = metin;
+    return e;
+  }
+
+  function b64kodla(metin) {
+    var bayt = new TextEncoder().encode(metin);
+    var ikili = "";
+    bayt.forEach(function (b) { ikili += String.fromCharCode(b); });
+    return btoa(ikili);
+  }
+
+  function b64coz(b64) {
+    var ikili = atob(b64.replace(/\s/g, ""));
+    var bayt = new Uint8Array(ikili.length);
+    for (var i = 0; i < ikili.length; i++) bayt[i] = ikili.charCodeAt(i);
+    return new TextDecoder("utf-8").decode(bayt);
+  }
+
+  function slugla(metin) {
+    var tr = { "ç": "c", "ğ": "g", "ı": "i", "ö": "o", "ş": "s", "ü": "u" };
+    return String(metin).toLowerCase()
+      .replace(/[çğıöşü]/g, function (c) { return tr[c]; })
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "yazi";
+  }
+
+  function bildir(mesaj, tur) {
+    var b = $("#bildirim");
+    b.className = "bildirim" + (tur ? " bildirim--" + tur : "");
+    b.textContent = mesaj;
+    b.hidden = false;
+    if (tur === "ok") window.setTimeout(function () { b.hidden = true; }, 6000);
+  }
+
+  function durumYaz(metin) { $("#durum").textContent = metin || ""; }
+
+  /* --------------------------------------------------------------- API */
+  function istek(yol, secenek) {
+    secenek = secenek || {};
+    return fetch(API + yol, {
+      method: secenek.method || "GET",
+      headers: {
+        Authorization: "Bearer " + ayar.token,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      body: secenek.body ? JSON.stringify(secenek.body) : undefined
+    }).then(function (y) {
+      if (!y.ok) {
+        return y.json().catch(function () { return {}; }).then(function (j) {
+          var m = j.message || y.statusText;
+          if (y.status === 401) m = "Erişim anahtarı geçersiz veya süresi dolmuş.";
+          if (y.status === 404) m = "Depo veya dosya bulunamadı — depo adı ve anahtar iznini kontrol edin.";
+          if (y.status === 409) m = "Dosya bu arada değişmiş. Sayfayı yenileyip tekrar deneyin.";
+          throw new Error(m);
+        });
+      }
+      return y.status === 204 ? null : y.json();
+    });
+  }
+
+  function dosyaYolu(ad) {
+    return "/repos/" + ayar.sahip + "/" + ayar.repo + "/contents/data/" + ad + ".json";
+  }
+
+  function dosyaOku(ad) {
+    return istek(dosyaYolu(ad) + "?ref=" + encodeURIComponent(ayar.dal)).then(function (y) {
+      sha[ad] = y.sha;
+      return JSON.parse(b64coz(y.content));
+    });
+  }
+
+  function dosyaYaz(ad, icerik, mesaj) {
+    return istek(dosyaYolu(ad), {
+      method: "PUT",
+      body: {
+        message: mesaj,
+        content: b64kodla(JSON.stringify(icerik, null, 2) + "\n"),
+        sha: sha[ad],
+        branch: ayar.dal
+      }
+    }).then(function (y) {
+      sha[ad] = y.content.sha;
+      return y;
+    });
+  }
+
+  /* ------------------------------------------------------------- giriş */
+  function ayarYukle() {
+    try { return JSON.parse(localStorage.getItem("fkAdmin") || "{}"); }
+    catch (e) { return {}; }
+  }
+
+  function ayarKaydet() {
+    localStorage.setItem("fkAdmin", JSON.stringify(ayar));
+  }
+
+  function girisDene() {
+    var hata = $("#girisHata");
+    hata.hidden = true;
+    ayar = {
+      token: $("#tokenGiris").value.trim(),
+      sahip: $("#repoSahibi").value.trim(),
+      repo: $("#repoAd").value.trim(),
+      dal: $("#repoDal").value.trim() || "main"
+    };
+    if (!ayar.token) {
+      hata.textContent = "Erişim anahtarı gerekli.";
+      hata.hidden = false;
+      return;
+    }
+    durumYaz("Bağlanılıyor…");
+    baslat().catch(function (e) {
+      hata.textContent = e.message;
+      hata.hidden = false;
+      durumYaz("");
+    });
+  }
+
+  function cikis() {
+    localStorage.removeItem("fkAdmin");
+    location.reload();
+  }
+
+  function baslat() {
+    return Promise.all(DOSYALAR.map(function (ad) {
+      return dosyaOku(ad).then(function (v) { veri[ad] = v; });
+    })).then(function () {
+      ayarKaydet();
+      $("#giris").hidden = true;
+      $("#kabuk").hidden = false;
+      $("#cikis").hidden = false;
+      durumYaz(ayar.sahip + "/" + ayar.repo);
+      cizAll();
+    });
+  }
+
+  /* ------------------------------------------------- form alanı üreticiler */
+  function alan(etiket, deger, degisti, secenek) {
+    secenek = secenek || {};
+    var d = el("div", "alan");
+    var id = "a" + Math.random().toString(36).slice(2, 9);
+    var l = el("label", null, etiket);
+    l.htmlFor = id;
+    var girdi = el(secenek.cokSatir ? "textarea" : "input");
+    girdi.id = id;
+    girdi.value = deger == null ? "" : deger;
+    if (secenek.tip) girdi.type = secenek.tip;
+    if (secenek.ipucu) girdi.placeholder = secenek.ipucu;
+    girdi.addEventListener("input", function () { degisti(girdi.value); });
+    d.appendChild(l);
+    d.appendChild(girdi);
+    if (secenek.aciklama) d.appendChild(el("span", "ipucu", secenek.aciklama));
+    return d;
+  }
+
+  function onay(etiket, deger, degisti) {
+    var d = el("div", "alan");
+    var l = el("label");
+    l.style.textTransform = "none";
+    l.style.letterSpacing = "0";
+    l.style.fontSize = "14px";
+    l.style.display = "flex";
+    l.style.alignItems = "center";
+    l.style.gap = ".5rem";
+    var g = el("input");
+    g.type = "checkbox";
+    g.checked = !!deger;
+    g.style.width = "auto";
+    g.addEventListener("change", function () { degisti(g.checked); });
+    l.appendChild(g);
+    l.appendChild(document.createTextNode(etiket));
+    d.appendChild(l);
+    return d;
+  }
+
+  function kartUst(baslik, i, liste, dosya, ek) {
+    var u = el("div", "kart__ust");
+    u.appendChild(el("span", "kart__no", String(i + 1).padStart(2, "0")));
+    u.appendChild(el("strong", null, baslik));
+    if (ek) u.appendChild(ek);
+    u.appendChild(el("span", "bosluk"));
+
+    function tasi(yon) {
+      var j = i + yon;
+      if (j < 0 || j >= liste.length) return;
+      var t = liste[i]; liste[i] = liste[j]; liste[j] = t;
+      isaretle(dosya); cizAll();
+    }
+    var yukari = el("button", "btn btn--kucuk btn--ikinci", "↑");
+    yukari.title = "Yukarı taşı";
+    yukari.addEventListener("click", function () { tasi(-1); });
+    var asagi = el("button", "btn btn--kucuk btn--ikinci", "↓");
+    asagi.title = "Aşağı taşı";
+    asagi.addEventListener("click", function () { tasi(1); });
+    var sil = el("button", "btn btn--kucuk btn--tehlike", "Sil");
+    sil.addEventListener("click", function () {
+      if (!window.confirm("“" + baslik + "” silinsin mi?")) return;
+      liste.splice(i, 1); isaretle(dosya); cizAll();
+    });
+    u.appendChild(yukari); u.appendChild(asagi); u.appendChild(sil);
+    return u;
+  }
+
+  function isaretle(dosya) {
+    kirli[dosya] = true;
+    var d = document.querySelector('[data-kaydet="' + dosya + '"]');
+    if (d) d.textContent = "Kaydet ve yayınla •";
+  }
+
+  /* ------------------------------------------------------------ çizim */
+  function cizProjeler() {
+    var kap = $("#projelerListe");
+    kap.textContent = "";
+    var liste = veri.projeler;
+    if (!liste.length) kap.appendChild(el("div", "bos", "Henüz proje yok."));
+
+    liste.forEach(function (p, i) {
+      var k = el("div", "kart");
+      var rozet = p.oneCikan ? el("span", "rozet rozet--yayin", "Öne çıkan") : null;
+      k.appendChild(kartUst(p.baslik || "(adsız)", i, liste, "projeler", rozet));
+
+      var s1 = el("div", "satir satir--3");
+      s1.appendChild(alan("Başlık", p.baslik, function (v) { p.baslik = v; isaretle("projeler"); }));
+      s1.appendChild(alan("Yıl", p.yil, function (v) { p.yil = v; isaretle("projeler"); }));
+      s1.appendChild(alan("Yer", p.yer, function (v) { p.yer = v; isaretle("projeler"); },
+        { aciklama: "Örn. İzmir · Konak" }));
+      k.appendChild(s1);
+
+      var s2 = el("div", "satir satir--2");
+      s2.appendChild(alan("Tür (görünen)", p.tur, function (v) {
+        p.tur = v; p.turSlug = slugla(v); isaretle("projeler");
+      }, { aciklama: "Filtre düğmesi bu addan üretilir." }));
+      s2.appendChild(alan("Not (isteğe bağlı)", p["not"], function (v) { p["not"] = v; isaretle("projeler"); }));
+      k.appendChild(s2);
+
+      k.appendChild(onay("Anasayfada öne çıkar", p.oneCikan, function (v) {
+        p.oneCikan = v; isaretle("projeler"); cizAll();
+      }));
+      kap.appendChild(k);
+    });
+  }
+
+  function cizHaberler() {
+    var kap = $("#haberlerListe");
+    kap.textContent = "";
+    var liste = veri.haberler;
+    if (!liste.length) kap.appendChild(el("div", "bos", "Henüz haber yok."));
+
+    liste.forEach(function (h, i) {
+      var k = el("div", "kart");
+      k.appendChild(kartUst(h.baslik || "(adsız)", i, liste, "haberler"));
+      var s1 = el("div", "satir satir--3");
+      s1.appendChild(alan("Başlık", h.baslik, function (v) { h.baslik = v; isaretle("haberler"); }));
+      s1.appendChild(alan("Yıl", h.yil, function (v) { h.yil = v; isaretle("haberler"); }));
+      s1.appendChild(alan("Tür", h.tur, function (v) { h.tur = v; isaretle("haberler"); },
+        { aciklama: "Bildiri, Panel, Forum, Söyleşi…" }));
+      k.appendChild(s1);
+      k.appendChild(alan("Yer", h.yer, function (v) { h.yer = v; isaretle("haberler"); }));
+      k.appendChild(alan("Özet", h.ozet, function (v) { h.ozet = v; isaretle("haberler"); },
+        { cokSatir: true }));
+      kap.appendChild(k);
+    });
+  }
+
+  function cizBlog() {
+    var kap = $("#blogListe");
+    kap.textContent = "";
+    var liste = veri.blog;
+    if (!liste.length) kap.appendChild(el("div", "bos", "Henüz yazı yok."));
+
+    liste.forEach(function (y, i) {
+      var k = el("div", "kart");
+      var rozet = el("span", "rozet " + (y.yayinda ? "rozet--yayin" : "rozet--taslak"),
+        y.yayinda ? "Yayında" : "Taslak");
+      k.appendChild(kartUst(y.baslik || "(adsız)", i, liste, "blog", rozet));
+
+      k.appendChild(alan("Başlık", y.baslik, function (v) {
+        y.baslik = v;
+        if (!y.slugKilit) y.slug = slugla(v);
+        isaretle("blog");
+      }));
+      k.appendChild(alan("Adres eki (slug)", y.slug, function (v) {
+        y.slug = slugla(v); y.slugKilit = true; isaretle("blog");
+      }, { aciklama: "Sayfa adresi: blog-" + (y.slug || "…") + ".html" }));
+
+      var s1 = el("div", "satir satir--3");
+      s1.appendChild(alan("Ay", y.ay, function (v) { y.ay = v; isaretle("blog"); },
+        { ipucu: "Şubat" }));
+      s1.appendChild(alan("Yıl", y.yil, function (v) { y.yil = v; isaretle("blog"); },
+        { ipucu: "2026" }));
+      s1.appendChild(alan("Kategori", y.kategori, function (v) { y.kategori = v; isaretle("blog"); },
+        { ipucu: "Malzeme" }));
+      k.appendChild(s1);
+
+      var s2 = el("div", "satir satir--2");
+      s2.appendChild(alan("Okuma süresi", y.sure, function (v) { y.sure = v; isaretle("blog"); },
+        { ipucu: "8 dk" }));
+      s2.appendChild(alan("Özet", y.ozet, function (v) { y.ozet = v; isaretle("blog"); },
+        { aciklama: "Listede ve sayfa başında görünür." }));
+      k.appendChild(s2);
+
+      k.appendChild(onay("Yayında", y.yayinda, function (v) {
+        y.yayinda = v; isaretle("blog"); cizAll();
+      }));
+
+      // --- içerik blokları
+      var basl = el("div", "alan");
+      basl.appendChild(el("label", null, "Yazı içeriği"));
+      k.appendChild(basl);
+
+      y.bloklar = y.bloklar || [];
+      y.bloklar.forEach(function (b, bi) {
+        var bd = el("div", "blok");
+        var bu = el("div", "blok__ust");
+        var sec = el("select");
+        [["p", "Paragraf"], ["baslik", "Başlık"], ["altbaslik", "Alt başlık"],
+         ["liste", "Liste"], ["alinti", "Alıntı"]].forEach(function (o) {
+          var op = el("option", null, o[1]);
+          op.value = o[0];
+          if ((b.tip || "p") === o[0]) op.selected = true;
+          sec.appendChild(op);
+        });
+        sec.addEventListener("change", function () { b.tip = sec.value; isaretle("blog"); cizAll(); });
+        bu.appendChild(sec);
+        bu.appendChild(el("span", "bosluk"));
+
+        function blokTasi(yon) {
+          var j = bi + yon;
+          if (j < 0 || j >= y.bloklar.length) return;
+          var t = y.bloklar[bi]; y.bloklar[bi] = y.bloklar[j]; y.bloklar[j] = t;
+          isaretle("blog"); cizAll();
+        }
+        var yu = el("button", "btn btn--kucuk btn--ikinci", "↑");
+        yu.addEventListener("click", function () { blokTasi(-1); });
+        var as = el("button", "btn btn--kucuk btn--ikinci", "↓");
+        as.addEventListener("click", function () { blokTasi(1); });
+        var si = el("button", "btn btn--kucuk btn--tehlike", "Sil");
+        si.addEventListener("click", function () {
+          y.bloklar.splice(bi, 1); isaretle("blog"); cizAll();
+        });
+        bu.appendChild(yu); bu.appendChild(as); bu.appendChild(si);
+        bd.appendChild(bu);
+
+        var ta = el("textarea");
+        ta.value = b.metin || "";
+        ta.placeholder = b.tip === "liste" ? "Her satır bir madde" : "";
+        ta.addEventListener("input", function () { b.metin = ta.value; isaretle("blog"); });
+        bd.appendChild(ta);
+        k.appendChild(bd);
+      });
+
+      var blokEkle = el("button", "btn btn--kucuk btn--ikinci", "+ Blok ekle");
+      blokEkle.addEventListener("click", function () {
+        y.bloklar.push({ tip: "p", metin: "" });
+        isaretle("blog"); cizAll();
+      });
+      k.appendChild(blokEkle);
+      kap.appendChild(k);
+    });
+  }
+
+  function cizHizmetler() {
+    var kap = $("#hizmetlerListe");
+    kap.textContent = "";
+    var liste = veri.hizmetler;
+    liste.forEach(function (h, i) {
+      h.no = String(i + 1).padStart(2, "0");
+      var k = el("div", "kart");
+      k.appendChild(kartUst(h.baslik || "(adsız)", i, liste, "hizmetler"));
+
+      var s1 = el("div", "satir satir--2");
+      s1.appendChild(alan("Başlık", h.baslik, function (v) {
+        h.baslik = v; h.id = slugla(v); isaretle("hizmetler");
+      }));
+      s1.appendChild(alan("Bağlantı eki", h.id, function (v) { h.id = slugla(v); isaretle("hizmetler"); },
+        { aciklama: "hizmetler.html#" + (h.id || "") }));
+      k.appendChild(s1);
+
+      k.appendChild(alan("Kısa metin (anasayfa kartı)", h.kisa, function (v) {
+        h.kisa = v; isaretle("hizmetler");
+      }, { cokSatir: true }));
+      k.appendChild(alan("Uzun metin (hizmetler sayfası)", h.metin, function (v) {
+        h.metin = v; isaretle("hizmetler");
+      }, { cokSatir: true }));
+      k.appendChild(alan("Etiketler", (h.etiketler || []).join(", "), function (v) {
+        h.etiketler = v.split(",").map(function (x) { return x.trim(); })
+          .filter(function (x) { return x; });
+        isaretle("hizmetler");
+      }, { aciklama: "Virgülle ayırın." }));
+      kap.appendChild(k);
+    });
+  }
+
+  function cizSite() {
+    var kap = $("#siteForm");
+    kap.textContent = "";
+    var s = veri.site;
+    var i = s.iletisim, f = s.footer, so = s.sosyal;
+
+    var k1 = el("div", "kart");
+    k1.appendChild(el("strong", null, "İletişim"));
+    var r1 = el("div", "satir satir--2");
+    r1.appendChild(alan("E-posta", i.eposta, function (v) { i.eposta = v; isaretle("site"); }));
+    r1.appendChild(alan("Telefon (görünen)", i.telefon, function (v) { i.telefon = v; isaretle("site"); }));
+    k1.appendChild(r1);
+    var r2 = el("div", "satir satir--2");
+    r2.appendChild(alan("Telefon (bağlantı)", i.telefonHam, function (v) { i.telefonHam = v; isaretle("site"); },
+      { aciklama: "Boşluksuz, +90 ile: +905464683221" }));
+    r2.appendChild(alan("WhatsApp numarası", i.whatsappHam, function (v) { i.whatsappHam = v; isaretle("site"); },
+      { aciklama: "Boşluksuz, + olmadan: 905464683221" }));
+    k1.appendChild(r2);
+    var r3 = el("div", "satir satir--2");
+    r3.appendChild(alan("Adres · 1. satır", i.adresSatir1, function (v) { i.adresSatir1 = v; isaretle("site"); }));
+    r3.appendChild(alan("Adres · 2. satır", i.adresSatir2, function (v) { i.adresSatir2 = v; isaretle("site"); }));
+    k1.appendChild(r3);
+    k1.appendChild(alan("Çalışma saatleri", i.calismaSaatleri, function (v) {
+      i.calismaSaatleri = v; isaretle("site");
+    }));
+    kap.appendChild(k1);
+
+    var k2 = el("div", "kart");
+    k2.appendChild(el("strong", null, "Alt bilgi (footer)"));
+    k2.appendChild(alan("Tanıtım metni", f.metin, function (v) { f.metin = v; isaretle("site"); },
+      { cokSatir: true }));
+    var r4 = el("div", "satir satir--2");
+    r4.appendChild(alan("Telif satırı", f.telifSatiri, function (v) { f.telifSatiri = v; isaretle("site"); }));
+    r4.appendChild(alan("Bölge satırı", f.bolgeSatiri, function (v) { f.bolgeSatiri = v; isaretle("site"); }));
+    k2.appendChild(r4);
+    kap.appendChild(k2);
+
+    var k3 = el("div", "kart");
+    k3.appendChild(el("strong", null, "Sosyal hesaplar"));
+    var r5 = el("div", "satir satir--2");
+    r5.appendChild(alan("Instagram", so.instagram, function (v) { so.instagram = v; isaretle("site"); }));
+    r5.appendChild(alan("LinkedIn", so.linkedin, function (v) { so.linkedin = v; isaretle("site"); }));
+    k3.appendChild(r5);
+    kap.appendChild(k3);
+
+    var k4 = el("div", "kart");
+    k4.appendChild(el("strong", null, "İletişim formu"));
+    k4.appendChild(alan("Form servisi adresi", s.form.servisAdresi, function (v) {
+      s.form.servisAdresi = v; isaretle("site");
+    }, { aciklama: "Boş bırakılırsa form ziyaretçinin e-posta uygulamasını açar. Web3Forms veya Formspree adresi girilirse mesajlar oraya düşer." }));
+    kap.appendChild(k4);
+  }
+
+  function cizMesajlar() {
+    var kap = $("#mesajlarIcerik");
+    kap.textContent = "";
+    var adres = (veri.site.form && veri.site.form.servisAdresi) || "";
+
+    var b = el("div", "bildirim bildirim--uyari");
+    b.innerHTML =
+      "<strong>Mesajlar bu panelde saklanamıyor.</strong> Site GitHub Pages üzerinde " +
+      "statik olarak yayınlandığı için form gönderimlerini alacak bir sunucu yok. " +
+      "Mesajların bir yerde birikmesi için form bir servise bağlanmalı; gelen kutusu " +
+      "o servisin panelinde olur.";
+    kap.appendChild(b);
+
+    var k = el("div", "kart");
+    k.appendChild(el("strong", null, "Şu anki durum"));
+    var d = el("p");
+    d.style.color = "var(--muted)";
+    if (adres) {
+      d.innerHTML = "Form şu adrese gönderiliyor:<br><code>" +
+        adres.replace(/</g, "&lt;") + "</code><br><br>" +
+        "Mesajları görmek için bu servisin kendi paneline girin. " +
+        "Çoğu servis ayrıca her mesajı e-posta olarak da iletir.";
+    } else {
+      d.innerHTML = "Form şu an <strong>e-posta uygulamasını açıyor</strong> (mailto). " +
+        "Mesajlar hiçbir yerde birikmiyor — ziyaretçinin kendi e-posta programı açılıyor " +
+        "ve göndermesi ona kalıyor.";
+    }
+    k.appendChild(d);
+    kap.appendChild(k);
+
+    var k2 = el("div", "kart");
+    k2.appendChild(el("strong", null, "Nasıl bağlanır?"));
+    var ol = el("ol");
+    ol.style.color = "var(--muted)";
+    ol.style.paddingLeft = "1.2rem";
+    [
+      "web3forms.com veya formspree.io adresinden ücretsiz hesap açın (aylık ~250 mesaj).",
+      "Size verilen form adresini kopyalayın.",
+      "“Site & Footer” sekmesindeki “Form servisi adresi” alanına yapıştırıp kaydedin.",
+      "Bundan sonra her mesaj hem e-postanıza düşer hem de servisin panelinde listelenir."
+    ].forEach(function (m) { ol.appendChild(el("li", null, m)); });
+    k2.appendChild(ol);
+    kap.appendChild(k2);
+  }
+
+  function cizAll() {
+    cizProjeler(); cizHaberler(); cizBlog();
+    cizHizmetler(); cizSite(); cizMesajlar();
+  }
+
+  /* ------------------------------------------------------------ ekleme */
+  var YENI = {
+    projeler: function () {
+      return { yil: String(new Date().getFullYear()), tur: "Restorasyon",
+               turSlug: "restorasyon", baslik: "Yeni proje", yer: "", "not": "", oneCikan: false };
+    },
+    haberler: function () {
+      return { yil: String(new Date().getFullYear()), tur: "Bildiri",
+               baslik: "Yeni haber", yer: "", ozet: "" };
+    },
+    blog: function () {
+      return { slug: "yeni-yazi", baslik: "Yeni yazı", ay: "", yil: String(new Date().getFullYear()),
+               kategori: "Malzeme", sure: "", ozet: "", yayinda: false,
+               bloklar: [{ tip: "p", metin: "" }] };
+    },
+    hizmetler: function () {
+      return { no: "00", id: "yeni-hizmet", baslik: "Yeni hizmet", kisa: "", metin: "",
+               ikon: '<path d="M10 42V10h28v32"/><path d="M6 42h36"/>', etiketler: [] };
+    }
+  };
+
+  /* ------------------------------------------------------------ kaydetme */
+  function kaydet(dosya, dugme) {
+    dugme.disabled = true;
+    var eskiMetin = dugme.textContent;
+    dugme.textContent = "Kaydediliyor…";
+    dosyaYaz(dosya, veri[dosya], "Yönetim paneli: " + dosya + " güncellendi")
+      .then(function () {
+        kirli[dosya] = false;
+        dugme.textContent = "Kaydet ve yayınla";
+        bildir("Kaydedildi. Site birkaç dakika içinde güncellenecek — " +
+               "yayın durumunu GitHub → Actions sekmesinden izleyebilirsiniz.", "ok");
+      })
+      .catch(function (e) {
+        dugme.textContent = eskiMetin;
+        bildir("Kaydedilemedi: " + e.message, "hata");
+      })
+      .then(function () { dugme.disabled = false; });
+  }
+
+  /* ------------------------------------------------------------- olaylar */
+  function olaylariBagla() {
+    $("#girisBtn").addEventListener("click", girisDene);
+    $("#tokenGiris").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") girisDene();
+    });
+    $("#cikis").addEventListener("click", cikis);
+
+    document.querySelectorAll(".sekme").forEach(function (s) {
+      s.addEventListener("click", function () {
+        document.querySelectorAll(".sekme").forEach(function (o) {
+          o.setAttribute("aria-selected", String(o === s));
+        });
+        document.querySelectorAll(".panel").forEach(function (p) {
+          p.hidden = p.id !== "panel-" + s.dataset.sekme;
+        });
+      });
+    });
+
+    document.addEventListener("click", function (e) {
+      var ekle = e.target.closest("[data-ekle]");
+      if (ekle) {
+        var d = ekle.dataset.ekle;
+        veri[d].unshift(YENI[d]());
+        isaretle(d); cizAll();
+        return;
+      }
+      var kay = e.target.closest("[data-kaydet]");
+      if (kay) kaydet(kay.dataset.kaydet, kay);
+    });
+
+    window.addEventListener("beforeunload", function (e) {
+      if (Object.keys(kirli).some(function (k) { return kirli[k]; })) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    });
+  }
+
+  /* --------------------------------------------------------------- açılış */
+  olaylariBagla();
+  ayar = ayarYukle();
+  if (ayar.token) {
+    $("#tokenGiris").value = ayar.token;
+    $("#repoSahibi").value = ayar.sahip || "aligokten";
+    $("#repoAd").value = ayar.repo || "FK-Mimarl-k";
+    $("#repoDal").value = ayar.dal || "main";
+    durumYaz("Bağlanılıyor…");
+    baslat().catch(function (e) {
+      durumYaz("");
+      var h = $("#girisHata");
+      h.textContent = e.message;
+      h.hidden = false;
+    });
+  }
+})();

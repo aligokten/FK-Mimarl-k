@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yönetim Paneli — Fatma Kocaova Mimarlık</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d0d0c">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Saira:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="ust">
+  <h1>FK Mimarlık · Yönetim</h1>
+  <span class="bosluk"></span>
+  <span class="durum" id="durum"></span>
+  <button class="btn btn--kucuk" id="cikis" hidden>Çıkış</button>
+</div>
+
+<!-- ======================== GİRİŞ ======================== -->
+<section class="giris" id="giris">
+  <h2>Giriş</h2>
+  <p>
+    Panel, içeriği doğrudan GitHub deposundaki <code>data/*.json</code> dosyalarına
+    yazar. Bunun için depoya yazma izni olan bir erişim anahtarı gerekir.
+  </p>
+
+  <div class="bildirim bildirim--uyari">
+    <strong>Anahtarı nasıl alırsınız?</strong>
+    <ol style="margin:.6rem 0 0">
+      <li>GitHub → Settings → Developer settings → <em>Fine-grained tokens</em> → <em>Generate new token</em></li>
+      <li><em>Repository access</em>: yalnızca <code>FK-Mimarl-k</code> deposunu seçin</li>
+      <li><em>Permissions</em> → Repository permissions → <strong>Contents: Read and write</strong> (başka izin gerekmez)</li>
+      <li>Süreyi 90 gün gibi sınırlı tutun; süresi dolunca yenileyin</li>
+    </ol>
+  </div>
+
+  <div class="alan">
+    <label for="tokenGiris">Erişim anahtarı</label>
+    <input type="password" id="tokenGiris" autocomplete="off" placeholder="github_pat_...">
+    <span class="ipucu">
+      Anahtar yalnızca bu tarayıcıda saklanır, hiçbir yere gönderilmez.
+      Ortak kullanılan bilgisayarda işiniz bitince <strong>Çıkış</strong>'a basın.
+    </span>
+  </div>
+
+  <div class="satir satir--3">
+    <div class="alan">
+      <label for="repoSahibi">Depo sahibi</label>
+      <input type="text" id="repoSahibi" value="aligokten">
+    </div>
+    <div class="alan">
+      <label for="repoAd">Depo adı</label>
+      <input type="text" id="repoAd" value="FK-Mimarl-k">
+    </div>
+    <div class="alan">
+      <label for="repoDal">Dal</label>
+      <input type="text" id="repoDal" value="main">
+    </div>
+  </div>
+
+  <div class="bildirim bildirim--hata" id="girisHata" hidden></div>
+
+  <div class="eylemler">
+    <button class="btn" id="girisBtn">Bağlan</button>
+    <a class="btn btn--ikinci" href="../index.html">Siteye dön</a>
+  </div>
+</section>
+
+<!-- ======================== PANEL ======================== -->
+<div class="kabuk" id="kabuk" hidden>
+
+  <div class="bildirim" id="bildirim" hidden></div>
+
+  <div class="sekmeler" role="tablist">
+    <button class="sekme" role="tab" data-sekme="projeler" aria-selected="true">Projeler</button>
+    <button class="sekme" role="tab" data-sekme="haberler" aria-selected="false">Haberler</button>
+    <button class="sekme" role="tab" data-sekme="blog" aria-selected="false">Blog</button>
+    <button class="sekme" role="tab" data-sekme="hizmetler" aria-selected="false">Hizmetler</button>
+    <button class="sekme" role="tab" data-sekme="site" aria-selected="false">Site &amp; Footer</button>
+    <button class="sekme" role="tab" data-sekme="mesajlar" aria-selected="false">Mesajlar</button>
+  </div>
+
+  <!-- ---------------- PROJELER ---------------- -->
+  <section class="panel" id="panel-projeler" role="tabpanel">
+    <header>
+      <h2>Projeler</h2>
+      <p>Projeler sayfasındaki liste. “Öne çıkan” işaretlenenler anasayfada da görünür.</p>
+    </header>
+    <div id="projelerListe"></div>
+    <div class="eylemler">
+      <button class="btn btn--ikinci" data-ekle="projeler">+ Proje ekle</button>
+      <button class="btn" data-kaydet="projeler">Kaydet ve yayınla</button>
+    </div>
+  </section>
+
+  <!-- ---------------- HABERLER ---------------- -->
+  <section class="panel" id="panel-haberler" role="tabpanel" hidden>
+    <header>
+      <h2>Haberler</h2>
+      <p>Katılınan sempozyum, panel, forum ve söyleşiler.</p>
+    </header>
+    <div id="haberlerListe"></div>
+    <div class="eylemler">
+      <button class="btn btn--ikinci" data-ekle="haberler">+ Haber ekle</button>
+      <button class="btn" data-kaydet="haberler">Kaydet ve yayınla</button>
+    </div>
+  </section>
+
+  <!-- ---------------- BLOG ---------------- -->
+  <section class="panel" id="panel-blog" role="tabpanel" hidden>
+    <header>
+      <h2>Blog</h2>
+      <p>
+        Yazı ve araştırma raporları. Her yazı için ayrı bir sayfa üretilir.
+        “Yayında” işaretlenmeyen yazılar sitede görünmez.
+      </p>
+    </header>
+    <div id="blogListe"></div>
+    <div class="eylemler">
+      <button class="btn btn--ikinci" data-ekle="blog">+ Yazı ekle</button>
+      <button class="btn" data-kaydet="blog">Kaydet ve yayınla</button>
+    </div>
+  </section>
+
+  <!-- ---------------- HİZMETLER ---------------- -->
+  <section class="panel" id="panel-hizmetler" role="tabpanel" hidden>
+    <header>
+      <h2>Hizmetler</h2>
+      <p>Çalışma alanları. Kısa metin anasayfadaki kartta, uzun metin hizmetler sayfasında görünür.</p>
+    </header>
+    <div id="hizmetlerListe"></div>
+    <div class="eylemler">
+      <button class="btn btn--ikinci" data-ekle="hizmetler">+ Hizmet ekle</button>
+      <button class="btn" data-kaydet="hizmetler">Kaydet ve yayınla</button>
+    </div>
+  </section>
+
+  <!-- ---------------- SİTE ---------------- -->
+  <section class="panel" id="panel-site" role="tabpanel" hidden>
+    <header>
+      <h2>Site &amp; Footer</h2>
+      <p>İletişim bilgileri ve alt bilgi metinleri. Bu alanlar tüm sayfalarda birlikte güncellenir.</p>
+    </header>
+    <div id="siteForm"></div>
+    <div class="eylemler">
+      <button class="btn" data-kaydet="site">Kaydet ve yayınla</button>
+    </div>
+  </section>
+
+  <!-- ---------------- MESAJLAR ---------------- -->
+  <section class="panel" id="panel-mesajlar" role="tabpanel" hidden>
+    <header>
+      <h2>Mesajlar</h2>
+      <p>İletişim formundan gelen mesajlar.</p>
+    </header>
+    <div id="mesajlarIcerik"></div>
+  </section>
+
+</div>
+
+<script src="admin.js" defer></script>
+</body>
+</html>

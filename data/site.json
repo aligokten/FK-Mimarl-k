@@ -1,0 +1,29 @@
+{
+  "ofis": {
+    "ad": "Fatma Kocaova Mimarlık",
+    "unvan": "Mimarlık · Restorasyon"
+  },
+  "iletisim": {
+    "eposta": "info@fatmakocaovamimarlik.com",
+    "telefon": "+90 546 468 32 21",
+    "telefonHam": "+905464683221",
+    "whatsappHam": "905464683221",
+    "adresSatir1": "Çınarlı Mah. 1572 Sk. No:33",
+    "adresSatir2": "Konak 35170 İzmir",
+    "calismaSaatleri": "Pazartesi – Cuma · 09.00 – 18.00"
+  },
+  "sosyal": {
+    "instagram": "https://www.instagram.com/fatmakocaovamimarlik/",
+    "linkedin": "https://tr.linkedin.com/in/fatma-kocaova-4442a6a4"
+  },
+  "footer": {
+    "marka": "Fatma Kocaova<br>Mimarlık",
+    "metin": "Mimari restorasyon, koruma ve yeniden işlevlendirme odaklı bağımsız mimarlık ofisi. İzmir merkezli, Türkiye genelinde proje ve danışmanlık.",
+    "telifSatiri": "Fatma Kocaova Mimarlık — Tüm hakları saklıdır.",
+    "bolgeSatiri": "İzmir · Türkiye"
+  },
+  "form": {
+    "servisAdresi": "",
+    "not": "Boş bırakılırsa form ziyaretçinin e-posta uygulamasını açar (mailto). Web3Forms/Formspree adresi girilirse form doğrudan oraya gönderilir."
+  }
+}
