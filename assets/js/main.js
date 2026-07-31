@@ -325,7 +325,10 @@
         return;
       }
 
-      if (saglayici === "ozel") return; // formun kendi action'ı çalışsın
+      /* Yalnızca gerçek bir action varsa tarayıcının kendi gönderimine izin
+         verilir. Aksi hâlde form statik barındırmaya POST eder ve sunucu
+         "405 Method Not Allowed" döndürür. */
+      if (saglayici === "ozel" && form.getAttribute("action")) return;
 
       e.preventDefault();
       if (!form.checkValidity()) {

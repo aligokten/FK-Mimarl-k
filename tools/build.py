@@ -151,7 +151,9 @@ def parca_form_etiketi(s):
             f'            <input type="checkbox" name="botcheck" class="tuzak" tabindex="-1" autocomplete="off" aria-hidden="true">\n'
         )
 
-    if saglayici == "ozel" and ozel:
+    # Göreli bir adres action'a yazılırsa form statik barındırmaya POST eder
+    # ve 405 döner. Yalnızca tam adres kabul edilir.
+    if saglayici == "ozel" and ozel.startswith(("http://", "https://")):
         return (
             f'          <form class="form" action="{kacis(ozel)}" method="POST"\n'
             f'                data-contact-form data-saglayici="ozel" data-mailto="{kacis(eposta)}" novalidate>\n'
@@ -412,6 +414,11 @@ def uret():
         for y in yazilar:
             hedef = os.path.join(KOK, f"blog-{y['slug']}.html")
             icerik = blog_sayfasi(y, kalip)
+            # Kalıp, yakalandığı andaki footer/iletişim içeriğini taşır.
+            # İşaretli bölgeleri burada da uygulamazsak üretilen sayfa her
+            # derlemede "değişti" görünür (betik idempotent olmaz).
+            for ad, parca in bolgeler.items():
+                icerik, _ = bolge_yaz(icerik, ad, parca)
             eski = open(hedef, encoding="utf-8").read() if os.path.exists(hedef) else None
             if eski != icerik:
                 with open(hedef, "w", encoding="utf-8") as f:
