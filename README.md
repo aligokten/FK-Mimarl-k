@@ -10,14 +10,12 @@ sunucuya (GitHub Pages, Netlify, Vercel, cPanel) olduğu gibi yükleyebilirsiniz
 
 | Dosya | İçerik |
 |---|---|
-| `index.html` | Anasayfa — kahraman bölümü, hakkımızda özeti, hizmetler, seçili projeler, süreç, sayılar, çağrı |
-| `hakkimizda.html` | Ofis, kurucu, uzmanlık alanları, sık sorulan sorular |
-| `hizmetler.html` | 7 hizmetin ayrıntılı anlatımı, çalışma süreci |
-| `projeler.html` | Filtrelenebilir proje arşivi |
-| `haberler.html` | Katılınan sempozyum, panel ve söyleşiler (türe göre filtreli) |
-| `blog.html` | Yazı ve araştırma raporları listesi (konuya göre filtreli) |
-| `blog-kirec-harci.html` | Örnek makale — yeni yazılar için şablon |
-| `proje-kemeralti.html`, `proje-alacati.html`, `proje-basmane.html` | Proje detay sayfaları |
+| `index.html` | Anasayfa — kahraman bölümü, hakkımızda özeti, çalışma alanları, seçili işler, süreç, kilometre taşları |
+| `hakkimizda.html` | Ofis, kurucu, özgeçmiş, referanslar, çalışma alanları, SSS |
+| `hizmetler.html` | Dört çalışma alanının anlatımı, çalışma süreci |
+| `projeler.html` | Filtrelenebilir proje arşivi (künye listesi) |
+| `haberler.html` | Katılınan sempozyum ve forumlar |
+| `blog.html` | Yazı ve araştırma raporları — **henüz içerik yok, boş durum gösteriyor** |
 | `iletisim.html` | İletişim bilgileri, form, harita |
 | `gizlilik.html` | Gizlilik / KVKK aydınlatma metni (taslak) |
 | `404.html` | Sayfa bulunamadı |
@@ -63,46 +61,39 @@ dizisine, çizim zamanlamasını değiştirmek için `heroSketch.js` içindeki
 
 ---
 
-## ⚠️ Yayına almadan önce güncellenmesi gerekenler
+## İçerik durumu
 
-Aşağıdaki içerikler **yer tutucudur**. Kod içinde `NOT:` ile başlayan HTML
-yorumları da aynı noktaları işaret eder.
+Sitedeki metinlerin çoğu ofisin tanıtım broşüründen alınmıştır ve gerçektir:
+iletişim bilgileri, özgeçmiş, çalışma alanları, proje listesi, etkinlikler ve
+referanslar.
 
-1. **İletişim bilgileri** — Adres gerçektir (Çınarlı Mah. 1572 Sk. No:33,
-   Konak 35170 İzmir). **E-posta ve telefon hâlâ yer tutucudur:**
-   `info@fatmakocaovamimarlik.com`, `+90 (000) 000 00 00` ve WhatsApp
-   numarası (`wa.me/900000000000`). Bu bilgiler her sayfanın alt bilgisinde,
-   mobil menüde ve `iletisim.html` içinde geçer:
-   ```
-   grep -rn "000 00 00\|900000000000\|info@fatmakocaovamimarlik.com" *.html
-   ```
-2. **Sayılar** — `index.html` içindeki istatistik bölümü (`data-count` değerleri:
-   60+ proje, 15+ yıl, 24 tescilli yapı, 9 il) örnek değerlerdir. Gerçek verilerle
-   değiştirin veya bölümü tamamen kaldırın.
-3. **Projeler** — Kemeraltı, Alaçatı, Basmane, Tire, Bergama, Urla projeleri örnek
-   içeriktir. Gerçek projelerle değiştirin.
-4. **Haberler** — `haberler.html` içindeki beş etkinlik kaydı örnektir. Ofisin
-   gerçekten katıldığı sempozyum, panel ve söyleşilerle değiştirin; katılmadığı
-   bir etkinliğin sitede durması yanıltıcıdır.
-5. **Blog** — `blog.html` içindeki dört yazı ve `blog-kirec-harci.html` içindeki
-   makale metni örnektir. Yeni yazı eklemek için makale dosyasını kopyalayın ve
-   `blog.html` içine bir `<a class="kayit">` satırı ekleyin.
-6. **Kurucu portresi** — `hakkimizda.html` içindeki portre şu an
+### Gerçek ve güncel
+
+- **İletişim** — adres, telefon (+90 546 468 32 21), e-posta, Instagram
+- **Projeler** — `projeler.html` içindeki 12 iş (restorasyon, kazı alanı,
+  mimari proje, görselleştirme)
+- **Haberler** — 2017, 2023 ve 2024 etkinlikleri
+- **Hakkımızda** — özgeçmiş zaman çizelgesi ve referanslar
+- **Hizmetler** — broşürdeki dört çalışma alanı
+
+### Hâlâ eksik olanlar
+
+1. **Kurucu portresi** — `hakkimizda.html` şu an
    `assets/img/portre-yer-tutucu.svg` gösteriyor. Gerçek fotoğrafı
    `assets/img/fatma-kocaova.jpg` olarak kaydedip (dikey 4:5, ~1000×1250 px)
    `src` ve `width`/`height` değerlerini güncelleyin. Portre, tek renk dile
    uyması için CSS'te gri tonlamalı gösterilir; renkli istenirse
    `main.css` içindeki `.portre img { filter: ... }` satırı silinir.
-7. **Görseller** — Diğer tüm görseller SVG yer tutucudur, bkz. `assets/img/README.md`.
-8. **Uzmanlık yüzdeleri** — `skill__fill` içindeki `data-value` değerleri.
-9. **Harita** — `iletisim.html` içindeki iframe artık gerçek adresi gösterir.
-   Daha hassas konumlama için Google Haritalar → Paylaş → Harita yerleştir
-   ile alınan iframe kodunu kullanabilirsiniz.
-10. **Gizlilik metni** — `gizlilik.html` bir taslaktır; hukuki destek alarak
-   ofisin ticari unvanı ve veri işleme uygulamalarına göre güncelleyin.
-11. **Alan adı** — `canonical`, `og:url` ve `sitemap.xml` içinde
-   `https://fatmakocaovamimarlik.com/` adresi kullanılır. Farklı bir adres
-   kullanacaksanız topluca değiştirin.
+2. **Proje görselleri** — proje listesi şu an yalnızca künye (yıl, tür, ad, yer)
+   gösteriyor. Fotoğraf geldiğinde her kayda görsel ve detay sayfası eklenebilir.
+3. **Diğer görseller** — sayfa başlıkları ve doku görselleri hâlâ SVG yer
+   tutucudur, bkz. `assets/img/README.md`.
+4. **Blog** — henüz yazı yok; sayfa boş durum gösteriyor. İlk yazı eklendiğinde
+   `blog.html` içindeki `.bos-durum` bloğu silinip `.kayitlar` listesi konur.
+5. **Gizlilik metni** — `gizlilik.html` bir taslaktır; hukuki destek alarak
+   ofisin ticari unvanına göre güncelleyin.
+6. **Alan adı** — `canonical`, `og:url` ve `sitemap.xml` içinde
+   `https://fatmakocaovamimarlik.com/` adresi kullanılır.
 
 ## İletişim formu
 
