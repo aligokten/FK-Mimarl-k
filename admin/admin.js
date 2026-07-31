@@ -465,52 +465,98 @@
 
     var k4 = el("div", "kart");
     k4.appendChild(el("strong", null, "İletişim formu"));
-    k4.appendChild(alan("Form servisi adresi", s.form.servisAdresi, function (v) {
-      s.form.servisAdresi = v; isaretle("site");
-    }, { aciklama: "Boş bırakılırsa form ziyaretçinin e-posta uygulamasını açar. Web3Forms veya Formspree adresi girilirse mesajlar oraya düşer." }));
+    var f = s.form || (s.form = { saglayici: "yok", erisimAnahtari: "", ozelAdres: "" });
+
+    var secKap = el("div", "alan");
+    secKap.appendChild(el("label", null, "Form nereye gönderilsin?"));
+    var sec = el("select");
+    [["yok", "E-posta uygulamasını açsın (mesaj birikmez)"],
+     ["web3forms", "Web3Forms"],
+     ["ozel", "Diğer servis (Formspree vb.)"]].forEach(function (o) {
+      var op = el("option", null, o[1]);
+      op.value = o[0];
+      if ((f.saglayici || "yok") === o[0]) op.selected = true;
+      sec.appendChild(op);
+    });
+    sec.addEventListener("change", function () {
+      f.saglayici = sec.value; isaretle("site"); cizAll();
+    });
+    secKap.appendChild(sec);
+    k4.appendChild(secKap);
+
+    if (f.saglayici === "web3forms") {
+      k4.appendChild(alan("Web3Forms erişim anahtarı", f.erisimAnahtari, function (v) {
+        f.erisimAnahtari = v.trim(); isaretle("site");
+      }, { aciklama: "web3forms.com panelinizdeki Access Key — 8-4-4-4-12 biçiminde bir kod. " +
+                     "Bu anahtar sayfa kaynağında görünür; tasarımı gereği böyledir, " +
+                     "yalnızca kayıtlı e-posta adresinize mesaj göndermeye yarar." }));
+      if (f.erisimAnahtari && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(f.erisimAnahtari)) {
+        var uy = el("div", "bildirim bildirim--uyari");
+        uy.style.marginTop = ".5rem";
+        uy.textContent = "Anahtar beklenen biçimde görünmüyor. Web3Forms panelinden kopyaladığınızdan emin olun.";
+        k4.appendChild(uy);
+      }
+    } else if (f.saglayici === "ozel") {
+      k4.appendChild(alan("Form adresi", f.ozelAdres, function (v) {
+        f.ozelAdres = v.trim(); isaretle("site");
+      }, { aciklama: "Örn. https://formspree.io/f/xxxxxxx" }));
+    }
     kap.appendChild(k4);
   }
 
   function cizMesajlar() {
     var kap = $("#mesajlarIcerik");
     kap.textContent = "";
-    var adres = (veri.site.form && veri.site.form.servisAdresi) || "";
+    var f = veri.site.form || {};
+    var saglayici = f.saglayici || "yok";
+    var bagli = (saglayici === "web3forms" && f.erisimAnahtari) ||
+                (saglayici === "ozel" && f.ozelAdres);
 
-    var b = el("div", "bildirim bildirim--uyari");
-    b.innerHTML =
-      "<strong>Mesajlar bu panelde saklanamıyor.</strong> Site GitHub Pages üzerinde " +
-      "statik olarak yayınlandığı için form gönderimlerini alacak bir sunucu yok. " +
-      "Mesajların bir yerde birikmesi için form bir servise bağlanmalı; gelen kutusu " +
-      "o servisin panelinde olur.";
+    var b = el("div", "bildirim " + (bagli ? "bildirim--ok" : "bildirim--uyari"));
+    b.innerHTML = bagli
+      ? "<strong>Form bağlı.</strong> Gelen mesajlar e-posta adresinize düşer ve " +
+        "servisin kendi panelinde listelenir. Site statik olduğu için mesajlar " +
+        "bu panelin içinde saklanamaz — gelen kutusu servistedir."
+      : "<strong>Form henüz bağlı değil.</strong> Şu an ziyaretçinin e-posta " +
+        "uygulaması açılıyor; mesajlar hiçbir yerde birikmiyor.";
     kap.appendChild(b);
 
     var k = el("div", "kart");
-    k.appendChild(el("strong", null, "Şu anki durum"));
+    k.appendChild(el("strong", null, "Şu anki ayar"));
     var d = el("p");
     d.style.color = "var(--muted)";
-    if (adres) {
-      d.innerHTML = "Form şu adrese gönderiliyor:<br><code>" +
-        adres.replace(/</g, "&lt;") + "</code><br><br>" +
-        "Mesajları görmek için bu servisin kendi paneline girin. " +
-        "Çoğu servis ayrıca her mesajı e-posta olarak da iletir.";
+    if (saglayici === "web3forms") {
+      d.innerHTML = f.erisimAnahtari
+        ? "Sağlayıcı: <strong>Web3Forms</strong><br>Anahtar: <code>" +
+          String(f.erisimAnahtari).replace(/</g, "&lt;") + "</code><br><br>" +
+          'Mesajlar için <a href="https://web3forms.com/" target="_blank" rel="noopener">' +
+          "web3forms.com</a> panelinize girin veya e-postanıza bakın."
+        : "Sağlayıcı Web3Forms seçili ama <strong>erişim anahtarı boş</strong>. " +
+          "Anahtar girilene kadar form e-posta uygulamasını açmaya devam eder. " +
+          "“Site &amp; Footer” sekmesinden anahtarı ekleyin.";
+    } else if (saglayici === "ozel") {
+      d.innerHTML = f.ozelAdres
+        ? "Form şu adrese gönderiliyor:<br><code>" +
+          String(f.ozelAdres).replace(/</g, "&lt;") + "</code>"
+        : "“Diğer servis” seçili ama adres boş.";
     } else {
-      d.innerHTML = "Form şu an <strong>e-posta uygulamasını açıyor</strong> (mailto). " +
-        "Mesajlar hiçbir yerde birikmiyor — ziyaretçinin kendi e-posta programı açılıyor " +
-        "ve göndermesi ona kalıyor.";
+      d.innerHTML = "Form <strong>e-posta uygulamasını açıyor</strong> (mailto). " +
+        "Ziyaretçinin kendi e-posta programı açılıyor, göndermesi ona kalıyor.";
     }
     k.appendChild(d);
     kap.appendChild(k);
 
     var k2 = el("div", "kart");
-    k2.appendChild(el("strong", null, "Nasıl bağlanır?"));
+    k2.appendChild(el("strong", null, "Web3Forms nasıl bağlanır?"));
     var ol = el("ol");
     ol.style.color = "var(--muted)";
     ol.style.paddingLeft = "1.2rem";
     [
-      "web3forms.com veya formspree.io adresinden ücretsiz hesap açın (aylık ~250 mesaj).",
-      "Size verilen form adresini kopyalayın.",
-      "“Site & Footer” sekmesindeki “Form servisi adresi” alanına yapıştırıp kaydedin.",
-      "Bundan sonra her mesaj hem e-postanıza düşer hem de servisin panelinde listelenir."
+      "web3forms.com adresinde e-postanızla ücretsiz kayıt olun (aylık 250 mesaj).",
+      "Size verilen Access Key kodunu kopyalayın.",
+      "“Site & Footer” sekmesinde sağlayıcıyı Web3Forms seçip anahtarı yapıştırın.",
+      "Kaydedin — birkaç dakika sonra form canlıda çalışmaya başlar.",
+      "Kendi sitenizden bir deneme mesajı gönderip e-postanıza düştüğünü doğrulayın."
     ].forEach(function (m) { ol.appendChild(el("li", null, m)); });
     k2.appendChild(ol);
     kap.appendChild(k2);

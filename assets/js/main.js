@@ -289,51 +289,108 @@
 
   /* ---------------------------------------------------------------------
      İletişim formu
-     Not: action boşsa mailto ile açılır. Gerçek gönderim için formun
-     action alanına bir servis adresi (Formspree, Netlify Forms vb.) yazın.
+
+     data-saglayici:
+       "yok"       → e-posta uygulamasını açar (mailto)
+       "web3forms" → api.web3forms.com'a AJAX gönderim, satır içi geri bildirim
+       "ozel"      → formun kendi action'ına klasik gönderim (Formspree vb.)
      --------------------------------------------------------------------- */
   function initForm() {
     var form = document.querySelector("[data-contact-form]");
     if (!form) return;
 
-    var status = form.querySelector(".form__status");
+    var durum = form.querySelector(".form__status");
+    var gonder = form.querySelector('button[type="submit"]');
+    var saglayici = form.getAttribute("data-saglayici") || "yok";
+
+    function bildir(metin, hataMi) {
+      if (!durum) return;
+      durum.textContent = metin;
+      durum.setAttribute("data-hata", hataMi ? "true" : "false");
+    }
+
+    function kilitle(kilitli, metin) {
+      if (!gonder) return;
+      gonder.disabled = kilitli;
+      if (metin) gonder.dataset.eski = gonder.dataset.eski || gonder.textContent.trim();
+      if (kilitli && metin) gonder.childNodes[0].nodeValue = metin;
+      else if (!kilitli && gonder.dataset.eski) gonder.childNodes[0].nodeValue = gonder.dataset.eski;
+    }
 
     form.addEventListener("submit", function (e) {
-      if (form.getAttribute("action")) return; // gerçek uç nokta tanımlı
+      // Tuzak alan doluysa gönderim bot kaynaklıdır; sessizce yut.
+      var tuzak = form.querySelector('[name="botcheck"]');
+      if (tuzak && tuzak.checked) {
+        e.preventDefault();
+        return;
+      }
+
+      if (saglayici === "ozel") return; // formun kendi action'ı çalışsın
 
       e.preventDefault();
-
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
 
-      var data = new FormData(form);
-      var mail = form.getAttribute("data-mailto") || "info@fatmakocaovamimarlik.com";
-      var subject =
-        "Web sitesi iletişim formu — " + (data.get("konu") || "Genel");
-      var body = [
-        "Ad Soyad: " + (data.get("ad") || ""),
-        "E-posta: " + (data.get("eposta") || ""),
-        "Telefon: " + (data.get("telefon") || ""),
-        "Konu: " + (data.get("konu") || ""),
+      var d = new FormData(form);
+
+      if (saglayici === "web3forms") {
+        kilitle(true, "Gönderiliyor…");
+        bildir("");
+
+        var govde = {
+          access_key: form.getAttribute("data-anahtar"),
+          subject: d.get("subject") || "Web sitesi iletişim formu",
+          from_name: d.get("from_name") || "Web sitesi",
+          name: d.get("ad") || "",
+          email: d.get("eposta") || "",
+          phone: d.get("telefon") || "",
+          konu: d.get("konu") || "",
+          message: d.get("mesaj") || ""
+        };
+
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(govde)
+        })
+          .then(function (y) { return y.json().catch(function () { return {}; }); })
+          .then(function (j) {
+            if (j && j.success) {
+              form.reset();
+              bildir("Mesajınız iletildi. En kısa sürede dönüş yapacağız.");
+            } else {
+              bildir("Mesaj gönderilemedi. Lütfen doğrudan " +
+                (form.getAttribute("data-mailto") || "") + " adresine yazın.", true);
+            }
+          })
+          .catch(function () {
+            bildir("Bağlantı kurulamadı. Lütfen doğrudan " +
+              (form.getAttribute("data-mailto") || "") + " adresine yazın.", true);
+          })
+          .then(function () { kilitle(false); });
+        return;
+      }
+
+      // saglayici === "yok" → e-posta uygulaması
+      var mail = form.getAttribute("data-mailto") || "";
+      var konu = "Web sitesi iletişim formu — " + (d.get("konu") || "Genel");
+      var metin = [
+        "Ad Soyad: " + (d.get("ad") || ""),
+        "E-posta: " + (d.get("eposta") || ""),
+        "Telefon: " + (d.get("telefon") || ""),
+        "Konu: " + (d.get("konu") || ""),
         "",
         "Mesaj:",
-        data.get("mesaj") || "",
+        d.get("mesaj") || ""
       ].join("\n");
 
-      window.location.href =
-        "mailto:" +
-        mail +
-        "?subject=" +
-        encodeURIComponent(subject) +
-        "&body=" +
-        encodeURIComponent(body);
+      window.location.href = "mailto:" + mail +
+        "?subject=" + encodeURIComponent(konu) +
+        "&body=" + encodeURIComponent(metin);
 
-      if (status) {
-        status.textContent =
-          "E-posta uygulamanız açılıyor. Açılmazsa doğrudan " + mail + " adresine yazabilirsiniz.";
-      }
+      bildir("E-posta uygulamanız açılıyor. Açılmazsa doğrudan " + mail + " adresine yazabilirsiniz.");
     });
   }
 

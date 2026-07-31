@@ -126,18 +126,44 @@ def parca_iletisim_kartlari(s):
 
 
 def parca_form_etiketi(s):
-    """İletişim formunun açılış etiketi.
+    """İletişim formunun açılış etiketi ve gizli alanları.
 
-    site.json içinde bir servis adresi tanımlıysa form doğrudan oraya
-    gönderilir; boşsa JavaScript e-posta uygulamasını açar (mailto).
+    saglayici:
+      "yok"       — JavaScript e-posta uygulamasını açar (mailto)
+      "web3forms" — api.web3forms.com'a AJAX ile gönderilir; erişim
+                    anahtarı tarayıcıya açıktır, tasarım gereği böyledir
+                    (anahtar yalnızca kayıtlı adrese posta göndermeye yarar)
+      "ozel"      — Formspree vb. bir adrese klasik form gönderimi
     """
-    adres = (s.get("form") or {}).get("servisAdresi", "").strip()
+    f = s.get("form") or {}
+    saglayici = (f.get("saglayici") or "yok").strip()
+    anahtar = (f.get("erisimAnahtari") or "").strip()
+    ozel = (f.get("ozelAdres") or "").strip()
     eposta = s["iletisim"]["eposta"]
-    if adres:
-        return (f'          <form class="form" action="{kacis(adres)}" method="POST"\n'
-                f'                data-contact-form data-mailto="{kacis(eposta)}" novalidate>\n')
-    return (f'          <form class="form" data-contact-form '
-            f'data-mailto="{kacis(eposta)}" novalidate>\n')
+    ofis = s["ofis"]["ad"]
+
+    if saglayici == "web3forms" and anahtar:
+        return (
+            f'          <form class="form" data-contact-form data-saglayici="web3forms"\n'
+            f'                data-anahtar="{kacis(anahtar)}" data-mailto="{kacis(eposta)}" novalidate>\n'
+            f'            <input type="hidden" name="subject" value="{kacis(ofis)} — web sitesi iletişim formu">\n'
+            f'            <input type="hidden" name="from_name" value="{kacis(ofis)} web sitesi">\n'
+            f'            <input type="checkbox" name="botcheck" class="tuzak" tabindex="-1" autocomplete="off" aria-hidden="true">\n'
+        )
+
+    if saglayici == "ozel" and ozel:
+        return (
+            f'          <form class="form" action="{kacis(ozel)}" method="POST"\n'
+            f'                data-contact-form data-saglayici="ozel" data-mailto="{kacis(eposta)}" novalidate>\n'
+            f'            <input type="hidden" name="_subject" value="{kacis(ofis)} — web sitesi iletişim formu">\n'
+            f'            <input type="checkbox" name="botcheck" class="tuzak" tabindex="-1" autocomplete="off" aria-hidden="true">\n'
+        )
+
+    return (
+        f'          <form class="form" data-contact-form data-saglayici="yok" '
+        f'data-mailto="{kacis(eposta)}" novalidate>\n'
+        f'            <input type="checkbox" name="botcheck" class="tuzak" tabindex="-1" autocomplete="off" aria-hidden="true">\n'
+    )
 
 
 def parca_wa(s):
