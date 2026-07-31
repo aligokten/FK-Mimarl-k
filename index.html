@@ -100,11 +100,12 @@
 
 <main id="main">
 
-  <!-- ================= KAHRAMAN — 3B RESTORASYON SAHNESİ ================= -->
-  <!-- .hero yüksek bir kaydırma pistidir; içindeki sahne sticky kalır ve
-       kaydırma ilerledikçe 3B model yıkıntıdan restore edilmiş konağa döner.
-       WebGL yoksa veya kullanıcı hareket azaltma tercih ettiyse sahne
-       otomatik olarak sabit görsele düşer (bkz. .hero.is-static). -->
+  <!-- ================= KAHRAMAN — MİMARİ ESKİZ ANİMASYONU ================= -->
+  <!-- .hero yüksek bir kaydırma pistidir; içindeki sahne sticky kalır.
+       Kaydırma ilerledikçe canvas üzerinde elle çizim hissi veren bir
+       eskiz üç evrede gelişir: rölöve alımı → uygulama projesi →
+       yapının oluşumu. Kullanıcı hareket azaltma tercih ettiyse veya
+       canvas desteklenmiyorsa bölüm sabit görsele düşer (.is-static). -->
   <section class="hero" id="hero" data-hero3d>
     <div class="hero__stage">
       <canvas class="hero__canvas" aria-hidden="true"></canvas>
@@ -131,13 +132,13 @@
       <!-- Restorasyonun gerçek aşama sırası; 3B sahneyle eşzamanlı ilerler -->
       <div class="hero__phases" aria-hidden="true">
         <p class="hero__caption" data-hero-caption>
-          Yapı bugünkü hâliyle ölçülü rölöve, fotoğraf ve hasar analizleriyle belgelenir.
+          Yapı yerinde ölçülür; mevcut durum, deformasyonlar ve kayıplar ölçülü çizime aktarılır.
         </p>
         <div class="hero__track"><span data-hero-progress></span></div>
         <ol class="hero__phase-list">
-          <li data-active="true">01 — Mevcut Durum</li>
-          <li>02 — Onarım</li>
-          <li>03 — Restorasyon</li>
+          <li data-active="true">01 — Rölöve Alımı</li>
+          <li>02 — Uygulama Projesi</li>
+          <li>03 — Yapının Oluşumu</li>
         </ol>
       </div>
 

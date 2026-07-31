@@ -25,12 +25,38 @@ Destek dosyaları: `robots.txt`, `sitemap.xml`, `site.webmanifest`.
 
 ```
 assets/
-  css/main.css      Tüm stiller (tasarım değişkenleri dosyanın başındadır)
-  js/main.js        Menü, kaydırma animasyonları, filtre, akordeon, form
-  img/*.svg         Geçici görseller + favicon
+  css/main.css        Tüm stiller (tasarım değişkenleri dosyanın başındadır)
+  js/main.js          Menü, kaydırma animasyonları, filtre, akordeon, form
+  js/heroSketch.js    Anasayfa kahraman bölümündeki eskiz animasyonu
+  img/*.svg           Geçici görseller + favicon
 tools/
   generate-placeholders.py   Geçici görselleri yeniden üretir
 ```
+
+## Kahraman bölümü eskiz animasyonu
+
+Anasayfadaki `.hero`, 320vh yüksekliğinde bir kaydırma pistidir; içindeki
+sahne sticky kalır ve kaydırma miktarı 0–1 ilerlemeye çevrilir. Canvas
+üzerinde elle çizim hissi veren bir mimari eskiz, ofisin üretim zincirini
+üç evrede anlatır:
+
+| Evre | İçerik |
+|---|---|
+| 01 · Rölöve alımı | Yapı bulunduğu hâliyle çizilir (çöken saçak, şakulden kaçmış duvar, çatlaklar), ölçü çizgileri ve kot işlenir |
+| 02 · Uygulama projesi | Ölçü katmanı solar, deformasyon düzelir; taş örgü, ahşap karkas, malzeme açıklamaları ve antet gelir |
+| 03 · Yapının oluşumu | Yüzeyler dolar, gölge düşer, pencerelerde ışık yanar |
+
+Tüm geometri `heroSketch.js` içinde kod olarak üretilir — dış kütüphane,
+görsel veya 3B model dosyası yoktur. Çizgilerdeki sapmalar tohumlu
+rastgelelikle **bir kez** hesaplanır; bu yüzden kareler arasında titremez.
+
+Modül yalnızca gerektiğinde dinamik `import()` ile indirilir. Kullanıcı
+hareket azaltma tercih ettiyse veya canvas desteklenmiyorsa hiç indirilmez;
+bölüm `.is-static` sınıfıyla tek ekranlık sabit görsele döner.
+
+Metinleri ve evre eşiklerini değiştirmek için `main.js` içindeki `EVRELER`
+dizisine, çizim zamanlamasını değiştirmek için `heroSketch.js` içindeki
+`EVRE` nesnesine bakın.
 
 ---
 

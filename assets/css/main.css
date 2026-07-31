@@ -668,9 +668,10 @@ body.is-locked .site-header {
     ),
     linear-gradient(
       90deg,
-      rgba(12, 10, 8, 0.82) 0%,
-      rgba(12, 10, 8, 0.42) 34%,
-      rgba(12, 10, 8, 0) 60%
+      rgba(12, 10, 8, 0.92) 0%,
+      rgba(12, 10, 8, 0.86) 30%,
+      rgba(12, 10, 8, 0.45) 46%,
+      rgba(12, 10, 8, 0) 58%
     );
 }
 

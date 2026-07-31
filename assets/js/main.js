@@ -348,31 +348,19 @@
     {
       esik: 0,
       metin:
-        "Yapı bugünkü hâliyle ölçülü rölöve, fotoğraf ve hasar analizleriyle belgelenir.",
+        "Yapı yerinde ölçülür; mevcut durum, deformasyonlar ve kayıplar ölçülü çizime aktarılır.",
     },
     {
-      esik: 0.34,
+      esik: 0.4,
       metin:
-        "İskele kurulur; özgün malzemeyle uyumlu tekniklerle sağlamlaştırma ve bütünleme yapılır.",
+        "Müdahale kararları detay, malzeme ve teknik şartnameyle birlikte projelendirilir.",
     },
     {
-      esik: 0.72,
+      esik: 0.74,
       metin:
-        "Yapı özgün karakterini koruyarak, yeniden kullanılabilir bir bütün olarak teslim edilir.",
+        "Proje şantiyede uygulanır; yapı özgün karakteriyle yeniden ayağa kalkar.",
     },
   ];
-
-  function webglVar() {
-    try {
-      var c = document.createElement("canvas");
-      return !!(
-        window.WebGLRenderingContext &&
-        (c.getContext("webgl2") || c.getContext("webgl"))
-      );
-    } catch (e) {
-      return false;
-    }
-  }
 
   function initHero() {
     var bolum = document.querySelector("[data-hero3d]");
@@ -396,7 +384,7 @@
       ).observe(bolum);
     }
 
-    if (reduceMotion || !webglVar() || !canvas) {
+    if (reduceMotion || !canvas || !canvas.getContext) {
       bolum.classList.add("is-static");
       return;
     }
@@ -448,32 +436,17 @@
       });
     }
 
-    // three.js yalnızca ihtiyaç anında indirilir
-    import(new URL("hero3d.js", BETIK_URL).href)
+    // Eskiz motoru yalnızca ihtiyaç anında indirilir
+    import(new URL("heroSketch.js", BETIK_URL).href)
       .then(function (mod) {
-        var dar = window.matchMedia("(max-width: 820px)").matches;
-        sahne = mod.initHero3D(canvas, { kalite: dar ? "dusuk" : "yuksek" });
+        sahne = mod.initHeroSketch(canvas);
         sahne.setProgress(ilerlemeHesapla());
-        sahne.start();
 
         window.addEventListener("scroll", kaydirma, { passive: true });
         window.addEventListener("resize", function () {
           sahne.resize();
           kaydirma();
         });
-
-        // Bölüm ekrandan çıkınca çizimi durdur
-        if ("IntersectionObserver" in window) {
-          new IntersectionObserver(
-            function (girdiler) {
-              girdiler.forEach(function (g) {
-                if (g.isIntersecting) sahne.start();
-                else sahne.stop();
-              });
-            },
-            { rootMargin: "120px" }
-          ).observe(bolum);
-        }
 
         kaydirma();
       })
