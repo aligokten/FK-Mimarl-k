@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "slug": "ornek-blog",
+    "baslik": "Örnek blog",
+    "ay": "Ağustos",
+    "yil": "2026",
+    "kategori": "Malzeme",
+    "sure": "",
+    "ozet": "",
+    "yayinda": true,
+    "bloklar": [
+      {
+        "tip": "baslik",
+        "metin": "Örnek Blog"
+      },
+      {
+        "tip": "p",
+        "metin": "Bu örnek bir blok yazısıdır"
+      }
+    ]
+  }
+]
