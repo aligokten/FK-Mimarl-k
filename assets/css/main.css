@@ -1060,6 +1060,29 @@ body.is-locked .site-header {
   text-transform: uppercase;
 }
 
+/* Kurucu portresi — tek renk dile uyması için gri tonlamalı.
+   Renkli göstermek için aşağıdaki filter satırını silin. */
+.portre {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  position: relative;
+  overflow: hidden;
+  background: var(--paper-3);
+}
+
+.portre img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  filter: grayscale(1) contrast(1.04);
+  transition: transform 1.1s var(--ease);
+}
+
+.portre:hover img {
+  transform: scale(1.03);
+}
+
 .prose p + p {
   margin-top: 1.1rem;
 }

@@ -32,6 +32,7 @@ piksel ölçüsüyle güncelleyin — bu, sayfa yüklenirken düzen kaymasını 
 | `about-2.svg` | Çağrı bölümü, kare | 1000×1000 (1:1) |
 | `proje-01…06.svg` | Proje kartları | 1000×1250 (4:5) |
 | `galeri-01…04.svg` | Proje detay galerileri | 1600×1000 (16:10) |
+| `portre-yer-tutucu.svg` | Hakkımızda — kurucu portresi | **`fatma-kocaova.jpg` ile değiştirin**, 1000×1250 (4:5) |
 | `favicon.svg` | Tarayıcı sekmesi ikonu | 64×64 — **değiştirmeyin, logodur** |
 
 ## Performans önerileri

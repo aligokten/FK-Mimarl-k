@@ -68,9 +68,11 @@ dizisine, çizim zamanlamasını değiştirmek için `heroSketch.js` içindeki
 Aşağıdaki içerikler **yer tutucudur**. Kod içinde `NOT:` ile başlayan HTML
 yorumları da aynı noktaları işaret eder.
 
-1. **İletişim bilgileri** — `info@fatmakocaovamimarlik.com`, `+90 (000) 000 00 00`,
-   adres ve WhatsApp numarası (`wa.me/900000000000`). Bu bilgiler her sayfanın alt
-   bilgisinde, mobil menüde ve `iletisim.html` içinde geçer:
+1. **İletişim bilgileri** — Adres gerçektir (Çınarlı Mah. 1572 Sk. No:33,
+   Konak 35170 İzmir). **E-posta ve telefon hâlâ yer tutucudur:**
+   `info@fatmakocaovamimarlik.com`, `+90 (000) 000 00 00` ve WhatsApp
+   numarası (`wa.me/900000000000`). Bu bilgiler her sayfanın alt bilgisinde,
+   mobil menüde ve `iletisim.html` içinde geçer:
    ```
    grep -rn "000 00 00\|900000000000\|info@fatmakocaovamimarlik.com" *.html
    ```
@@ -85,13 +87,20 @@ yorumları da aynı noktaları işaret eder.
 5. **Blog** — `blog.html` içindeki dört yazı ve `blog-kirec-harci.html` içindeki
    makale metni örnektir. Yeni yazı eklemek için makale dosyasını kopyalayın ve
    `blog.html` içine bir `<a class="kayit">` satırı ekleyin.
-6. **Görseller** — Tüm görseller SVG yer tutucudur, bkz. `assets/img/README.md`.
-7. **Uzmanlık yüzdeleri** — `skill__fill` içindeki `data-value` değerleri.
-8. **Harita** — `iletisim.html` içindeki iframe genel olarak İzmir'i gösterir.
-   Google Haritalar → Paylaş → Harita yerleştir ile alınan gerçek adresle değiştirin.
-9. **Gizlilik metni** — `gizlilik.html` bir taslaktır; hukuki destek alarak
+6. **Kurucu portresi** — `hakkimizda.html` içindeki portre şu an
+   `assets/img/portre-yer-tutucu.svg` gösteriyor. Gerçek fotoğrafı
+   `assets/img/fatma-kocaova.jpg` olarak kaydedip (dikey 4:5, ~1000×1250 px)
+   `src` ve `width`/`height` değerlerini güncelleyin. Portre, tek renk dile
+   uyması için CSS'te gri tonlamalı gösterilir; renkli istenirse
+   `main.css` içindeki `.portre img { filter: ... }` satırı silinir.
+7. **Görseller** — Diğer tüm görseller SVG yer tutucudur, bkz. `assets/img/README.md`.
+8. **Uzmanlık yüzdeleri** — `skill__fill` içindeki `data-value` değerleri.
+9. **Harita** — `iletisim.html` içindeki iframe artık gerçek adresi gösterir.
+   Daha hassas konumlama için Google Haritalar → Paylaş → Harita yerleştir
+   ile alınan iframe kodunu kullanabilirsiniz.
+10. **Gizlilik metni** — `gizlilik.html` bir taslaktır; hukuki destek alarak
    ofisin ticari unvanı ve veri işleme uygulamalarına göre güncelleyin.
-10. **Alan adı** — `canonical`, `og:url` ve `sitemap.xml` içinde
+11. **Alan adı** — `canonical`, `og:url` ve `sitemap.xml` içinde
    `https://fatmakocaovamimarlik.com/` adresi kullanılır. Farklı bir adres
    kullanacaksanız topluca değiştirin.
 

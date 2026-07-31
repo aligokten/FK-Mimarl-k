@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250" role="img" aria-label="Portre yer tutucu" preserveAspectRatio="xMidYMid slice">
+  <title>Portre yer tutucu</title>
+  <defs>
+    <linearGradient id="pg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#e4e4e2"/>
+      <stop offset="55%" stop-color="#c9c9c5"/>
+      <stop offset="100%" stop-color="#aaaaa6"/>
+    </linearGradient>
+    <filter id="pgr" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.1"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1000" height="1250" fill="url(#pg)"/>
+  <rect width="1000" height="1250" filter="url(#pgr)" opacity="0.7"/>
+</svg>
