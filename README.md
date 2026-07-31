@@ -14,6 +14,9 @@ sunucuya (GitHub Pages, Netlify, Vercel, cPanel) olduğu gibi yükleyebilirsiniz
 | `hakkimizda.html` | Ofis, kurucu, uzmanlık alanları, sık sorulan sorular |
 | `hizmetler.html` | 7 hizmetin ayrıntılı anlatımı, çalışma süreci |
 | `projeler.html` | Filtrelenebilir proje arşivi |
+| `haberler.html` | Katılınan sempozyum, panel ve söyleşiler (türe göre filtreli) |
+| `blog.html` | Yazı ve araştırma raporları listesi (konuya göre filtreli) |
+| `blog-kirec-harci.html` | Örnek makale — yeni yazılar için şablon |
 | `proje-kemeralti.html`, `proje-alacati.html`, `proje-basmane.html` | Proje detay sayfaları |
 | `iletisim.html` | İletişim bilgileri, form, harita |
 | `gizlilik.html` | Gizlilik / KVKK aydınlatma metni (taslak) |
@@ -76,13 +79,19 @@ yorumları da aynı noktaları işaret eder.
    değiştirin veya bölümü tamamen kaldırın.
 3. **Projeler** — Kemeraltı, Alaçatı, Basmane, Tire, Bergama, Urla projeleri örnek
    içeriktir. Gerçek projelerle değiştirin.
-4. **Görseller** — Tüm görseller SVG yer tutucudur, bkz. `assets/img/README.md`.
-5. **Uzmanlık yüzdeleri** — `skill__fill` içindeki `data-value` değerleri.
-6. **Harita** — `iletisim.html` içindeki iframe genel olarak İzmir'i gösterir.
+4. **Haberler** — `haberler.html` içindeki beş etkinlik kaydı örnektir. Ofisin
+   gerçekten katıldığı sempozyum, panel ve söyleşilerle değiştirin; katılmadığı
+   bir etkinliğin sitede durması yanıltıcıdır.
+5. **Blog** — `blog.html` içindeki dört yazı ve `blog-kirec-harci.html` içindeki
+   makale metni örnektir. Yeni yazı eklemek için makale dosyasını kopyalayın ve
+   `blog.html` içine bir `<a class="kayit">` satırı ekleyin.
+6. **Görseller** — Tüm görseller SVG yer tutucudur, bkz. `assets/img/README.md`.
+7. **Uzmanlık yüzdeleri** — `skill__fill` içindeki `data-value` değerleri.
+8. **Harita** — `iletisim.html` içindeki iframe genel olarak İzmir'i gösterir.
    Google Haritalar → Paylaş → Harita yerleştir ile alınan gerçek adresle değiştirin.
-7. **Gizlilik metni** — `gizlilik.html` bir taslaktır; hukuki destek alarak
+9. **Gizlilik metni** — `gizlilik.html` bir taslaktır; hukuki destek alarak
    ofisin ticari unvanı ve veri işleme uygulamalarına göre güncelleyin.
-8. **Alan adı** — `canonical`, `og:url` ve `sitemap.xml` içinde
+10. **Alan adı** — `canonical`, `og:url` ve `sitemap.xml` içinde
    `https://fatmakocaovamimarlik.com/` adresi kullanılır. Farklı bir adres
    kullanacaksanız topluca değiştirin.
 
@@ -152,15 +161,22 @@ bloğundadır. Ana renkleri değiştirmek için yalnızca bu değişkenleri düz
 
 | Değişken | Değer | Kullanım |
 |---|---|---|
-| `--paper` | `#f5f2ec` | Ana arka plan (kireç taşı) |
-| `--ink` | `#16130f` | Metin ve koyu bölümler |
-| `--accent` | `#a9764a` | Vurgu (patina / toprak) |
-| `--accent-soft` | `#c49a6f` | Koyu zemin üzerinde vurgu |
+| `--paper` | `#f2f2f0` | Ana arka plan |
+| `--ink` | `#0d0d0c` | Metin ve koyu bölümler |
+| `--muted` | `#70706b` | İkincil metin |
+| `--accent` | `#0d0d0c` | Mürekkeple aynı — vurgu **renkle değil ters blokla** verilir |
+| `--accent-soft` | `#d4d4cf` | Koyu zeminde vurgu |
 
-Yazı tipleri Google Fonts üzerinden yüklenir: **Archivo** (başlık/gövde) ve
-**Cormorant Garamond** (italik vurgular). Yerel barındırma tercih edilirse
-`<link>` etiketlerini kaldırıp fontları `assets/fonts/` altına alın ve
-`--font-sans` / `--font-serif` değişkenlerini güncelleyin.
+Palet bilinçli olarak tek renktir. Buton, satır ve ikon hover'ları renk
+değiştirmez; zemin ile metin yer değiştirir. Başlıklardaki vurgu kelimeler
+`-webkit-text-stroke` ile konturlu yazılır.
+
+Tipografi tek bir sesle konuşur: **Saira** (`--font-display`) tüm başlık,
+etiket, buton ve sayı yüzeylerinde; **Archivo** (`--font-sans`) yalnızca
+gövde metninde. Serif aile kullanılmaz.
+
+Yerel barındırma tercih edilirse `<link>` etiketlerini kaldırıp fontları
+`assets/fonts/` altına alın ve iki değişkeni güncelleyin.
 
 ## Erişilebilirlik ve performans
 

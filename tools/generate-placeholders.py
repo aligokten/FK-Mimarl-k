@@ -34,11 +34,12 @@ class Palette:
 
 
 PALETTES = [
-    Palette("stone", "#d9d2c4", "#efeae0", "#cdc3b1", "#a89a84", "#e2dccf", "#3a332b", "#a9764a", "#bdb3a1"),
-    Palette("dusk", "#2b241d", "#4a3d30", "#5c4c3c", "#3a2f25", "#7a6650", "#17120e", "#c49a6f", "#241d17"),
-    Palette("lime", "#e7e1d4", "#f5f2ec", "#ded5c3", "#b6a992", "#efe9dc", "#443a30", "#a9764a", "#cbc0ad"),
-    Palette("terra", "#e3d4c2", "#f2e9dc", "#d3b99c", "#ab8a68", "#e9dbc8", "#402f22", "#8c5a34", "#c4a888"),
-    Palette("slate", "#cfd0cb", "#e8e8e4", "#b9bab3", "#8d8e87", "#dcdcd6", "#2c2e2a", "#a9764a", "#a8a9a2"),
+    # Soğuk, tek renk kademeler — sitenin tek renk paletiyle uyumlu
+    Palette("stone", "#d3d3d0", "#ececeb", "#c4c4c1", "#9d9d9a", "#dedede", "#2e2e2c", "#8a8a86", "#b4b4b1"),
+    Palette("dusk", "#232323", "#3d3d3c", "#4c4c4a", "#2f2f2e", "#6a6a67", "#131312", "#c9c9c5", "#1c1c1b"),
+    Palette("lime", "#e2e2e0", "#f2f2f0", "#d4d4d1", "#a9a9a6", "#ebebe9", "#3a3a38", "#8a8a86", "#c2c2bf"),
+    Palette("terra", "#dcdcda", "#eeeeec", "#c9c9c6", "#a0a09d", "#e4e4e2", "#333331", "#797976", "#bebebb"),
+    Palette("slate", "#cfd0cf", "#e8e8e7", "#b9bab8", "#8d8e8c", "#dcdcdb", "#2a2a29", "#8a8a86", "#a8a8a6"),
 ]
 
 

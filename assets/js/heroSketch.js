@@ -41,15 +41,15 @@ function tohumlu(seed) {
    ========================================================================== */
 const KALEM = {
   // Rölöve: serbest elle, biraz kararsız kurşun kalem
-  roleve: { renk: "#e8e2d6", kalinlik: 1.35, sapma: 0.9, gecis: 2, alfa: 0.85 },
-  // Ölçü/kot katmanı: ince, sarı-toprak
-  olcu: { renk: "#c49a6f", kalinlik: 0.9, sapma: 0.45, gecis: 1, alfa: 0.9 },
-  // Uygulama projesi: net, kararlı çizgi
-  proje: { renk: "#f2ede2", kalinlik: 1.7, sapma: 0.32, gecis: 2, alfa: 0.95 },
+  roleve: { renk: "#dedede", kalinlik: 1.35, sapma: 0.9, gecis: 2, alfa: 0.85 },
+  // Ölçü/kot katmanı: ince, soğuk gri
+  olcu: { renk: "#9c9c98", kalinlik: 0.9, sapma: 0.45, gecis: 1, alfa: 0.95 },
+  // Uygulama projesi: net, kararlı beyaz çizgi
+  proje: { renk: "#ffffff", kalinlik: 1.7, sapma: 0.32, gecis: 2, alfa: 0.95 },
   // Tarama / hatch
-  tarama: { renk: "#b9b0a0", kalinlik: 0.75, sapma: 0.4, gecis: 1, alfa: 0.55 },
+  tarama: { renk: "#a8a8a4", kalinlik: 0.75, sapma: 0.4, gecis: 1, alfa: 0.55 },
   // İnce yardımcı çizgi (aks, uzatma)
-  ince: { renk: "#8d8477", kalinlik: 0.7, sapma: 0.25, gecis: 1, alfa: 0.7 },
+  ince: { renk: "#7c7c78", kalinlik: 0.7, sapma: 0.25, gecis: 1, alfa: 0.75 },
 };
 
 /* ==========================================================================
@@ -192,7 +192,7 @@ class Cizim {
         (x1 + x2) / 2 + nx * 7,
         (y1 + y2) / 2 + ny * 7,
         deger,
-        { boyut: 7, renk: "#c49a6f", bas: lerp(bas, bit, 0.6), bit,
+        { boyut: 7, renk: "#b4b4b0", bas: lerp(bas, bit, 0.6), bit,
           aci: Math.abs(dy) > Math.abs(dx) ? -90 : 0, hiza: "center",
           sonrasi: ek && ek.sonrasi }
       );
@@ -206,7 +206,7 @@ class Cizim {
     const yon = x >= hedefX ? 1 : -1;
     this.cizgi(x, y, x + 12 * yon, y, "ince", lerp(bas, bit, 0.5), lerp(bas, bit, 0.65), ek);
     this.yazi(x + 14 * yon, y - 2.2, metin, {
-      boyut: 6, renk: "#b9b0a0", bas: lerp(bas, bit, 0.6), bit,
+      boyut: 6, renk: "#9c9c98", bas: lerp(bas, bit, 0.6), bit,
       hiza: yon > 0 ? "left" : "right",
       sonrasi: ek && ek.sonrasi,
     });
@@ -217,7 +217,7 @@ class Cizim {
     this.yazilar.push({
       x, y, metin,
       boyut: o.boyut || 7,
-      renk: o.renk || "#e8e2d6",
+      renk: o.renk || "#e4e4e2",
       bas: o.bas, bit: o.bit,
       aci: o.aci || 0,
       hiza: o.hiza || "left",
@@ -401,12 +401,12 @@ function sahneKur(G) {
   c.poli([[G.zeminKat.x + 30, G.zemin - 4], [G.zeminKat.x + 33, G.zemin],
           [G.zeminKat.x + 27, G.zemin]], "olcu", r.olcuBas + 0.14, r.olcuBas + 0.16, true, o);
   c.yazi(G.zeminKat.x + 36, G.zemin - 3, "±0.00", {
-    boyut: 6.6, renk: "#c49a6f", bas: r.olcuBas + 0.15, bit: r.olcuBas + 0.17,
+    boyut: 6.6, renk: "#b4b4b0", bas: r.olcuBas + 0.15, bit: r.olcuBas + 0.17,
     sonrasi: o.sonrasi,
   });
 
   c.yazi(4, 8, "RÖLÖVE · MEVCUT DURUM", {
-    boyut: 7, renk: "#c49a6f", bas: r.olcuBas + 0.02, bit: r.olcuBas + 0.06,
+    boyut: 7, renk: "#b4b4b0", bas: r.olcuBas + 0.02, bit: r.olcuBas + 0.06,
     aralik: 0.3, sonrasi: o.sonrasi,
   });
 
@@ -485,11 +485,11 @@ function sahneKur(G) {
   c.dikdortgen(anteX, anteY, 34, 14, "ince", p.detayBit - 0.06, p.detayBit - 0.02, ante);
   c.cizgi(anteX, anteY + 6, anteX + 34, anteY + 6, "ince", p.detayBit - 0.03, p.detayBit - 0.01, ante);
   c.yazi(anteX + 2.5, anteY + 4.3, "UYGULAMA PROJESİ", {
-    boyut: 6.4, renk: "#e8e2d6", bas: p.detayBit - 0.03, bit: p.detayBit,
+    boyut: 6.4, renk: "#e4e4e2", bas: p.detayBit - 0.03, bit: p.detayBit,
     aralik: 0.22, sonrasi: ante.sonrasi,
   });
   c.yazi(anteX + 2.5, anteY + 11, "ÖLÇEK 1/50 · PAFTA 03", {
-    boyut: 5.6, renk: "#8d8477", bas: p.detayBit - 0.01, bit: p.detayBit + 0.02,
+    boyut: 5.6, renk: "#8a8a86", bas: p.detayBit - 0.01, bit: p.detayBit + 0.02,
     aralik: 0.18, sonrasi: ante.sonrasi,
   });
 
@@ -500,21 +500,21 @@ function sahneKur(G) {
   c.dolgu(
     [[G.zeminKat.x, G.zeminKat.y], [G.zeminKat.x + G.zeminKat.g, G.zeminKat.y],
      [G.zeminKat.x + G.zeminKat.g, G.zeminKat.y + G.zeminKat.h], [G.zeminKat.x, G.zeminKat.y + G.zeminKat.h]],
-    "#b9ac93", y.yapiBas, y.yapiBas + 0.09, 0.5
+    "#9d9d99", y.yapiBas, y.yapiBas + 0.09, 0.52
   );
   c.dolgu(
     [[G.ustKat.x, G.ustKat.y], [G.ustKat.x + G.ustKat.g, G.ustKat.y],
      [G.ustKat.x + G.ustKat.g, G.ustKat.y + G.ustKat.h], [G.ustKat.x, G.ustKat.y + G.ustKat.h]],
-    "#d6cbb4", y.yapiBas + 0.06, y.yapiBas + 0.15, 0.42
+    "#c6c6c2", y.yapiBas + 0.06, y.yapiBas + 0.15, 0.44
   );
   c.dolgu(
     [G.cati[0], G.cati[1], G.cati[2], G.cati[3]],
-    "#a8623f", y.yapiBas + 0.12, y.yapiBas + 0.2, 0.55
+    "#6f6f6c", y.yapiBas + 0.12, y.yapiBas + 0.2, 0.62
   );
   c.dolgu(
     [[G.baca.x, G.baca.y], [G.baca.x + G.baca.g, G.baca.y],
      [G.baca.x + G.baca.g, G.baca.y + G.baca.h], [G.baca.x, G.baca.y + G.baca.h]],
-    "#b9ac93", y.yapiBas + 0.14, y.yapiBas + 0.19, 0.5
+    "#9d9d99", y.yapiBas + 0.14, y.yapiBas + 0.19, 0.52
   );
 
   // gölge tarafı (sağ cephe hissi) — eğik tarama
@@ -526,7 +526,7 @@ function sahneKur(G) {
     const b = y.yapiBas + 0.18 + i * 0.012;
     c.dolgu(
       [[w.x, w.y], [w.x + w.g, w.y], [w.x + w.g, w.y + w.h], [w.x, w.y + w.h]],
-      "#e8a758", b, b + 0.05, 0.7
+      "#f2f2f0", b, b + 0.05, 0.62
     );
   });
   G.zeminAcik.forEach((w, i) => {
@@ -534,7 +534,7 @@ function sahneKur(G) {
     const b = y.yapiBas + 0.2 + i * 0.012;
     c.dolgu(
       [[w.x, w.y], [w.x + w.g, w.y], [w.x + w.g, w.y + w.h], [w.x, w.y + w.h]],
-      "#e8a758", b, b + 0.05, 0.66
+      "#f2f2f0", b, b + 0.05, 0.58
     );
   });
 
@@ -659,7 +659,7 @@ export function initHeroSketch(canvas, options = {}) {
     ctx.save();
     ctx.globalAlpha = a * 0.92;
     ctx.fillStyle = w.renk;
-    ctx.font = "500 " + px + 'px "Archivo", system-ui, sans-serif';
+    ctx.font = "500 " + px + 'px "Saira", "Archivo", system-ui, sans-serif';
     ctx.textAlign = w.hiza;
     ctx.textBaseline = "middle";
     ctx.translate(X(w.x), Y(w.y));

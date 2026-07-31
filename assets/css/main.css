@@ -7,24 +7,27 @@
    1. Tasarım değişkenleri
    -------------------------------------------------------------------------- */
 :root {
-  /* Renkler — kireç taşı, mürekkep ve patina */
-  --paper: #f5f2ec;
-  --paper-2: #ebe6dc;
-  --paper-3: #ded7c9;
-  --ink: #16130f;
-  --ink-2: #2a2521;
-  --muted: #6d6459;
-  --muted-2: #918a7d;
-  --accent: #a9764a;
-  --accent-soft: #c49a6f;
-  --line: rgba(22, 19, 15, 0.14);
-  --line-strong: rgba(22, 19, 15, 0.28);
-  --line-invert: rgba(245, 242, 236, 0.18);
+  /* Renkler — tek renk, yüksek kontrast.
+     Vurgu renkle değil, kontrast ve ters blokla verilir. */
+  --paper: #f2f2f0;
+  --paper-2: #e7e7e4;
+  --paper-3: #d7d7d3;
+  --ink: #0d0d0c;
+  --ink-2: #1d1d1b;
+  --muted: #70706b;
+  --muted-2: #9a9a94;
+  --accent: #0d0d0c; /* = mürekkep; vurgu ters blokla yapılır */
+  --accent-soft: #d4d4cf; /* koyu zeminde vurgu */
+  --line: rgba(13, 13, 12, 0.14);
+  --line-strong: rgba(13, 13, 12, 0.3);
+  --line-invert: rgba(242, 242, 240, 0.2);
 
   /* Tipografi */
   --font-sans: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
-  --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  /* Başlıklar ve etiketler tek bir "engineered" ailede — tip öncülüğünde kimlik */
+  --font-display: "Saira", "Archivo", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   /* Akışkan tipografi ölçeği
      Ölçek bilinçli olarak kutuplaştırılmıştır: başlıklar çok büyük,
@@ -111,9 +114,12 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  /* Konturlu vurgu kelimeler glif kutusunun dışına taştığı için
+     satır aralığı tamamen sıkıştırılmaz. */
+  line-height: 1.06;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
@@ -201,7 +207,7 @@ p {
 }
 
 .eyebrow--invert {
-  color: rgba(245, 242, 236, 0.66);
+  color: rgba(242, 242, 240, 0.66);
 }
 
 .section-head {
@@ -224,13 +230,24 @@ p {
   margin-top: 0.75rem;
 }
 
+/* Metin bloğu içindeki başlıkla gövde arasına nefes payı */
+.prose .section-title,
+.prose h2 {
+  margin-bottom: 1.5rem;
+}
+
+/* Vurgu kelime: renk yerine kontur — tip öncülüğünde bir ayrım */
 .section-title em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: -0.01em;
-  color: var(--accent);
+  font-style: normal;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+@supports (-webkit-text-stroke: 1px black) {
+  .section-title em {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--ink);
+  }
 }
 
 /* Açıklama metni: başlığın karşısında bilinçli olarak küçük tutulur,
@@ -282,11 +299,28 @@ p {
   transform: translateX(4px);
 }
 
+/* Vurgu rengi olmadığı için hover ters blokla verilir */
 .btn:hover,
 .btn:focus-visible {
-  --btn-bg: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+  --btn-bg: var(--paper);
+  --btn-fg: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn--light:hover,
+.btn--light:focus-visible,
+.btn--outline-light:hover,
+.btn--outline-light:focus-visible {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  border-color: var(--paper);
+}
+
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  border-color: var(--ink);
 }
 
 .btn--ghost {
@@ -352,7 +386,7 @@ p {
 }
 
 .site-header.is-scrolled {
-  background: rgba(245, 242, 236, 0.92);
+  background: rgba(242, 242, 240, 0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 1px 0 var(--line);
@@ -402,11 +436,11 @@ body.is-locked .site-header {
   display: none;
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1140px) {
   .nav {
     display: flex;
     align-items: center;
-    gap: clamp(1.25rem, 2.6vw, 2.75rem);
+    gap: clamp(1rem, 1.8vw, 1.9rem);
   }
 }
 
@@ -452,7 +486,7 @@ body.is-locked .site-header {
   display: none;
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1140px) {
   .header-cta {
     display: inline-flex;
     padding: 0.7rem 1.35rem;
@@ -474,7 +508,7 @@ body.is-locked .site-header {
   border-radius: 0;
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1140px) {
   .menu-toggle {
     display: none;
   }
@@ -567,7 +601,7 @@ body.is-locked .site-header {
   display: grid;
   gap: 0.35rem;
   font-size: var(--fs-sm);
-  color: rgba(245, 242, 236, 0.7);
+  color: rgba(242, 242, 240, 0.7);
 }
 
 /* --------------------------------------------------------------------------
@@ -661,17 +695,17 @@ body.is-locked .site-header {
   pointer-events: none;
   background: linear-gradient(
       180deg,
-      rgba(12, 10, 8, 0.5) 0%,
-      rgba(12, 10, 8, 0) 26%,
-      rgba(12, 10, 8, 0) 52%,
-      rgba(12, 10, 8, 0.72) 100%
+      rgba(10, 10, 9, 0.5) 0%,
+      rgba(10, 10, 9, 0) 26%,
+      rgba(10, 10, 9, 0) 52%,
+      rgba(10, 10, 9, 0.72) 100%
     ),
     linear-gradient(
       90deg,
-      rgba(12, 10, 8, 0.92) 0%,
-      rgba(12, 10, 8, 0.86) 30%,
-      rgba(12, 10, 8, 0.45) 46%,
-      rgba(12, 10, 8, 0) 58%
+      rgba(10, 10, 9, 0.92) 0%,
+      rgba(10, 10, 9, 0.86) 30%,
+      rgba(10, 10, 9, 0.45) 46%,
+      rgba(10, 10, 9, 0) 58%
     );
 }
 
@@ -681,10 +715,10 @@ body.is-locked .site-header {
   .hero__scrim {
     background: linear-gradient(
       180deg,
-      rgba(12, 10, 8, 0.55) 0%,
-      rgba(12, 10, 8, 0) 24%,
-      rgba(12, 10, 8, 0.62) 48%,
-      rgba(12, 10, 8, 0.92) 78%
+      rgba(10, 10, 9, 0.55) 0%,
+      rgba(10, 10, 9, 0) 24%,
+      rgba(10, 10, 9, 0.62) 48%,
+      rgba(10, 10, 9, 0.92) 78%
     );
   }
 }
@@ -708,17 +742,23 @@ body.is-locked .site-header {
 
 .hero__title em {
   display: block;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 300;
-  text-transform: lowercase;
-  letter-spacing: -0.02em;
+  font-style: normal;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: -0.045em;
   color: var(--accent-soft);
+}
+
+@supports (-webkit-text-stroke: 1px black) {
+  .hero__title em {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--paper);
+  }
 }
 
 .hero__text {
   max-width: 42ch;
-  color: rgba(245, 242, 236, 0.72);
+  color: rgba(242, 242, 240, 0.72);
   font-size: var(--fs-base);
   line-height: 1.75;
 }
@@ -749,7 +789,7 @@ body.is-locked .site-header {
 .hero__track {
   position: relative;
   height: 1px;
-  background: rgba(245, 242, 236, 0.22);
+  background: rgba(242, 242, 240, 0.22);
   margin-bottom: 1rem;
 }
 
@@ -775,7 +815,7 @@ body.is-locked .site-header {
   font-size: var(--fs-xs);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(245, 242, 236, 0.4);
+  color: rgba(242, 242, 240, 0.4);
   transition: color 0.4s var(--ease);
 }
 
@@ -796,7 +836,7 @@ body.is-locked .site-header {
   margin: 0 0 1.25rem;
   font-size: var(--fs-sm);
   line-height: 1.6;
-  color: rgba(245, 242, 236, 0.66);
+  color: rgba(242, 242, 240, 0.66);
   max-width: 54ch;
   min-height: 3.2em;
   transition: opacity 0.3s var(--ease);
@@ -818,7 +858,7 @@ body.is-locked .site-header {
   font-size: var(--fs-xs);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(245, 242, 236, 0.55);
+  color: rgba(242, 242, 240, 0.55);
 }
 
 @media (min-width: 900px) {
@@ -830,7 +870,7 @@ body.is-locked .site-header {
 .scroll-hint__line {
   width: 1px;
   height: 46px;
-  background: rgba(245, 242, 236, 0.35);
+  background: rgba(242, 242, 240, 0.35);
   position: relative;
   overflow: hidden;
 }
@@ -887,7 +927,7 @@ body.is-locked .site-header {
 
 .page-hero__text {
   max-width: 56ch;
-  color: rgba(245, 242, 236, 0.75);
+  color: rgba(242, 242, 240, 0.75);
   font-size: var(--fs-lg);
 }
 
@@ -901,7 +941,7 @@ body.is-locked .site-header {
   font-size: var(--fs-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(245, 242, 236, 0.55);
+  color: rgba(242, 242, 240, 0.55);
 }
 
 .breadcrumb li + li::before {
@@ -1041,9 +1081,10 @@ body.is-locked .site-header {
 }
 
 .signature__name {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--fs-xl);
-  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .signature__role {
@@ -1175,7 +1216,7 @@ body.is-locked .site-header {
 }
 
 .service:hover .service__text {
-  color: rgba(245, 242, 236, 0.72);
+  color: rgba(242, 242, 240, 0.72);
 }
 
 .service__more {
@@ -1333,8 +1374,8 @@ body.is-locked .site-header {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(15, 12, 9, 0) 45%,
-    rgba(15, 12, 9, 0.62) 100%
+    rgba(10, 10, 9, 0) 45%,
+    rgba(10, 10, 9, 0.62) 100%
   );
   opacity: 0;
   transition: opacity 0.5s var(--ease);
@@ -1350,7 +1391,7 @@ body.is-locked .site-header {
   left: 1rem;
   z-index: 2;
   padding: 0.35rem 0.8rem;
-  background: rgba(245, 242, 236, 0.92);
+  background: rgba(242, 242, 240, 0.92);
   font-size: var(--fs-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1501,9 +1542,12 @@ body.is-locked .site-header {
 }
 
 .process__num {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
   color: var(--accent-soft);
 }
 
@@ -1514,7 +1558,7 @@ body.is-locked .site-header {
 }
 
 .process__text {
-  color: rgba(245, 242, 236, 0.66);
+  color: rgba(242, 242, 240, 0.66);
   font-size: var(--fs-sm);
 }
 
@@ -1563,11 +1607,11 @@ body.is-locked .site-header {
 
 .quote blockquote {
   margin: 0;
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: clamp(1.5rem, 3.4vw, 2.75rem);
-  font-style: italic;
-  line-height: 1.28;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
@@ -1598,17 +1642,22 @@ main > .cta:last-child {
 }
 
 .cta__title em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  text-transform: none;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 600;
   color: var(--accent-soft);
+}
+
+@supports (-webkit-text-stroke: 1px black) {
+  .cta__title em {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--paper);
+  }
 }
 
 .cta__text {
   margin-top: 1.25rem;
   max-width: 46ch;
-  color: rgba(245, 242, 236, 0.72);
+  color: rgba(242, 242, 240, 0.72);
 }
 
 .cta__actions {
@@ -1765,7 +1814,7 @@ main > .cta:last-child {
 }
 
 .accordion__trigger:hover {
-  color: var(--accent);
+  opacity: 0.55;
 }
 
 .accordion__icon {
@@ -1821,6 +1870,176 @@ main > .cta:last-child {
   max-width: 68ch;
 }
 
+
+/* --------------------------------------------------------------------------
+   15b. Kayıt listesi — Haberler ve Blog
+   Fotoğraf yerine tipografiye dayanan satır listesi. Vurgu renk yerine
+   ters blokla verilir: satırın üzerine gelindiğinde zemin mürekkebe döner.
+   -------------------------------------------------------------------------- */
+.kayitlar {
+  border-top: 1px solid var(--line-strong);
+}
+
+.kayit {
+  display: grid;
+  gap: 0.5rem 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(0.75rem, 2vw, 1.5rem);
+  border-bottom: 1px solid var(--line);
+  transition: background 0.35s var(--ease), color 0.35s var(--ease),
+    padding-left 0.35s var(--ease);
+}
+
+@media (min-width: 820px) {
+  .kayit {
+    grid-template-columns: 7.5rem 9rem 1fr auto;
+    align-items: baseline;
+  }
+}
+
+a.kayit:hover,
+a.kayit:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  padding-left: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+.kayit__tarih {
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.35s var(--ease);
+}
+
+.kayit__tur {
+  justify-self: start;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid currentColor;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.35s var(--ease);
+}
+
+a.kayit:hover .kayit__tarih,
+a.kayit:hover .kayit__tur,
+a.kayit:hover .kayit__yer,
+a.kayit:hover .kayit__ozet {
+  color: inherit;
+}
+
+.kayit__baslik {
+  font-size: clamp(1.125rem, 0.95rem + 0.8vw, 1.625rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.14;
+}
+
+.kayit__ozet {
+  margin-top: 0.5rem;
+  max-width: 62ch;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  transition: color 0.35s var(--ease);
+}
+
+.kayit__yer {
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.35s var(--ease);
+}
+
+/* --------------------------------------------------------------------------
+   15c. Makale gövdesi
+   -------------------------------------------------------------------------- */
+.makale {
+  max-width: 68ch;
+  margin-inline: auto;
+}
+
+.makale > * + * {
+  margin-top: 1.35rem;
+}
+
+.makale h2 {
+  font-size: var(--fs-xl);
+  margin-top: 2.75rem;
+  letter-spacing: -0.025em;
+}
+
+.makale h3 {
+  font-size: var(--fs-lg);
+  margin-top: 2rem;
+}
+
+.makale p {
+  color: var(--ink-2);
+}
+
+.makale ul,
+.makale ol {
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--ink-2);
+}
+
+.makale blockquote {
+  padding-left: clamp(1rem, 3vw, 1.75rem);
+  border-left: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.makale figure {
+  margin-block: 2.25rem;
+}
+
+.makale figcaption {
+  margin-top: 0.6rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.makale-kunye {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.75rem;
+  padding-block: 1.25rem;
+  border-block: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Boş durum bildirimi */
+.bos-durum {
+  padding: clamp(2.5rem, 6vw, 4rem);
+  border: 1px solid var(--line);
+  text-align: center;
+  color: var(--muted);
+}
+
 /* --------------------------------------------------------------------------
    16. Alt bilgi
    -------------------------------------------------------------------------- */
@@ -1853,7 +2072,7 @@ main > .cta:last-child {
 .footer-brand__text {
   margin-top: 1rem;
   max-width: 40ch;
-  color: rgba(245, 242, 236, 0.66);
+  color: rgba(242, 242, 240, 0.66);
   font-size: var(--fs-sm);
 }
 
@@ -1861,7 +2080,7 @@ main > .cta:last-child {
   font-size: var(--fs-xs);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(245, 242, 236, 0.5);
+  color: rgba(242, 242, 240, 0.5);
   margin-bottom: 1.1rem;
 }
 
@@ -1871,7 +2090,7 @@ main > .cta:last-child {
   display: grid;
   gap: 0.65rem;
   font-size: var(--fs-sm);
-  color: rgba(245, 242, 236, 0.82);
+  color: rgba(242, 242, 240, 0.82);
 }
 
 .footer-bottom {
@@ -1884,7 +2103,7 @@ main > .cta:last-child {
   font-size: var(--fs-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(245, 242, 236, 0.5);
+  color: rgba(242, 242, 240, 0.5);
 }
 
 .social {
@@ -1904,9 +2123,9 @@ main > .cta:last-child {
 }
 
 .social a:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink);
 }
 
 .social svg {
@@ -1944,7 +2163,9 @@ main > .cta:last-child {
 }
 
 .to-top:hover {
-  background: var(--accent);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
 }
 
 /* WhatsApp hızlı erişim */
@@ -1957,8 +2178,8 @@ main > .cta:last-child {
   place-items: center;
   width: 48px;
   height: 48px;
-  background: #1f7a4d;
-  color: #fff;
+  background: var(--ink);
+  color: var(--paper);
   transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
 }
 
@@ -2039,6 +2260,69 @@ body.hero-gorunur .to-top {
   .hero__fallback {
     display: block;
   }
+}
+
+
+/* --------------------------------------------------------------------------
+   19b. Tip öncülüğünde kimlik
+   Başlıkların yanı sıra tüm etiket, buton ve sayı yüzeyleri de display
+   ailesindedir; site tek bir tipografik sesle konuşur.
+   -------------------------------------------------------------------------- */
+.eyebrow,
+.brand__name,
+.brand__meta,
+.nav__link,
+.mobile-nav__link,
+.mobile-nav__index,
+.btn,
+.filter-btn,
+.service__index,
+.service__more,
+.service-row__num,
+.project-card__badge,
+.project-card__meta,
+.project-card__year,
+.stat__value,
+.stat__label,
+.hero__meta dt,
+.hero__meta dd,
+.fact dt,
+.fact dd,
+.breadcrumb,
+.tag-list li,
+.footer-brand__mark,
+.footer-col__title,
+.footer-bottom,
+.pager,
+.media-frame__caption,
+.hero__phase-list,
+.hero__caption,
+.scroll-hint,
+.signature__role,
+.field label,
+.contact-item__label,
+.contact-item__value,
+.quote figcaption {
+  font-family: var(--font-display);
+}
+
+/* Hizalanan rakamlarda sabit genişlik */
+.stat__value,
+.project-card__year,
+.fact dd,
+.hero__phase-list,
+.service__index,
+.service-row__num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Display ailesi dar olduğundan etiketlerde hafif fazladan aralık */
+.eyebrow,
+.nav__link,
+.btn,
+.filter-btn,
+.footer-col__title {
+  letter-spacing: 0.18em;
 }
 
 /* --------------------------------------------------------------------------

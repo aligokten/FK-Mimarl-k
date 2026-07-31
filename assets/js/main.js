@@ -88,7 +88,7 @@
     });
 
     // Masaüstüne geçildiğinde menüyü kapat
-    window.matchMedia("(min-width: 1000px)").addEventListener("change", function (e) {
+    window.matchMedia("(min-width: 1140px)").addEventListener("change", function (e) {
       if (e.matches) setState(false);
     });
 
