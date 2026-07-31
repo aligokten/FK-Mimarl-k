@@ -7,6 +7,10 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // Dinamik import()'un bu dosyaya göre çözülmesi için betiğin kendi adresi
+  var BETIK_URL =
+    (document.currentScript && document.currentScript.src) || window.location.href;
+
   /* ---------------------------------------------------------------------
      Başlık: kaydırınca arka plan, aşağı kaydırınca gizlenme
      --------------------------------------------------------------------- */
@@ -334,6 +338,152 @@
   }
 
   /* ---------------------------------------------------------------------
+     Kahraman bölümü 3B sahnesi
+
+     Sahne yalnızca WebGL destekleniyorsa ve kullanıcı hareket azaltma
+     tercih etmediyse yüklenir. Aksi hâlde bölüm .is-static sınıfıyla
+     tek ekranlık sabit görsele döner ve three.js hiç indirilmez.
+     --------------------------------------------------------------------- */
+  var EVRELER = [
+    {
+      esik: 0,
+      metin:
+        "Yapı bugünkü hâliyle ölçülü rölöve, fotoğraf ve hasar analizleriyle belgelenir.",
+    },
+    {
+      esik: 0.34,
+      metin:
+        "İskele kurulur; özgün malzemeyle uyumlu tekniklerle sağlamlaştırma ve bütünleme yapılır.",
+    },
+    {
+      esik: 0.72,
+      metin:
+        "Yapı özgün karakterini koruyarak, yeniden kullanılabilir bir bütün olarak teslim edilir.",
+    },
+  ];
+
+  function webglVar() {
+    try {
+      var c = document.createElement("canvas");
+      return !!(
+        window.WebGLRenderingContext &&
+        (c.getContext("webgl2") || c.getContext("webgl"))
+      );
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function initHero() {
+    var bolum = document.querySelector("[data-hero3d]");
+    if (!bolum) return;
+
+    var canvas = bolum.querySelector(".hero__canvas");
+    var cubuk = bolum.querySelector("[data-hero-progress]");
+    var acikla = bolum.querySelector("[data-hero-caption]");
+    var evreler = bolum.querySelectorAll(".hero__phase-list li");
+
+    /* Bölüm ekrandayken sabit WhatsApp/yukarı-çık butonlarını gizle:
+       evre göstergesinin üzerine binmesinler. 3B yüklenmese de çalışır. */
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(
+        function (girdiler) {
+          girdiler.forEach(function (g) {
+            document.body.classList.toggle("hero-gorunur", g.isIntersecting);
+          });
+        },
+        { threshold: 0 }
+      ).observe(bolum);
+    }
+
+    if (reduceMotion || !webglVar() || !canvas) {
+      bolum.classList.add("is-static");
+      return;
+    }
+
+    var sahne = null;
+    var sonEvre = -1;
+
+    /** Kaydırma konumunu 0–1 ilerlemeye çevirir. */
+    function ilerlemeHesapla() {
+      var r = bolum.getBoundingClientRect();
+      var pist = r.height - window.innerHeight;
+      if (pist <= 0) return 0;
+      return Math.min(Math.max(-r.top / pist, 0), 1);
+    }
+
+    function arayuzGuncelle(t) {
+      if (cubuk) cubuk.style.width = t * 100 + "%";
+
+      var indeks = 0;
+      for (var i = 0; i < EVRELER.length; i++) {
+        if (t >= EVRELER[i].esik) indeks = i;
+      }
+      if (indeks === sonEvre) return;
+      sonEvre = indeks;
+
+      evreler.forEach(function (li, i) {
+        if (i === indeks) li.setAttribute("data-active", "true");
+        else li.removeAttribute("data-active");
+      });
+
+      if (acikla) {
+        acikla.setAttribute("data-fading", "true");
+        window.setTimeout(function () {
+          acikla.textContent = EVRELER[indeks].metin;
+          acikla.removeAttribute("data-fading");
+        }, 300);
+      }
+    }
+
+    var bekleyen = false;
+    function kaydirma() {
+      if (bekleyen) return;
+      bekleyen = true;
+      window.requestAnimationFrame(function () {
+        var t = ilerlemeHesapla();
+        if (sahne) sahne.setProgress(t);
+        arayuzGuncelle(t);
+        bekleyen = false;
+      });
+    }
+
+    // three.js yalnızca ihtiyaç anında indirilir
+    import(new URL("hero3d.js", BETIK_URL).href)
+      .then(function (mod) {
+        var dar = window.matchMedia("(max-width: 820px)").matches;
+        sahne = mod.initHero3D(canvas, { kalite: dar ? "dusuk" : "yuksek" });
+        sahne.setProgress(ilerlemeHesapla());
+        sahne.start();
+
+        window.addEventListener("scroll", kaydirma, { passive: true });
+        window.addEventListener("resize", function () {
+          sahne.resize();
+          kaydirma();
+        });
+
+        // Bölüm ekrandan çıkınca çizimi durdur
+        if ("IntersectionObserver" in window) {
+          new IntersectionObserver(
+            function (girdiler) {
+              girdiler.forEach(function (g) {
+                if (g.isIntersecting) sahne.start();
+                else sahne.stop();
+              });
+            },
+            { rootMargin: "120px" }
+          ).observe(bolum);
+        }
+
+        kaydirma();
+      })
+      .catch(function () {
+        // Modül yüklenemezse sessizce sabit görsele düş
+        bolum.classList.add("is-static");
+      });
+  }
+
+  /* ---------------------------------------------------------------------
      Yıl bilgisi
      --------------------------------------------------------------------- */
   function initYear() {
@@ -353,6 +503,7 @@
     initAccordion();
     initToTop();
     initForm();
+    initHero();
     initYear();
   }
 

@@ -100,41 +100,52 @@
 
 <main id="main">
 
-  <!-- ================= KAHRAMAN ================= -->
-  <section class="hero">
-    <div class="hero__media">
-      <img src="assets/img/hero.svg" alt="Restore edilmiş tarihi yapı cephesi" width="1920" height="1200" fetchpriority="high">
-    </div>
-    <span class="hero__side">Fatma Kocaova Mimarlık — İzmir</span>
+  <!-- ================= KAHRAMAN — 3B RESTORASYON SAHNESİ ================= -->
+  <!-- .hero yüksek bir kaydırma pistidir; içindeki sahne sticky kalır ve
+       kaydırma ilerledikçe 3B model yıkıntıdan restore edilmiş konağa döner.
+       WebGL yoksa veya kullanıcı hareket azaltma tercih ettiyse sahne
+       otomatik olarak sabit görsele düşer (bkz. .hero.is-static). -->
+  <section class="hero" id="hero" data-hero3d>
+    <div class="hero__stage">
+      <canvas class="hero__canvas" aria-hidden="true"></canvas>
+      <img class="hero__fallback" src="assets/img/hero.svg" alt="Restore edilmiş tarihi konak" width="1920" height="1200">
+      <div class="hero__scrim" aria-hidden="true"></div>
 
-    <div class="container hero__inner">
-      <span class="eyebrow eyebrow--invert" data-reveal>İzmir · Mimari Restorasyon</span>
-      <h1 class="hero__title" data-reveal style="--reveal-delay:100ms">Tarihi yapıları <em>özgün</em> değeriyle geleceğe taşıyoruz</h1>
-      <p class="hero__text" data-reveal style="--reveal-delay:200ms">
-        Rölöveden restitüsyona, restorasyon projesinden uygulama kontrollüğüne kadar
-        kültür varlıklarının korunması sürecinin tamamını tek bir uzman ekiple yürütüyoruz.
-      </p>
+      <div class="container hero__inner">
+        <span class="eyebrow eyebrow--invert">İzmir · Mimari Restorasyon</span>
+        <h1 class="hero__title">Yıkıntıdan <em>geleceğe</em></h1>
+        <p class="hero__text">
+          Rölöveden restitüsyona, restorasyon projesinden uygulama kontrollüğüne —
+          kültür varlıklarının korunma sürecinin tamamını tek bir uzman ekiple yürütüyoruz.
+        </p>
 
-      <div class="hero__actions" data-reveal style="--reveal-delay:300ms">
-        <a class="btn btn--light" href="projeler.html">
-          Projeleri İnceleyin
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-        </a>
-        <a class="btn btn--outline-light" href="iletisim.html">Bize Ulaşın</a>
+        <div class="hero__actions">
+          <a class="btn btn--light" href="projeler.html">
+            Projeleri İnceleyin
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          </a>
+          <a class="btn btn--outline-light" href="iletisim.html">Bize Ulaşın</a>
+        </div>
       </div>
 
-      <dl class="hero__meta" data-reveal style="--reveal-delay:400ms">
-        <div><dt>Uzmanlık</dt><dd>Restorasyon</dd></div>
-        <div><dt>Merkez</dt><dd>İzmir</dd></div>
-        <div><dt>Kapsam</dt><dd>Kültür Varlıkları</dd></div>
-        <div><dt>Yaklaşım</dt><dd>Özgün Malzeme</dd></div>
-      </dl>
-    </div>
+      <!-- Restorasyonun gerçek aşama sırası; 3B sahneyle eşzamanlı ilerler -->
+      <div class="hero__phases" aria-hidden="true">
+        <p class="hero__caption" data-hero-caption>
+          Yapı bugünkü hâliyle ölçülü rölöve, fotoğraf ve hasar analizleriyle belgelenir.
+        </p>
+        <div class="hero__track"><span data-hero-progress></span></div>
+        <ol class="hero__phase-list">
+          <li data-active="true">01 — Mevcut Durum</li>
+          <li>02 — Onarım</li>
+          <li>03 — Restorasyon</li>
+        </ol>
+      </div>
 
-    <span class="scroll-hint" aria-hidden="true">
-      Kaydırın
-      <span class="scroll-hint__line"></span>
-    </span>
+      <span class="scroll-hint" aria-hidden="true">
+        Kaydırın
+        <span class="scroll-hint__line"></span>
+      </span>
+    </div>
   </section>
 
   <!-- ================= KAYAN ŞERİT ================= -->

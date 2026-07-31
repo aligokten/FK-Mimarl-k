@@ -26,15 +26,17 @@
     Helvetica, Arial, sans-serif;
   --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
 
-  /* Akışkan tipografi ölçeği */
-  --fs-xs: 0.6875rem;
-  --fs-sm: 0.8125rem;
-  --fs-base: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
-  --fs-lg: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
-  --fs-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem);
-  --fs-2xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
-  --fs-3xl: clamp(2rem, 1.5rem + 2.6vw, 4.25rem);
-  --fs-4xl: clamp(2.375rem, 1.75rem + 3.4vw, 5.75rem);
+  /* Akışkan tipografi ölçeği
+     Ölçek bilinçli olarak kutuplaştırılmıştır: başlıklar çok büyük,
+     metin küçük ama bol satır aralığıyla rahat okunur. */
+  --fs-xs: 0.6875rem; /* 11px — etiketler, harf aralığı geniş */
+  --fs-sm: 0.8125rem; /* 13px — ikincil bilgi */
+  --fs-base: clamp(0.9375rem, 0.91rem + 0.12vw, 1rem); /* 15 → 16px */
+  --fs-lg: clamp(1rem, 0.96rem + 0.2vw, 1.125rem); /* 16 → 18px */
+  --fs-xl: clamp(1.25rem, 1.1rem + 0.7vw, 1.75rem);
+  --fs-2xl: clamp(1.875rem, 1.35rem + 2.3vw, 3.25rem);
+  --fs-3xl: clamp(2.5rem, 1.5rem + 4.4vw, 6.25rem);
+  --fs-4xl: clamp(3rem, 1.4rem + 8.6vw, 10.5rem);
 
   /* Boşluk */
   --gutter: clamp(1.25rem, 4vw, 4rem);
@@ -73,7 +75,8 @@ body {
   font-family: var(--font-sans);
   font-size: var(--fs-base);
   font-weight: 400;
-  line-height: 1.65;
+  /* Küçük punto, geniş satır aralığıyla dengelenir */
+  line-height: 1.72;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -109,8 +112,8 @@ h2,
 h3,
 h4 {
   font-weight: 500;
-  line-height: 1.06;
-  letter-spacing: -0.02em;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
@@ -230,10 +233,13 @@ p {
   color: var(--accent);
 }
 
+/* Açıklama metni: başlığın karşısında bilinçli olarak küçük tutulur,
+   satır aralığı ve satır uzunluğu okunabilirliği korur. */
 .lead {
-  font-size: var(--fs-lg);
+  font-size: var(--fs-base);
+  line-height: 1.75;
   color: var(--muted);
-  max-width: 52ch;
+  max-width: 46ch;
 }
 
 .rule {
@@ -565,158 +571,258 @@ body.is-locked .site-header {
 }
 
 /* --------------------------------------------------------------------------
-   6. Kahraman bölümü
+   6. Kahraman bölümü — kaydırmayla ilerleyen 3B restorasyon sahnesi
+
+   .hero yüksek bir "kaydırma pisti"dir; içindeki .hero__stage sticky olarak
+   ekranda kalır. Kaydırma miktarı 0 → 1 ilerleme değerine çevrilir ve
+   3B model yıkıntıdan restore edilmiş konağa dönüşür.
    -------------------------------------------------------------------------- */
 .hero {
   position: relative;
-  min-height: 100svh;
-  display: flex;
-  align-items: flex-end;
   color: var(--paper);
   background: var(--ink);
+  /* 100svh sahne + dönüşüm için kaydırma payı */
+  height: 320vh;
+}
+
+/* 3B kapalıysa (WebGL yok / hareket azaltma / eski tarayıcı) sahne
+   tek ekranlık klasik bir kahraman bölümüne döner. */
+.hero.is-static {
+  height: auto;
+  min-height: 100svh;
+}
+
+.hero__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
   overflow: hidden;
-  padding-top: calc(var(--header-h) + 2rem);
-  padding-bottom: clamp(2rem, 5vw, 4rem);
+  display: flex;
+  align-items: flex-end;
+  padding-top: calc(var(--header-h) + 1.5rem);
+  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.hero.is-static .hero__stage {
+  position: relative;
+  height: auto;
+  min-height: 100svh;
 }
 
 /* Küçük ekranlarda sabit WhatsApp / yukarı çık butonlarına yer bırak */
 @media (max-width: 700px) {
-  .hero {
+  .hero__stage {
     padding-bottom: 5.5rem;
   }
 }
 
-.hero__media {
+/* Geniş ekranda alttaki evre göstergesine yer aç */
+@media (min-width: 900px) {
+  .hero__stage {
+    padding-bottom: clamp(10rem, 17vh, 13.5rem);
+  }
+}
+
+.hero__canvas {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
   z-index: 0;
 }
 
-.hero__media img,
-.hero__media svg {
+.hero.is-static .hero__canvas {
+  display: none;
+}
+
+/* WebGL yoksa gösterilen sabit görsel */
+.hero__fallback {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  z-index: 0;
+  display: none;
 }
 
-.hero__media::after {
-  content: "";
+.hero.is-static .hero__fallback {
+  display: block;
+}
+
+/* Metnin okunması için koyu geçiş katmanı */
+/* Perde yalnızca metnin oturduğu sol ve alt bantları koyultur;
+   modelin durduğu sağ üst bölge açık kalır. */
+.hero__scrim {
   position: absolute;
   inset: 0;
+  z-index: 1;
+  pointer-events: none;
   background: linear-gradient(
       180deg,
-      rgba(15, 12, 9, 0.72) 0%,
-      rgba(15, 12, 9, 0.42) 38%,
-      rgba(15, 12, 9, 0.86) 100%
+      rgba(12, 10, 8, 0.5) 0%,
+      rgba(12, 10, 8, 0) 26%,
+      rgba(12, 10, 8, 0) 52%,
+      rgba(12, 10, 8, 0.72) 100%
     ),
-    linear-gradient(90deg, rgba(15, 12, 9, 0.7) 0%, rgba(15, 12, 9, 0.15) 70%);
+    linear-gradient(
+      90deg,
+      rgba(12, 10, 8, 0.82) 0%,
+      rgba(12, 10, 8, 0.42) 34%,
+      rgba(12, 10, 8, 0) 60%
+    );
+}
+
+/* Dar ekranda metin alt yarıda durur; yatay perde yerine
+   alttan yukarı güçlenen tek bir geçiş kullanılır. */
+@media (max-width: 900px) {
+  .hero__scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(12, 10, 8, 0.55) 0%,
+      rgba(12, 10, 8, 0) 24%,
+      rgba(12, 10, 8, 0.62) 48%,
+      rgba(12, 10, 8, 0.92) 78%
+    );
+  }
 }
 
 .hero__inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
 }
 
+/* --- Büyük başlık / küçük metin kontrastı --- */
 .hero__title {
   font-size: var(--fs-4xl);
   text-transform: uppercase;
-  letter-spacing: -0.035em;
-  line-height: 0.95;
-  margin-block: clamp(1rem, 2.5vw, 1.75rem);
-  max-width: 16ch;
+  letter-spacing: -0.055em;
+  line-height: 0.84;
+  font-weight: 500;
+  margin-block: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 2.2vw, 1.75rem);
+  max-width: 12ch;
 }
 
 .hero__title em {
+  display: block;
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 300;
-  text-transform: none;
-  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  letter-spacing: -0.02em;
   color: var(--accent-soft);
 }
 
 .hero__text {
-  max-width: 48ch;
-  color: rgba(245, 242, 236, 0.78);
-  font-size: var(--fs-lg);
+  max-width: 42ch;
+  color: rgba(245, 242, 236, 0.72);
+  font-size: var(--fs-base);
+  line-height: 1.75;
 }
 
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
 }
 
-.hero__meta {
-  margin-top: clamp(2.5rem, 7vw, 5rem);
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--line-invert);
-  display: grid;
-  gap: 1.25rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  font-size: var(--fs-sm);
-}
-
-@media (min-width: 780px) {
-  .hero__meta {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.hero__meta dt {
-  font-size: var(--fs-xs);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(245, 242, 236, 0.55);
-  margin-bottom: 0.35rem;
-}
-
-.hero__meta dd {
-  margin: 0;
-  font-size: var(--fs-lg);
-  font-weight: 500;
-}
-
-/* Dikey kenar etiketi (referans tasarımdaki gibi) */
-.hero__side {
+/* --- Evre göstergesi: restorasyon sürecinin gerçek sırası --- */
+.hero__phases {
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(1rem, 2.5vw, 2rem);
   display: none;
 }
 
-@media (min-width: 1200px) {
-  .hero__side {
-    position: absolute;
-    left: calc(var(--gutter) / 2 - 6px);
-    top: 50%;
-    z-index: 2;
+@media (min-width: 900px) {
+  .hero__phases {
     display: block;
-    transform: rotate(180deg) translateY(50%);
-    writing-mode: vertical-rl;
-    font-size: var(--fs-xs);
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: rgba(245, 242, 236, 0.5);
   }
 }
 
+.hero__track {
+  position: relative;
+  height: 1px;
+  background: rgba(245, 242, 236, 0.22);
+  margin-bottom: 1rem;
+}
+
+.hero__track span {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 0%;
+  background: var(--accent-soft);
+  transition: width 0.15s linear;
+}
+
+.hero__phase-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hero__phase-list li {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245, 242, 236, 0.4);
+  transition: color 0.4s var(--ease);
+}
+
+.hero__phase-list li:last-child {
+  text-align: right;
+}
+
+.hero__phase-list li:nth-child(2) {
+  text-align: center;
+}
+
+.hero__phase-list li[data-active="true"] {
+  color: var(--accent-soft);
+}
+
+/* Evreye göre değişen tek satırlık açıklama */
+.hero__caption {
+  margin: 0 0 1.25rem;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: rgba(245, 242, 236, 0.66);
+  max-width: 54ch;
+  min-height: 3.2em;
+  transition: opacity 0.3s var(--ease);
+}
+
+.hero__caption[data-fading="true"] {
+  opacity: 0;
+}
+
+/* Mobilde göstergenin yerine sade bir kaydırma ipucu */
 .scroll-hint {
   position: absolute;
   right: var(--gutter);
   bottom: clamp(2rem, 5vw, 4rem);
   z-index: 2;
-  display: none;
+  display: flex;
   align-items: center;
   gap: 0.75rem;
   font-size: var(--fs-xs);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(245, 242, 236, 0.6);
+  color: rgba(245, 242, 236, 0.55);
 }
 
-@media (min-width: 780px) {
+@media (min-width: 900px) {
   .scroll-hint {
-    display: flex;
+    display: none;
   }
 }
 
@@ -1852,11 +1958,19 @@ main > .cta:last-child {
   height: 48px;
   background: #1f7a4d;
   color: #fff;
-  transition: transform 0.3s var(--ease);
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
 }
 
 .wa-float:hover {
   transform: translateY(-3px);
+}
+
+/* Kahraman bölümü ekrandayken sabit butonlar evre göstergesini kapatmasın */
+body.hero-gorunur .wa-float,
+body.hero-gorunur .to-top {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
 }
 
 .wa-float svg {
@@ -1902,6 +2016,27 @@ main > .cta:last-child {
 
   .marquee__track {
     animation: none;
+  }
+
+  /* 3B sahne ve kaydırma pisti devre dışı; sabit görsel gösterilir */
+  .hero {
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .hero__stage {
+    position: relative;
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .hero__canvas,
+  .hero__phases {
+    display: none;
+  }
+
+  .hero__fallback {
+    display: block;
   }
 }
 
