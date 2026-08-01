@@ -96,6 +96,30 @@
     });
   }
 
+  /* Depodaki herhangi bir yolun sha'sı — dosya yoksa null.
+     Yeni dosya yazarken sha gönderilmez, var olanı güncellerken zorunludur. */
+  function yolSha(yol) {
+    return istek("/repos/" + ayar.sahip + "/" + ayar.repo + "/contents/" +
+                 yol + "?ref=" + encodeURIComponent(ayar.dal))
+      .then(function (y) { return y.sha; })
+      .catch(function () { return null; });
+  }
+
+  /* İkili dosya (görsel) yazar. icerikB64 doğrudan base64 gövdedir. */
+  function ikiliYaz(yol, icerikB64, mesaj) {
+    return yolSha(yol).then(function (sha) {
+      return istek("/repos/" + ayar.sahip + "/" + ayar.repo + "/contents/" + yol, {
+        method: "PUT",
+        body: {
+          message: mesaj,
+          content: icerikB64,
+          sha: sha || undefined,
+          branch: ayar.dal
+        }
+      });
+    });
+  }
+
   function dosyaYaz(ad, icerik, mesaj) {
     return istek(dosyaYolu(ad), {
       method: "PUT",
@@ -624,6 +648,266 @@
     kap.appendChild(k4);
   }
 
+  /* ---------------------------------------------------------------- logo
+
+     Yüklenen dosyalar kaydedilene kadar bellekte bekler; "Kaydet ve yayınla"
+     önce görselleri depoya yazar, sonra site.json'u günceller.
+     -------------------------------------------------------------------- */
+  var LOGO_TURLER = {
+    "image/svg+xml": "svg",
+    "image/png": "png",
+    "image/webp": "webp",
+    "image/jpeg": "jpg"
+  };
+  var LOGO_AZAMI = 512 * 1024;
+  var bekleyenLogo = {}; // { acik: {uzanti, b64, oran, adres}, koyu: {...} }
+
+  function boyutYaz(bayt) {
+    return bayt < 1024 ? bayt + " B" : (bayt / 1024).toFixed(1) + " KB";
+  }
+
+  function logoAyar() {
+    var s = veri.site;
+    if (!s.logo) {
+      s.logo = { tur: "yazi", acik: "", koyu: "", acikOran: 0, koyuOran: 0,
+                 yukseklikBaslik: 30, yukseklikAlt: 84 };
+    }
+    return s.logo;
+  }
+
+  /* Dosyanın en/boy oranını bulur. SVG'de tarayıcı içsel ölçü vermeyebildiği
+     için önce viewBox / width-height nitelikleri okunur. */
+  function gorselOrani(dosya, veriAdres) {
+    if (dosya.type === "image/svg+xml") {
+      return dosya.text().then(function (metin) {
+        var vb = /viewBox\s*=\s*["']\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([\d.]+)[\s,]+([\d.]+)/i.exec(metin);
+        if (vb) return parseFloat(vb[1]) / parseFloat(vb[2]);
+        var g = /\swidth\s*=\s*["']([\d.]+)/i.exec(metin);
+        var y = /\sheight\s*=\s*["']([\d.]+)/i.exec(metin);
+        if (g && y) return parseFloat(g[1]) / parseFloat(y[1]);
+        return 0;
+      }).catch(function () { return 0; });
+    }
+    return new Promise(function (coz) {
+      var im = new Image();
+      im.onload = function () { coz(im.naturalHeight ? im.naturalWidth / im.naturalHeight : 0); };
+      im.onerror = function () { coz(0); };
+      im.src = veriAdres;
+    });
+  }
+
+  function logoOku(dosya, hangi, bittiginde) {
+    if (!LOGO_TURLER[dosya.type]) {
+      bildir("Desteklenmeyen dosya türü. SVG, PNG, WEBP veya JPG yükleyin.", "hata");
+      return;
+    }
+    if (dosya.size > LOGO_AZAMI) {
+      bildir("Dosya çok büyük (" + Math.round(dosya.size / 1024) + " KB). " +
+             "En fazla 512 KB olmalı — SVG kullanmanız önerilir.", "hata");
+      return;
+    }
+    var oku = new FileReader();
+    oku.onload = function () {
+      var adres = String(oku.result);
+      var b64 = adres.slice(adres.indexOf(",") + 1);
+      gorselOrani(dosya, adres).then(function (oran) {
+        bekleyenLogo[hangi] = {
+          uzanti: LOGO_TURLER[dosya.type],
+          b64: b64,
+          oran: Math.round((oran || 0) * 1000) / 1000,
+          adres: adres,
+          ad: dosya.name,
+          boyut: dosya.size
+        };
+        isaretle("site");
+        bittiginde();
+      });
+    };
+    oku.onerror = function () { bildir("Dosya okunamadı.", "hata"); };
+    oku.readAsDataURL(dosya);
+  }
+
+  function logoYukleyici(baslik, hangi, aciklama, koyuZemin) {
+    var g = logoAyar();
+    var d = el("div", "alan");
+    d.appendChild(el("label", null, baslik));
+
+    var girdi = el("input");
+    girdi.type = "file";
+    girdi.accept = ".svg,.png,.webp,.jpg,.jpeg";
+    girdi.addEventListener("change", function () {
+      if (girdi.files && girdi.files[0]) logoOku(girdi.files[0], hangi, cizLogo);
+    });
+    d.appendChild(girdi);
+    if (aciklama) d.appendChild(el("span", "ipucu", aciklama));
+
+    var bekleyen = bekleyenLogo[hangi];
+    var kayitli = g[hangi];
+    if (bekleyen || kayitli) {
+      var on = el("div", "onizleme" + (koyuZemin ? " onizleme--koyu" : ""));
+      var im = el("img");
+      im.src = bekleyen ? bekleyen.adres : "../" + kayitli;
+      im.alt = "";
+      im.style.height = "48px";
+      im.style.width = "auto";
+      on.appendChild(im);
+      d.appendChild(on);
+
+      var bilgi = el("span", "ipucu");
+      bilgi.textContent = bekleyen
+        ? "Yüklendi: " + bekleyen.ad + " · " + boyutYaz(bekleyen.boyut) +
+          " · kaydedilmeyi bekliyor"
+        : "Yayındaki dosya: " + kayitli;
+      d.appendChild(bilgi);
+
+      var sil = el("button", "btn btn--tehlike btn--kucuk", "Kaldır");
+      sil.style.marginTop = ".5rem";
+      sil.style.justifySelf = "start";
+      sil.addEventListener("click", function () {
+        delete bekleyenLogo[hangi];
+        g[hangi] = "";
+        g[hangi + "Oran"] = 0;
+        isaretle("site");
+        cizLogo();
+      });
+      d.appendChild(sil);
+    }
+    return d;
+  }
+
+  function cizLogo() {
+    var kap = $("#logoForm");
+    kap.textContent = "";
+    var g = logoAyar();
+
+    /* --- tür seçimi --- */
+    var k1 = el("div", "kart");
+    k1.appendChild(el("strong", null, "Logo türü"));
+    var secKap = el("div", "alan");
+    secKap.appendChild(el("label", null, "Sitede ne kullanılsın?"));
+    var sec = el("select");
+    [["yazi", "Yazı ile kurulan kilit (mevcut)"],
+     ["tekGorsel", "Tek dosya — koyu zeminde otomatik ters çevrilsin"],
+     ["ikiGorsel", "İki dosya — açık ve koyu sürüm ayrı"]].forEach(function (o) {
+      var op = el("option", null, o[1]);
+      op.value = o[0];
+      if ((g.tur || "yazi") === o[0]) op.selected = true;
+      sec.appendChild(op);
+    });
+    sec.addEventListener("change", function () {
+      g.tur = sec.value; isaretle("site"); cizLogo();
+    });
+    secKap.appendChild(sec);
+    k1.appendChild(secKap);
+    kap.appendChild(k1);
+
+    if ((g.tur || "yazi") === "yazi") {
+      var bilgi = el("div", "bildirim");
+      bilgi.innerHTML =
+        "Şu an logo, sitenin kendi yazı tipiyle kuruluyor: dolu kare + " +
+        "<strong>FATMA KOCAOVA</strong> + <em>mimarlık / architecture</em>. " +
+        "Her ölçekte keskin görünür ve zemine göre rengi kendiliğinden değişir. " +
+        "Kurumsal logonun asıl dosyasını kullanmak isterseniz yukarıdan " +
+        "“Tek dosya” veya “İki dosya” seçin.";
+      kap.appendChild(bilgi);
+      return;
+    }
+
+    /* --- dosyalar --- */
+    var k2 = el("div", "kart");
+    k2.appendChild(el("strong", null, "Dosyalar"));
+
+    var uyari = el("div", "bildirim bildirim--uyari");
+    uyari.innerHTML =
+      "<strong>SVG önerilir</strong> — her ekranda keskin çıkar ve dosyası " +
+      "küçüktür. PNG/WEBP yüklerseniz görünecek yüksekliğin en az iki katı " +
+      "çözünürlükte olsun. En fazla 512 KB.";
+    k2.appendChild(uyari);
+
+    if (g.tur === "tekGorsel") {
+      k2.appendChild(logoYukleyici(
+        "Logo dosyası", "acik",
+        "Koyu renkli (siyah) sürümü yükleyin. Koyu zeminlerde otomatik ters " +
+        "çevrilir. Bu yöntem yalnızca tek renk logolarda doğru sonuç verir; " +
+        "logonuz çok renkliyse “İki dosya” seçeneğini kullanın.",
+        false));
+    } else {
+      k2.appendChild(logoYukleyici(
+        "Açık zeminde kullanılacak logo", "koyu",
+        "Koyu renkli (siyah) sürüm — beyaz zeminli sayfalarda görünür.",
+        false));
+      k2.appendChild(logoYukleyici(
+        "Koyu zeminde kullanılacak logo", "acik",
+        "Açık renkli (beyaz) sürüm — anasayfa kahramanında ve alt bilgide görünür.",
+        true));
+    }
+    kap.appendChild(k2);
+
+    /* --- ölçüler --- */
+    var k3 = el("div", "kart");
+    k3.appendChild(el("strong", null, "Görünecek yükseklik"));
+    var r = el("div", "satir satir--2");
+    r.appendChild(alan("Başlık çubuğunda (px)", g.yukseklikBaslik, function (v) {
+      g.yukseklikBaslik = parseInt(v, 10) || 30; isaretle("site");
+    }, { tip: "number", aciklama: "Önerilen: 24–40. Başlık çubuğu 74 px yüksekliğinde." }));
+    r.appendChild(alan("Alt bilgide (px)", g.yukseklikAlt, function (v) {
+      g.yukseklikAlt = parseInt(v, 10) || 84; isaretle("site");
+    }, { tip: "number", aciklama: "Önerilen: 60–120." }));
+    k3.appendChild(r);
+    kap.appendChild(k3);
+
+    var eksik = (g.tur === "tekGorsel")
+      ? !(bekleyenLogo.acik || g.acik)
+      : !((bekleyenLogo.acik || g.acik) || (bekleyenLogo.koyu || g.koyu));
+    if (eksik) {
+      var e = el("div", "bildirim bildirim--uyari");
+      e.textContent = "Henüz dosya yüklenmedi. Kaydetseniz bile site, dosya " +
+                      "gelene kadar yazıyla kurulan kilidi kullanmaya devam eder.";
+      kap.appendChild(e);
+    }
+  }
+
+  function logoKaydet(dugme) {
+    var g = logoAyar();
+    dugme.disabled = true;
+    var eskiMetin = dugme.textContent;
+
+    var yuklemeler = Object.keys(bekleyenLogo).map(function (hangi) {
+      var d = bekleyenLogo[hangi];
+      var yol = "assets/img/logo-" + hangi + "." + d.uzanti;
+      return function () {
+        dugme.textContent = "Görsel yükleniyor…";
+        return ikiliYaz(yol, d.b64, "Yönetim paneli: logo görseli güncellendi")
+          .then(function () {
+            g[hangi] = yol;
+            g[hangi + "Oran"] = d.oran;
+            delete bekleyenLogo[hangi];
+          });
+      };
+    });
+
+    var zincir = Promise.resolve();
+    yuklemeler.forEach(function (adim) { zincir = zincir.then(adim); });
+
+    zincir
+      .then(function () {
+        dugme.textContent = "Kaydediliyor…";
+        return dosyaYaz("site", veri.site, "Yönetim paneli: logo güncellendi");
+      })
+      .then(function () {
+        kirli.site = false;
+        dugme.textContent = "Kaydet ve yayınla";
+        cizLogo();
+        bildir("Logo kaydedildi. Site birkaç dakika içinde güncellenecek — " +
+               "yayın durumunu GitHub → Actions sekmesinden izleyebilirsiniz.", "ok");
+      })
+      .catch(function (e) {
+        dugme.textContent = eskiMetin;
+        bildir("Kaydedilemedi: " + e.message, "hata");
+      })
+      .then(function () { dugme.disabled = false; });
+  }
+
   function cizMesajlar() {
     var kap = $("#mesajlarIcerik");
     kap.textContent = "";
@@ -684,7 +968,7 @@
 
   function cizAll() {
     cizProjeler(); cizHaberler(); cizBlog();
-    cizHizmetler(); cizSite(); cizMesajlar();
+    cizHizmetler(); cizLogo(); cizSite(); cizMesajlar();
   }
 
   /* ------------------------------------------------------------ ekleme */
@@ -765,7 +1049,12 @@
         return;
       }
       var kay = e.target.closest("[data-kaydet]");
-      if (kay) kaydet(kay.dataset.kaydet, kay);
+      if (kay) {
+        /* Logo ayarları site.json içinde durur ve önce görselleri yazmak
+           gerekir; bu yüzden kendi kaydetme akışı vardır. */
+        if (kay.dataset.kaydet === "logo") logoKaydet(kay);
+        else kaydet(kay.dataset.kaydet, kay);
+      }
     });
 
     window.addEventListener("beforeunload", function (e) {

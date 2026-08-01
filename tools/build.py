@@ -73,17 +73,74 @@ def parca_footer_liste(s):
 """
 
 
+LOGO_ETIKET = "Fatma Kocaova Mimarlık — Anasayfa"
+
+
+def logo_gorsel(yol, oran, yukseklik, sinif=""):
+    """Tek bir <img> etiketi. Oran biliniyorsa genişlik/yükseklik yazılır ki
+    sayfa yüklenirken logo yerini kaplasın ve düzen zıplamasın."""
+    ek = f" {sinif}" if sinif else ""
+    olcu = ""
+    if oran:
+        olcu = f' width="{round(yukseklik * oran)}" height="{yukseklik}"'
+    return (f'<img class="logo__img{ek}" src="{kacis(yol)}" alt=""'
+            f'{olcu} loading="eager" decoding="async">')
+
+
+def logo_satirlari(s, yer):
+    """Marka kilidinin iç satırları. yer: 'baslik' | 'alt'
+
+    Panelden görsel yüklenmediyse site tipografisiyle kurulan kilit kullanılır.
+    """
+    g = s.get("logo") or {}
+    tur = g.get("tur") or "yazi"
+    yukseklik = int(g.get("yukseklikBaslik" if yer == "baslik" else "yukseklikAlt") or 30)
+    acik, koyu = g.get("acik") or "", g.get("koyu") or ""
+
+    if tur == "tekGorsel" and acik:
+        # Tek dosya: koyu zeminde CSS ile ters çevrilir.
+        return [logo_gorsel(acik, g.get("acikOran"), yukseklik, "logo__img--tersle")]
+
+    if tur == "ikiGorsel" and (acik or koyu):
+        if acik and koyu:
+            return [logo_gorsel(koyu, g.get("koyuOran"), yukseklik, "logo__img--koyu"),
+                    logo_gorsel(acik, g.get("acikOran"), yukseklik, "logo__img--acik")]
+        tek = acik or koyu
+        oran = g.get("acikOran") if acik else g.get("koyuOran")
+        return [logo_gorsel(tek, oran, yukseklik)]
+
+    # Yazı ile kurulan kilit
+    ad = "Fatma Kocaova" if yer == "baslik" else "Fatma<br>Kocaova"
+    return ['<span class="logo__kare" aria-hidden="true"></span>',
+            '<span>',
+            f'  <span class="logo__ad">{ad}</span>',
+            '  <span class="logo__alt">mimarlık / architecture</span>',
+            '</span>']
+
+
+def logo_kilit(s, yer, girinti):
+    g = s.get("logo") or {}
+    gorselMi = (g.get("tur") in ("tekGorsel", "ikiGorsel")) and (g.get("acik") or g.get("koyu"))
+    sinif = "logo logo--gorsel" if gorselMi else (
+        "logo logo--satir" if yer == "baslik" else "logo logo--yigin")
+    b = " " * girinti
+    ic = "".join(f"{b}  {satir}\n" for satir in logo_satirlari(s, yer))
+    stil = ""
+    if gorselMi:
+        y = int(g.get("yukseklikBaslik" if yer == "baslik" else "yukseklikAlt") or 30)
+        stil = f' style="--logo-y:{y}px"'
+    return (f'{b}<a class="{sinif}"{stil} href="index.html" aria-label="{LOGO_ETIKET}">\n'
+            f'{ic}'
+            f'{b}</a>\n')
+
+
+def parca_logo_baslik(s):
+    return logo_kilit(s, "baslik", 4)
+
+
 def parca_footer_marka(s):
-    # Marka kilidi kurumsal kimliktir, içerik değildir: JSON'dan gelmez.
     f = s["footer"]
-    return f"""        <a class="logo logo--yigin" href="index.html" aria-label="Fatma Kocaova Mimarlık — Anasayfa">
-          <span class="logo__kare" aria-hidden="true"></span>
-          <span>
-            <span class="logo__ad">Fatma<br>Kocaova</span>
-            <span class="logo__alt">mimarlık / architecture</span>
-          </span>
-        </a>
-        <p class="footer-brand__text">
+    return logo_kilit(s, "alt", 8) + f"""        <p class="footer-brand__text">
           {kacis(f['metin'])}
         </p>
 """
@@ -389,6 +446,7 @@ def uret():
 
     bolgeler = {
         "footer-liste": parca_footer_liste(s),
+        "logo-baslik": parca_logo_baslik(s),
         "footer-marka": parca_footer_marka(s),
         "footer-alt": parca_footer_alt(s),
         "mobil-iletisim": parca_mobil_iletisim(s),

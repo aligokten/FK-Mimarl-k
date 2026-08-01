@@ -488,6 +488,54 @@ body.is-locked .site-header {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
 }
 
+/* --------------------------------------------------------------------------
+   Görsel logo (yönetim panelinden yüklenen dosya)
+
+   Panelden dosya yüklendiğinde yazıyla kurulan kilidin yerini <img> alır.
+   İki sürüm yüklendiyse zemine göre biri gösterilir; tek sürüm yüklendiyse
+   koyu zeminde CSS ile ters çevrilir (yalnızca tek renk logolarda doğru sonuç
+   verir, panelde bu uyarı yazılıdır).
+   -------------------------------------------------------------------------- */
+.logo--gorsel {
+  display: inline-block;
+  --logo-y: 30px; /* panelden gelen yükseklik; etiket üzerinde ezilir */
+}
+
+/* Yükseklik açıkça verilir: genel img sıfırlamasındaki height:auto ve
+   SVG'lerin içsel ölçüsünün olmaması yüzünden aksi hâlde 0 çizilir.
+   Genişlik, width/height nitelikleriyle gelen en-boy oranından türer. */
+.logo__img {
+  display: block;
+  height: var(--logo-y);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+/* Koyu zemin: kahraman üzerindeki başlık, mobil menü açıkken ve alt bilgi */
+.logo__img--acik {
+  display: none;
+}
+
+.site-header[data-theme="light"]:not(.is-scrolled) .logo__img--acik,
+body.is-locked .site-header .logo__img--acik,
+.site-footer .logo__img--acik {
+  display: block;
+}
+
+.site-header[data-theme="light"]:not(.is-scrolled) .logo__img--koyu,
+body.is-locked .site-header .logo__img--koyu,
+.site-footer .logo__img--koyu {
+  display: none;
+}
+
+.site-header[data-theme="light"]:not(.is-scrolled) .logo__img--tersle,
+body.is-locked .site-header .logo__img--tersle,
+.site-footer .logo__img--tersle {
+  filter: invert(1);
+}
+
 .nav {
   display: none;
 }
