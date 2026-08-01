@@ -1,11 +1,11 @@
 {
   "logo": {
-    "tur": "yazi",
-    "acik": "",
+    "tur": "tekGorsel",
+    "acik": "assets/img/logo-acik.png",
     "koyu": "",
-    "acikOran": 0,
+    "acikOran": 2.288,
     "koyuOran": 0,
-    "yukseklikBaslik": 30,
+    "yukseklikBaslik": 60,
     "yukseklikAlt": 84,
     "not": "tur: 'yazi' = site tipografisiyle kurulan marka kilidi | 'tekGorsel' = tek dosya, koyu zeminde ters çevrilir | 'ikiGorsel' = açık ve koyu zemin için ayrı dosya. Dosya yolları ve oranlar yönetim panelinden yazılır."
   },
