@@ -74,8 +74,15 @@ def parca_footer_liste(s):
 
 
 def parca_footer_marka(s):
+    # Marka kilidi kurumsal kimliktir, içerik değildir: JSON'dan gelmez.
     f = s["footer"]
-    return f"""        <p class="footer-brand__mark">{f['marka']}</p>
+    return f"""        <a class="logo logo--yigin" href="index.html" aria-label="Fatma Kocaova Mimarlık — Anasayfa">
+          <span class="logo__kare" aria-hidden="true"></span>
+          <span>
+            <span class="logo__ad">Fatma<br>Kocaova</span>
+            <span class="logo__alt">mimarlık / architecture</span>
+          </span>
+        </a>
         <p class="footer-brand__text">
           {kacis(f['metin'])}
         </p>

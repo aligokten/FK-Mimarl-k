@@ -410,26 +410,82 @@ body.is-locked .site-header {
   color: var(--paper);
 }
 
-.brand {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+/* ==========================================================================
+   MARKA KİLİDİ (LOGO)
+
+   Kurumsal logonun web karşılığı: solda dolu kare, yanında iki satır isim,
+   altında "mimarlık / architecture". Renk currentColor'dan gelir — koyu
+   zeminde açık, açık zeminde koyu görünür, ayrı dosya gerekmez.
+
+   Tüm ölçüler .logo'nun yazı boyuna (em) bağlıdır; bir kilidi büyütmek için
+   yalnızca font-size değiştirmek yeterlidir.
+   ========================================================================== */
+.logo {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.31em; /* referans: büyük harf yüksekliğinin 0.46'sı */
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1;
+  color: inherit;
+  text-decoration: none;
 }
 
-.brand__name {
-  font-size: 0.95rem;
+.logo__kare {
+  flex: none;
+  width: 0.3em; /* referans: büyük harf yüksekliğinin 0.43'ü */
+  height: 0.3em;
+  margin-top: 0.13em; /* üst kenarı büyük harf tepesiyle hizalar */
+  background: currentColor;
+}
+
+.logo__ad {
+  display: block;
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 0.98; /* referans: satır aralığı = 1.42 × büyük harf */
+  letter-spacing: -0.005em;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
 }
 
-.brand__meta {
-  font-size: var(--fs-xs);
+.logo__alt {
+  display: block;
+  margin-top: 0.17em;
+  font-size: 0.36em;
   font-weight: 400;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  opacity: 0.6;
+  line-height: 1.2;
+  letter-spacing: 0.055em;
+  white-space: nowrap;
+}
+
+/* Başlık çubuğu: isim tek satıra iner, kare yine büyük harf tepesine hizalanır.
+   Küçük ölçekte 0.3em'lik kare kaybolduğu için biraz büyütülür. */
+.logo--satir {
+  gap: 0.5em;
+  font-size: 0.95rem;
+}
+
+.logo--satir .logo__kare {
+  width: 0.42em;
+  height: 0.42em;
+  margin-top: 0.1em;
+}
+
+.logo--satir .logo__ad {
+  font-weight: 600;
+  letter-spacing: 0.13em;
+}
+
+.logo--satir .logo__alt {
+  margin-top: 0.4em;
+  font-size: 0.62em;
+  letter-spacing: 0.2em;
+  opacity: 0.62;
+}
+
+/* Alt bilgi: tam yığın kilit. */
+.logo--yigin {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
 }
 
 .nav {
@@ -2102,13 +2158,6 @@ a.kayit:hover .kayit__ozet {
   }
 }
 
-.footer-brand__mark {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-}
-
 .footer-brand__text {
   margin-top: 1rem;
   max-width: 40ch;
@@ -2331,8 +2380,6 @@ body.hero-gorunur .to-top {
    ailesindedir; site tek bir tipografik sesle konuşur.
    -------------------------------------------------------------------------- */
 .eyebrow,
-.brand__name,
-.brand__meta,
 .nav__link,
 .mobile-nav__link,
 .mobile-nav__index,
@@ -2352,7 +2399,6 @@ body.hero-gorunur .to-top {
 .fact dd,
 .breadcrumb,
 .tag-list li,
-.footer-brand__mark,
 .footer-col__title,
 .footer-bottom,
 .pager,
