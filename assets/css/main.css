@@ -2146,6 +2146,28 @@ a.kayit:hover .kayit__ozet {
   color: rgba(242, 242, 240, 0.5);
 }
 
+/* Alt bilgi sağ ucu: bölge satırı ile yönetim bağlantısı birlikte durur. */
+.footer-bottom__son {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.footer-admin {
+  color: rgba(242, 242, 240, 0.42);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(242, 242, 240, 0.22);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-admin:hover,
+.footer-admin:focus-visible {
+  color: var(--paper);
+  border-bottom-color: var(--paper);
+}
+
 .social {
   display: flex;
   gap: 0.6rem;

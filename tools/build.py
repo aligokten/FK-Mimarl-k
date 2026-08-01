@@ -84,8 +84,13 @@ def parca_footer_marka(s):
 
 def parca_footer_alt(s):
     f = s["footer"]
+    # Yönetim bağlantısı tüm sayfalarda kök dizinde olduğu için göreli adres
+    # her sayfada aynı çalışır (üretilen blog sayfaları da kökte durur).
     return f"""      <span>© <span data-year>2026</span> {kacis(f['telifSatiri'])}</span>
-      <span>{kacis(f['bolgeSatiri'])}</span>
+      <span class="footer-bottom__son">
+        <span>{kacis(f['bolgeSatiri'])}</span>
+        <a class="footer-admin" href="admin/index.html" rel="nofollow">Yönetim Paneli</a>
+      </span>
 """
 
 

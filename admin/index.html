@@ -21,12 +21,50 @@
   <button class="btn btn--kucuk" id="cikis" hidden>Çıkış</button>
 </div>
 
+<noscript>
+  <section class="giris">
+    <h2>JavaScript gerekli</h2>
+    <p>Yönetim paneli tarayıcıda çalışır. Devam etmek için JavaScript'i açın.</p>
+  </section>
+</noscript>
+
 <!-- ======================== GİRİŞ ======================== -->
-<section class="giris" id="giris">
-  <h2>Giriş</h2>
+<section class="giris" id="giris" hidden>
+  <h2>Yönetim Paneli</h2>
+  <p>Devam etmek için kullanıcı adı ve şifrenizi girin.</p>
+
+  <div class="alan">
+    <label for="kullaniciGiris">Kullanıcı adı</label>
+    <input type="text" id="kullaniciGiris" autocomplete="username" autocapitalize="none" spellcheck="false">
+  </div>
+
+  <div class="alan">
+    <label for="sifreGiris">Şifre</label>
+    <input type="password" id="sifreGiris" autocomplete="current-password">
+  </div>
+
+  <div class="bildirim bildirim--hata" id="girisHata" hidden></div>
+
+  <div class="eylemler">
+    <button class="btn" id="girisBtn">Giriş yap</button>
+    <a class="btn btn--ikinci" href="../index.html">Siteye dön</a>
+  </div>
+
+  <p class="ipucu" style="margin-top:1.5rem">
+    Şifrenizi unuttuysanız kilidi sıfırlayıp erişim anahtarıyla yeniden
+    kurulum yapabilirsiniz.
+    <button class="btn btn--tehlike btn--kucuk" id="sifirlaBtn" style="margin-left:.4rem">Kilidi sıfırla</button>
+  </p>
+</section>
+
+<!-- ======================== İLK KURULUM ======================== -->
+<section class="giris" id="kurulum" hidden>
+  <h2>İlk kurulum</h2>
   <p>
     Panel, içeriği doğrudan GitHub deposundaki <code>data/*.json</code> dosyalarına
     yazar. Bunun için depoya yazma izni olan bir erişim anahtarı gerekir.
+    Anahtarı bir kez girersiniz; şifrenizle bu tarayıcıda şifreli olarak saklanır
+    ve sonraki girişlerde yalnızca kullanıcı adı ile şifre istenir.
   </p>
 
   <div class="bildirim bildirim--uyari">
@@ -39,12 +77,24 @@
     </ol>
   </div>
 
+  <div class="satir satir--2">
+    <div class="alan">
+      <label for="kullaniciKur">Kullanıcı adı</label>
+      <input type="text" id="kullaniciKur" value="admin" autocomplete="username" autocapitalize="none" spellcheck="false">
+    </div>
+    <div class="alan">
+      <label for="sifreKur">Şifre</label>
+      <input type="password" id="sifreKur" value="123456" autocomplete="new-password">
+    </div>
+  </div>
+
   <div class="alan">
     <label for="tokenGiris">Erişim anahtarı</label>
     <input type="password" id="tokenGiris" autocomplete="off" placeholder="github_pat_...">
     <span class="ipucu">
-      Anahtar yalnızca bu tarayıcıda saklanır, hiçbir yere gönderilmez.
-      Ortak kullanılan bilgisayarda işiniz bitince <strong>Çıkış</strong>'a basın.
+      Anahtar yalnızca bu tarayıcıda, şifrenizle şifrelenmiş olarak saklanır;
+      GitHub dışında hiçbir yere gönderilmez. Kurulumu her bilgisayarda
+      bir kez yapmanız gerekir.
     </span>
   </div>
 
@@ -63,10 +113,10 @@
     </div>
   </div>
 
-  <div class="bildirim bildirim--hata" id="girisHata" hidden></div>
+  <div class="bildirim bildirim--hata" id="kurulumHata" hidden></div>
 
   <div class="eylemler">
-    <button class="btn" id="girisBtn">Bağlan</button>
+    <button class="btn" id="kurulumBtn">Kur ve giriş yap</button>
     <a class="btn btn--ikinci" href="../index.html">Siteye dön</a>
   </div>
 </section>

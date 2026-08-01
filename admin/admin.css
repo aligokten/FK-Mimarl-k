@@ -18,6 +18,10 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* .btn ve .panel gibi sınıflar display tanımladığı için hidden niteliğinin
+   tarayıcı öntanımını eziyor; gizleme her zaman geçerli olmalı. */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   background: var(--paper-2);
@@ -88,7 +92,7 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -.02em; margin: 0
 }
 .alan textarea { min-height: 90px; resize: vertical; }
 .alan input:focus, .alan textarea:focus, .alan select:focus { outline: none; border-color: var(--ink); }
-.alan .ipucu { font-size: 12px; color: var(--muted); }
+.ipucu { font-size: 12px; color: var(--muted); }
 
 .satir { display: grid; gap: .9rem; }
 @media (min-width: 700px) { .satir--2 { grid-template-columns: 1fr 1fr; } .satir--3 { grid-template-columns: 1fr 1fr 1fr; } }

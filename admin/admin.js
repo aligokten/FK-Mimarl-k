@@ -111,40 +111,159 @@
     });
   }
 
-  /* ------------------------------------------------------------- giriş */
-  function ayarYukle() {
-    try { return JSON.parse(localStorage.getItem("fkAdmin") || "{}"); }
-    catch (e) { return {}; }
+  /* ------------------------------------------------------------- giriş
+
+     Panelin arkasında sunucu yoktur; asıl yetki GitHub erişim anahtarındadır.
+     Bu yüzden kullanıcı adı/şifre sahte bir kapı değil: anahtar, şifreden
+     türetilen bir anahtarla (PBKDF2 + AES-GCM) şifrelenip bu tarayıcıda
+     saklanır. Şifre yanlışsa çözme başarısız olur, anahtar ele geçmez.
+     -------------------------------------------------------------------- */
+  var KASA = "fkAdminKasa";        // localStorage — şifreli anahtar
+  var OTURUM = "fkAdminOturum";    // sessionStorage — açık oturum
+  var ESKI = "fkAdmin";            // eski sürümdeki düz kayıt (taşınır)
+  var HATA_GIRIS = "Kullanıcı adı veya şifre hatalı.";
+
+  function baytB64(bayt) {
+    var ikili = "";
+    new Uint8Array(bayt).forEach(function (b) { ikili += String.fromCharCode(b); });
+    return btoa(ikili);
   }
 
-  function ayarKaydet() {
-    localStorage.setItem("fkAdmin", JSON.stringify(ayar));
+  function b64Bayt(b64) {
+    var ikili = atob(b64);
+    var bayt = new Uint8Array(ikili.length);
+    for (var i = 0; i < ikili.length; i++) bayt[i] = ikili.charCodeAt(i);
+    return bayt;
+  }
+
+  function kripto() {
+    return window.crypto && window.crypto.subtle ? window.crypto.subtle : null;
+  }
+
+  function anahtarTuret(sifre, tuz) {
+    return kripto().importKey(
+      "raw", new TextEncoder().encode(sifre), "PBKDF2", false, ["deriveKey"]
+    ).then(function (k) {
+      return kripto().deriveKey(
+        { name: "PBKDF2", salt: tuz, iterations: 200000, hash: "SHA-256" },
+        k, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]
+      );
+    });
+  }
+
+  function kasaOku() {
+    try { return JSON.parse(localStorage.getItem(KASA) || "null"); }
+    catch (e) { return null; }
+  }
+
+  function kasaYaz(kullanici, sifre, gizli) {
+    var tuz = crypto.getRandomValues(new Uint8Array(16));
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    return anahtarTuret(sifre, tuz).then(function (a) {
+      return kripto().encrypt(
+        { name: "AES-GCM", iv: iv }, a,
+        new TextEncoder().encode(JSON.stringify(gizli))
+      );
+    }).then(function (sifreli) {
+      localStorage.setItem(KASA, JSON.stringify({
+        s: 1,
+        kullanici: kullanici,
+        tuz: baytB64(tuz),
+        iv: baytB64(iv),
+        kasa: baytB64(sifreli)
+      }));
+      localStorage.removeItem(ESKI);
+    });
+  }
+
+  function kasaCoz(kullanici, sifre) {
+    var k = kasaOku();
+    if (!k) return Promise.reject(new Error("Kurulum yapılmamış."));
+    if (kullanici.toLowerCase() !== String(k.kullanici).toLowerCase()) {
+      return Promise.reject(new Error(HATA_GIRIS));
+    }
+    return anahtarTuret(sifre, b64Bayt(k.tuz)).then(function (a) {
+      return kripto().decrypt(
+        { name: "AES-GCM", iv: b64Bayt(k.iv) }, a, b64Bayt(k.kasa)
+      );
+    }).then(
+      function (acik) { return JSON.parse(new TextDecoder().decode(acik)); },
+      function () { throw new Error(HATA_GIRIS); }
+    );
+  }
+
+  function oturumYukle() {
+    try { return JSON.parse(sessionStorage.getItem(OTURUM) || "null"); }
+    catch (e) { return null; }
+  }
+
+  function hataGoster(secici, mesaj) {
+    var h = $(secici);
+    h.textContent = mesaj;
+    h.hidden = !mesaj;
   }
 
   function girisDene() {
-    var hata = $("#girisHata");
-    hata.hidden = true;
-    ayar = {
+    hataGoster("#girisHata", "");
+    var kullanici = $("#kullaniciGiris").value.trim();
+    var sifre = $("#sifreGiris").value;
+    if (!kullanici || !sifre) {
+      hataGoster("#girisHata", "Kullanıcı adı ve şifre gerekli.");
+      return;
+    }
+    durumYaz("Giriş yapılıyor…");
+    kasaCoz(kullanici, sifre)
+      .then(function (gizli) {
+        ayar = gizli;
+        return baslat();
+      })
+      .catch(function (e) {
+        hataGoster("#girisHata", e.message);
+        durumYaz("");
+      });
+  }
+
+  function kurulumDene() {
+    hataGoster("#kurulumHata", "");
+    var kullanici = $("#kullaniciKur").value.trim();
+    var sifre = $("#sifreKur").value;
+    var gizli = {
       token: $("#tokenGiris").value.trim(),
       sahip: $("#repoSahibi").value.trim(),
       repo: $("#repoAd").value.trim(),
       dal: $("#repoDal").value.trim() || "main"
     };
-    if (!ayar.token) {
-      hata.textContent = "Erişim anahtarı gerekli.";
-      hata.hidden = false;
+    if (!kullanici || !sifre) {
+      hataGoster("#kurulumHata", "Kullanıcı adı ve şifre gerekli.");
+      return;
+    }
+    if (!gizli.token) {
+      hataGoster("#kurulumHata", "Erişim anahtarı gerekli.");
       return;
     }
     durumYaz("Bağlanılıyor…");
-    baslat().catch(function (e) {
-      hata.textContent = e.message;
-      hata.hidden = false;
-      durumYaz("");
-    });
+    ayar = gizli;
+    /* Anahtar ancak GitHub'a bağlanabildiği doğrulandıktan sonra saklanır. */
+    baslat()
+      .then(function () { return kasaYaz(kullanici, sifre, gizli); })
+      .catch(function (e) {
+        hataGoster("#kurulumHata", e.message);
+        durumYaz("");
+      });
   }
 
   function cikis() {
-    localStorage.removeItem("fkAdmin");
+    sessionStorage.removeItem(OTURUM);
+    location.reload();
+  }
+
+  function kilidiSifirla() {
+    if (!window.confirm(
+      "Kayıtlı erişim anahtarı bu tarayıcıdan silinecek ve kurulumu " +
+      "yeniden yapmanız gerekecek. Devam edilsin mi?"
+    )) return;
+    localStorage.removeItem(KASA);
+    sessionStorage.removeItem(OTURUM);
     location.reload();
   }
 
@@ -152,8 +271,9 @@
     return Promise.all(DOSYALAR.map(function (ad) {
       return dosyaOku(ad).then(function (v) { veri[ad] = v; });
     })).then(function () {
-      ayarKaydet();
+      try { sessionStorage.setItem(OTURUM, JSON.stringify(ayar)); } catch (e) { /* yoksay */ }
       $("#giris").hidden = true;
+      $("#kurulum").hidden = true;
       $("#kabuk").hidden = false;
       $("#cikis").hidden = false;
       durumYaz(ayar.sahip + "/" + ayar.repo);
@@ -610,10 +730,20 @@
   /* ------------------------------------------------------------- olaylar */
   function olaylariBagla() {
     $("#girisBtn").addEventListener("click", girisDene);
-    $("#tokenGiris").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") girisDene();
-    });
+    $("#kurulumBtn").addEventListener("click", kurulumDene);
+    $("#sifirlaBtn").addEventListener("click", kilidiSifirla);
     $("#cikis").addEventListener("click", cikis);
+
+    [$("#kullaniciGiris"), $("#sifreGiris")].forEach(function (g) {
+      g.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") girisDene();
+      });
+    });
+    [$("#sifreKur"), $("#tokenGiris")].forEach(function (g) {
+      g.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") kurulumDene();
+      });
+    });
 
     document.querySelectorAll(".sekme").forEach(function (s) {
       s.addEventListener("click", function () {
@@ -647,19 +777,48 @@
   }
 
   /* --------------------------------------------------------------- açılış */
+  function ekranSec() {
+    var kasa = kasaOku();
+    if (kasa) {
+      $("#giris").hidden = false;
+      $("#kullaniciGiris").value = kasa.kullanici || "";
+      $(kasa.kullanici ? "#sifreGiris" : "#kullaniciGiris").focus();
+      return;
+    }
+    /* Eski sürümde anahtar düz metin olarak saklanıyordu; kurulum
+       ekranını onunla dolduruyoruz ki kullanıcı yeniden yazmasın. */
+    var eski = {};
+    try { eski = JSON.parse(localStorage.getItem(ESKI) || "{}"); } catch (e) { /* yoksay */ }
+    if (eski.token) {
+      $("#tokenGiris").value = eski.token;
+      if (eski.sahip) $("#repoSahibi").value = eski.sahip;
+      if (eski.repo) $("#repoAd").value = eski.repo;
+      if (eski.dal) $("#repoDal").value = eski.dal;
+    }
+    $("#kurulum").hidden = false;
+  }
+
   olaylariBagla();
-  ayar = ayarYukle();
-  if (ayar.token) {
-    $("#tokenGiris").value = ayar.token;
-    $("#repoSahibi").value = ayar.sahip || "aligokten";
-    $("#repoAd").value = ayar.repo || "FK-Mimarl-k";
-    $("#repoDal").value = ayar.dal || "main";
-    durumYaz("Bağlanılıyor…");
-    baslat().catch(function (e) {
-      durumYaz("");
-      var h = $("#girisHata");
-      h.textContent = e.message;
-      h.hidden = false;
-    });
+
+  if (!kripto()) {
+    $("#kurulum").hidden = false;
+    hataGoster("#kurulumHata",
+      "Bu tarayıcı şifreleme desteği sunmuyor ya da sayfa güvenli olmayan " +
+      "bir bağlantı üzerinden açıldı. Paneli https:// adresinden açın.");
+  } else {
+    var oturum = oturumYukle();
+    if (oturum && oturum.token) {
+      /* Aynı sekmede sayfa yenilendiğinde tekrar şifre sorulmaz. */
+      ayar = oturum;
+      durumYaz("Bağlanılıyor…");
+      baslat().catch(function (e) {
+        durumYaz("");
+        sessionStorage.removeItem(OTURUM);
+        ekranSec();
+        hataGoster($("#giris").hidden ? "#kurulumHata" : "#girisHata", e.message);
+      });
+    } else {
+      ekranSec();
+    }
   }
 })();
