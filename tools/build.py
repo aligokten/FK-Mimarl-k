@@ -146,6 +146,51 @@ def parca_footer_marka(s):
 """
 
 
+SOSYAL_SIMGE = {
+    "instagram": ('Instagram',
+                  '<rect x="3" y="3" width="18" height="18" rx="5"/>'
+                  '<circle cx="12" cy="12" r="4"/>'
+                  '<circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>'),
+    "linkedin": ('LinkedIn',
+                 '<rect x="3" y="3" width="18" height="18" rx="2"/>'
+                 '<path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4"/>'),
+    "youtube": ('YouTube',
+                '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/>'
+                '<path d="M10.4 9.4 15.6 12l-5.2 2.6z" stroke-linejoin="round"/>'),
+}
+# Sıra sabittir: hesap eklenip çıkarılsa da yerleşim kaymasın.
+SOSYAL_SIRA = ["instagram", "linkedin", "youtube"]
+
+
+def sosyal_ogeler(s, girinti):
+    b = " " * girinti
+    so = s.get("sosyal") or {}
+    satirlar = []
+    for ad in SOSYAL_SIRA:
+        adres = (so.get(ad) or "").strip()
+        if not adres:
+            continue
+        etiket, cizim = SOSYAL_SIMGE[ad]
+        satirlar.append(
+            f'{b}<li><a href="{kacis(adres)}" target="_blank" rel="noopener" aria-label="{etiket}">\n'
+            f'{b}  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            f'stroke-width="1.6" aria-hidden="true">{cizim}</svg>\n'
+            f'{b}</a></li>\n')
+    return "".join(satirlar)
+
+
+def parca_sosyal_footer(s):
+    return sosyal_ogeler(s, 10)
+
+
+def parca_sosyal_baslik(s):
+    return sosyal_ogeler(s, 8)
+
+
+def parca_sosyal_mobil(s):
+    return sosyal_ogeler(s, 6)
+
+
 def parca_footer_alt(s):
     f = s["footer"]
     # Yönetim bağlantısı tüm sayfalarda kök dizinde olduğu için göreli adres
@@ -447,6 +492,9 @@ def uret():
     bolgeler = {
         "footer-liste": parca_footer_liste(s),
         "logo-baslik": parca_logo_baslik(s),
+        "sosyal-footer": parca_sosyal_footer(s),
+        "sosyal-baslik": parca_sosyal_baslik(s),
+        "sosyal-mobil": parca_sosyal_mobil(s),
         "footer-marka": parca_footer_marka(s),
         "footer-alt": parca_footer_alt(s),
         "mobil-iletisim": parca_mobil_iletisim(s),

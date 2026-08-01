@@ -41,6 +41,22 @@
   --fs-3xl: clamp(2.5rem, 1.5rem + 4.4vw, 6.25rem);
   --fs-4xl: clamp(3rem, 1.4rem + 8.6vw, 10.5rem);
 
+  /* Harf aralığı — dört basamaklı tek ölçek.
+     Aynı işi gören her öge aynı değeri kullanır; dağınık ara değerler yok.
+     Küçük başlıklarda daralma bilerek daha azdır, yoksa okunurluk düşer. */
+  --ls-display: -0.03em; /* çok büyük başlıklar ve sayılar */
+  --ls-baslik: -0.015em; /* orta ve küçük başlıklar */
+  --ls-etiket: 0.16em; /* büyük harfli küçük etiketler */
+  --ls-govde: 0; /* gövde metni */
+
+  /* Satır aralığı — Türkçe ölçülerek belirlendi. Ğ ve İ'nin şapkası harf
+     kutusunun üstüne, Ç ve Ş'nin kuyruğu altına taşar; satır kutusu bu iki
+     taşmanın toplamından küçük olursa satırlar üst üste biner.
+     Büyük harfli başlıklarda gereken en az değer 1.09, karışık yazımda 1.15. */
+  --lh-display: 1.12; /* çok büyük başlıklar */
+  --lh-baslik: 1.2; /* orta ve küçük başlıklar */
+  --lh-govde: 1.72; /* gövde metni */
+
   /* Boşluk */
   --gutter: clamp(1.25rem, 4vw, 4rem);
   --section-y: clamp(4.5rem, 9vw, 9.5rem);
@@ -118,8 +134,8 @@ h4 {
   font-weight: 600;
   /* Konturlu vurgu kelimeler glif kutusunun dışına taştığı için
      satır aralığı tamamen sıkıştırılmaz. */
-  line-height: 1.06;
-  letter-spacing: -0.035em;
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
   text-wrap: balance;
 }
 
@@ -194,7 +210,7 @@ p {
   gap: 0.6em;
   font-size: var(--fs-xs);
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -226,7 +242,7 @@ p {
 .section-title {
   font-size: var(--fs-3xl);
   text-transform: uppercase;
-  letter-spacing: -0.03em;
+  letter-spacing: var(--ls-display);
   margin-top: 0.75rem;
 }
 
@@ -279,7 +295,7 @@ p {
   color: var(--btn-fg);
   font-size: var(--fs-xs);
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   border: 1px solid var(--btn-bg);
   border-radius: 0;
@@ -443,7 +459,10 @@ body.is-locked .site-header {
   display: block;
   font-size: 1em;
   font-weight: 700;
-  line-height: 0.98; /* referans: satır aralığı = 1.42 × büyük harf */
+  /* Referans logodaki satır aralığı = 1.42 × büyük harf yüksekliği.
+     Metin sabit ve "FATMA KOCAOVA" şapkalı/kuyruklu harf içermediği için
+     bu sıkı aralık çakışmaya yol açmaz; genel başlık kuralı uygulanmaz. */
+  line-height: 0.98;
   letter-spacing: -0.005em;
   text-transform: uppercase;
 }
@@ -552,7 +571,7 @@ body.is-locked .site-header .logo__img--tersle,
   position: relative;
   font-size: var(--fs-xs);
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   padding-block: 0.4rem;
 }
@@ -680,7 +699,7 @@ body.is-locked .site-header .logo__img--tersle,
   padding-block: clamp(0.7rem, 2.4vw, 1.1rem);
   font-size: clamp(1.75rem, 8vw, 3rem);
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--ls-display);
   font-weight: 500;
   transform: translateY(110%);
   transition: transform 0.6s var(--ease), color 0.3s;
@@ -696,7 +715,7 @@ body.is-locked .site-header .logo__img--tersle,
 
 .mobile-nav__index {
   font-size: var(--fs-xs);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-etiket);
   opacity: 0.45;
 }
 
@@ -837,8 +856,8 @@ body.is-locked .site-header .logo__img--tersle,
 .hero__title {
   font-size: var(--fs-4xl);
   text-transform: uppercase;
-  letter-spacing: -0.055em;
-  line-height: 0.84;
+  letter-spacing: var(--ls-display);
+  line-height: var(--lh-display);
   font-weight: 500;
   margin-block: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 2.2vw, 1.75rem);
   max-width: 12ch;
@@ -849,7 +868,7 @@ body.is-locked .site-header .logo__img--tersle,
   font-style: normal;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: -0.045em;
+  letter-spacing: var(--ls-display);
   color: var(--accent-soft);
 }
 
@@ -917,7 +936,7 @@ body.is-locked .site-header .logo__img--tersle,
 
 .hero__phase-list li {
   font-size: var(--fs-xs);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: rgba(242, 242, 240, 0.4);
   transition: color 0.4s var(--ease);
@@ -960,7 +979,7 @@ body.is-locked .site-header .logo__img--tersle,
   align-items: center;
   gap: 0.75rem;
   font-size: var(--fs-xs);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: rgba(242, 242, 240, 0.55);
 }
@@ -1043,7 +1062,7 @@ body.is-locked .site-header .logo__img--tersle,
   padding: 0;
   margin-top: 1.75rem;
   font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: rgba(242, 242, 240, 0.55);
 }
@@ -1081,7 +1100,7 @@ body.is-locked .site-header .logo__img--tersle,
   gap: 3rem;
   font-size: clamp(1.1rem, 2.6vw, 1.75rem);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ls-etiket);
   white-space: nowrap;
   color: var(--muted);
 }
@@ -1160,7 +1179,7 @@ body.is-locked .site-header .logo__img--tersle,
   background: var(--ink);
   color: var(--paper);
   font-size: var(--fs-xs);
-  letter-spacing: 0.16em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
 }
 
@@ -1211,12 +1230,12 @@ body.is-locked .site-header .logo__img--tersle,
   font-family: var(--font-display);
   font-size: var(--fs-xl);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--ls-baslik);
 }
 
 .signature__role {
   font-size: var(--fs-xs);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -1231,7 +1250,7 @@ body.is-locked .site-header .logo__img--tersle,
   justify-content: space-between;
   align-items: baseline;
   font-size: var(--fs-sm);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--ls-govde);
   margin-bottom: 0.5rem;
 }
 
@@ -1309,7 +1328,7 @@ body.is-locked .site-header .logo__img--tersle,
   top: clamp(1.75rem, 3.4vw, 2.75rem);
   right: clamp(1.75rem, 3.4vw, 2.75rem);
   font-size: var(--fs-xs);
-  letter-spacing: 0.18em;
+  letter-spacing: var(--ls-etiket);
   color: var(--muted);
   transition: color 0.45s;
 }
@@ -1333,7 +1352,7 @@ body.is-locked .site-header .logo__img--tersle,
 
 .service__title {
   font-size: var(--fs-xl);
-  letter-spacing: -0.015em;
+  letter-spacing: var(--ls-baslik);
 }
 
 .service__text {
@@ -1350,7 +1369,7 @@ body.is-locked .site-header .logo__img--tersle,
   margin-top: auto;
   padding-top: 0.5rem;
   font-size: var(--fs-xs);
-  letter-spacing: 0.18em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   display: inline-flex;
   align-items: center;
@@ -1379,7 +1398,7 @@ body.is-locked .site-header .logo__img--tersle,
 
 .service-row__num {
   font-size: var(--fs-sm);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-etiket);
   color: var(--accent);
   padding-top: 0.4rem;
 }
@@ -1406,7 +1425,7 @@ body.is-locked .site-header .logo__img--tersle,
   padding: 0.35rem 0.85rem;
   border: 1px solid var(--line-strong);
   font-size: var(--fs-xs);
-  letter-spacing: 0.12em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -1426,7 +1445,7 @@ body.is-locked .site-header .logo__img--tersle,
   background: transparent;
   border: 1px solid var(--line-strong);
   font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.3s, color 0.3s, border-color 0.3s;
@@ -1520,7 +1539,7 @@ body.is-locked .site-header .logo__img--tersle,
   padding: 0.35rem 0.8rem;
   background: rgba(242, 242, 240, 0.92);
   font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
 }
 
@@ -1557,14 +1576,14 @@ body.is-locked .site-header .logo__img--tersle,
 
 .project-card__title {
   font-size: var(--fs-xl);
-  letter-spacing: -0.015em;
+  letter-spacing: var(--ls-baslik);
 }
 
 .project-card__meta {
   display: block;
   margin-top: 0.35rem;
   font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -1601,7 +1620,7 @@ body.is-locked .site-header .logo__img--tersle,
 
 .fact dt {
   font-size: var(--fs-xs);
-  letter-spacing: 0.18em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 0.4rem;
@@ -1635,7 +1654,7 @@ body.is-locked .site-header .logo__img--tersle,
   padding-block: clamp(2rem, 4vw, 3rem);
   border-top: 1px solid var(--line);
   font-size: var(--fs-xs);
-  letter-spacing: 0.16em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
 }
 
@@ -1672,7 +1691,7 @@ body.is-locked .site-header .logo__img--tersle,
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 5vw, 3.75rem);
   font-weight: 600;
-  letter-spacing: -0.04em;
+  letter-spacing: var(--ls-display);
   line-height: 1;
   font-variant-numeric: tabular-nums;
   color: var(--accent-soft);
@@ -1681,7 +1700,8 @@ body.is-locked .site-header .logo__img--tersle,
 .process__title {
   font-size: var(--fs-lg);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ls-etiket);
+  line-height: var(--lh-baslik);
 }
 
 .process__text {
@@ -1713,14 +1733,14 @@ body.is-locked .site-header .logo__img--tersle,
 .stat__value {
   font-size: clamp(2.5rem, 5.5vw, 4rem);
   font-weight: 500;
-  letter-spacing: -0.04em;
+  letter-spacing: var(--ls-display);
   line-height: 1;
 }
 
 .stat__label {
   margin-top: 0.6rem;
   font-size: var(--fs-xs);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -1737,15 +1757,15 @@ body.is-locked .site-header .logo__img--tersle,
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3.4vw, 2.75rem);
   font-weight: 500;
-  line-height: 1.16;
-  letter-spacing: -0.03em;
+  line-height: var(--lh-baslik);
+  letter-spacing: var(--ls-display);
   text-wrap: balance;
 }
 
 .quote figcaption {
   margin-top: 1.75rem;
   font-size: var(--fs-xs);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -1815,7 +1835,7 @@ main > .cta:last-child {
 
 .contact-item__label {
   font-size: var(--fs-xs);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 0.35rem;
@@ -1846,7 +1866,7 @@ main > .cta:last-child {
 
 .field label {
   font-size: var(--fs-xs);
-  letter-spacing: 0.16em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -1889,7 +1909,7 @@ main > .cta:last-child {
 
 .field--check label {
   text-transform: none;
-  letter-spacing: 0;
+  letter-spacing: var(--ls-govde);
   font-size: var(--fs-sm);
   line-height: 1.5;
 }
@@ -1954,6 +1974,8 @@ main > .cta:last-child {
   cursor: pointer;
   font-size: var(--fs-lg);
   font-weight: 500;
+  line-height: var(--lh-baslik);
+  letter-spacing: var(--ls-baslik);
   transition: color 0.3s;
 }
 
@@ -2051,7 +2073,7 @@ a.kayit:focus-visible {
   font-family: var(--font-display);
   font-size: var(--fs-xs);
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
@@ -2065,7 +2087,7 @@ a.kayit:focus-visible {
   font-family: var(--font-display);
   font-size: 0.625rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
   white-space: nowrap;
@@ -2082,8 +2104,8 @@ a.kayit:hover .kayit__ozet {
 .kayit__baslik {
   font-size: clamp(1.125rem, 0.95rem + 0.8vw, 1.625rem);
   font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.14;
+  letter-spacing: var(--ls-baslik);
+  line-height: var(--lh-baslik);
 }
 
 .kayit__ozet {
@@ -2097,7 +2119,7 @@ a.kayit:hover .kayit__ozet {
 .kayit__yer {
   font-family: var(--font-display);
   font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
   white-space: nowrap;
@@ -2119,7 +2141,7 @@ a.kayit:hover .kayit__ozet {
 .makale h2 {
   font-size: var(--fs-xl);
   margin-top: 2.75rem;
-  letter-spacing: -0.025em;
+  letter-spacing: var(--ls-baslik);
 }
 
 .makale h3 {
@@ -2146,7 +2168,7 @@ a.kayit:hover .kayit__ozet {
   font-family: var(--font-display);
   font-size: var(--fs-lg);
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--ls-baslik);
   color: var(--ink);
 }
 
@@ -2158,7 +2180,7 @@ a.kayit:hover .kayit__ozet {
   margin-top: 0.6rem;
   font-family: var(--font-display);
   font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -2171,7 +2193,7 @@ a.kayit:hover .kayit__ozet {
   border-block: 1px solid var(--line);
   font-family: var(--font-display);
   font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -2215,7 +2237,7 @@ a.kayit:hover .kayit__ozet {
 
 .footer-col__title {
   font-size: var(--fs-xs);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: rgba(242, 242, 240, 0.5);
   margin-bottom: 1.1rem;
@@ -2238,7 +2260,7 @@ a.kayit:hover .kayit__ozet {
   gap: 1rem;
   padding-block: 1.75rem;
   font-size: var(--fs-xs);
-  letter-spacing: 0.1em;
+  letter-spacing: var(--ls-etiket);
   text-transform: uppercase;
   color: rgba(242, 242, 240, 0.5);
 }
@@ -2285,6 +2307,46 @@ a.kayit:hover .kayit__ozet {
   background: var(--paper);
   border-color: var(--paper);
   color: var(--ink);
+}
+
+/* Başlık çubuğu: çerçevesiz, yalnızca simge. Zemin koyudan açığa dönerken
+   renk currentColor'dan geldiği için ayrıca bir kural gerekmez.
+   Ana menüyle aynı kırılımda görünür; altında mobil menüde yer alır. */
+.social--baslik {
+  display: none;
+  gap: 0.15rem;
+  margin-right: 0.35rem;
+}
+
+@media (min-width: 1140px) {
+  .social--baslik {
+    display: flex;
+  }
+}
+
+.social--baslik a {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  opacity: 0.6;
+  transition: opacity 0.3s var(--ease);
+}
+
+.social--baslik a:hover,
+.social--baslik a:focus-visible {
+  background: transparent;
+  color: inherit;
+  opacity: 1;
+}
+
+.social--baslik svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* Mobil menü: koyu zemin, alt bilgideki çerçeveli görünümle aynı */
+.social--mobil {
+  margin-top: clamp(1.75rem, 5vw, 2.75rem);
 }
 
 .social svg {
@@ -2470,15 +2532,6 @@ body.hero-gorunur .to-top {
 .service__index,
 .service-row__num {
   font-variant-numeric: tabular-nums;
-}
-
-/* Display ailesi dar olduğundan etiketlerde hafif fazladan aralık */
-.eyebrow,
-.nav__link,
-.btn,
-.filter-btn,
-.footer-col__title {
-  letter-spacing: 0.18em;
 }
 
 /* --------------------------------------------------------------------------

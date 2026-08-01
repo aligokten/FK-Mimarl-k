@@ -601,10 +601,13 @@
 
     var k3 = el("div", "kart");
     k3.appendChild(el("strong", null, "Sosyal hesaplar"));
-    var r5 = el("div", "satir satir--2");
-    r5.appendChild(alan("Instagram", so.instagram, function (v) { so.instagram = v; isaretle("site"); }));
-    r5.appendChild(alan("LinkedIn", so.linkedin, function (v) { so.linkedin = v; isaretle("site"); }));
+    var r5 = el("div", "satir satir--3");
+    r5.appendChild(alan("Instagram", so.instagram, function (v) { so.instagram = v.trim(); isaretle("site"); }));
+    r5.appendChild(alan("LinkedIn", so.linkedin, function (v) { so.linkedin = v.trim(); isaretle("site"); }));
+    r5.appendChild(alan("YouTube", so.youtube, function (v) { so.youtube = v.trim(); isaretle("site"); }));
     k3.appendChild(r5);
+    k3.appendChild(el("span", "ipucu",
+      "Boş bıraktığınız hesabın simgesi başlıkta, mobil menüde ve alt bilgide görünmez."));
     kap.appendChild(k3);
 
     var k4 = el("div", "kart");
