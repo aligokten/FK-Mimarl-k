@@ -139,106 +139,178 @@
         <button class="filter-btn" type="button" data-filter="gorsellestirme" aria-pressed="false">Görselleştirme</button>
 <!-- /OTO:proje-filtreleri -->      </div>
 
-      <div class="kayitlar">
-<!-- OTO:projeler -->
-        <article class="kayit" data-category="restorasyon" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Restorasyon</p>
-          <div>
-            <h2 class="kayit__baslik">Doğanbey Konutu</h2>
-          </div>
-          <p class="kayit__yer">Aydın · Söke</p>
-        </article>
-        <article class="kayit" data-category="restorasyon" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Restorasyon</p>
-          <div>
-            <h2 class="kayit__baslik">Kemeraltı Dükkânı</h2>
-          </div>
-          <p class="kayit__yer">İzmir · Konak</p>
-        </article>
-        <article class="kayit" data-category="restorasyon" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Restorasyon</p>
-          <div>
-            <h2 class="kayit__baslik">Alsancak Dükkânı</h2>
-          </div>
-          <p class="kayit__yer">İzmir · Konak</p>
-        </article>
-        <article class="kayit" data-category="restorasyon" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Restorasyon</p>
-          <div>
-            <h2 class="kayit__baslik">Karşıyaka Konutu</h2>
-          </div>
-          <p class="kayit__yer">İzmir · Karşıyaka</p>
-        </article>
-        <article class="kayit" data-category="restorasyon" data-reveal="stagger">
-          <p class="kayit__tarih">2019</p>
-          <p class="kayit__tur">Restorasyon</p>
-          <div>
-            <h2 class="kayit__baslik">Çamlıdere Konutu</h2>
-          </div>
-          <p class="kayit__yer">Ankara · Çamlıdere</p>
-        </article>
-        <article class="kayit" data-category="kazi" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Kazı Alanı</p>
-          <div>
-            <h2 class="kayit__baslik">Foça Konut Alanı Kazısı</h2>
-          </div>
-          <p class="kayit__yer">İzmir · Foça</p>
-        </article>
-        <article class="kayit" data-category="mimari" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Mimari Proje</p>
-          <div>
-            <h2 class="kayit__baslik">SŞ Evi</h2>
-          </div>
-          <p class="kayit__yer">İzmir · Mordoğan</p>
-        </article>
-        <article class="kayit" data-category="gorsellestirme" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Görselleştirme</p>
-          <div>
-            <h2 class="kayit__baslik">Şevval Sam Evi</h2>
-          </div>
-          <p class="kayit__yer">Çanakkale</p>
-        </article>
-        <article class="kayit" data-category="gorsellestirme" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Görselleştirme</p>
-          <div>
-            <h2 class="kayit__baslik">Kekiklibayır Polyesi</h2>
-            <p class="kayit__ozet">8 bina ve arazi düzenlemesi</p>
-          </div>
-          <p class="kayit__yer">Çanakkale</p>
-        </article>
-        <article class="kayit" data-category="gorsellestirme" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Görselleştirme</p>
-          <div>
-            <h2 class="kayit__baslik">T Evi</h2>
-          </div>
-          <p class="kayit__yer">Çanakkale</p>
-        </article>
-        <article class="kayit" data-category="gorsellestirme" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Görselleştirme</p>
-          <div>
-            <h2 class="kayit__baslik">Sosyal Tesis</h2>
-          </div>
-          <p class="kayit__yer">Çanakkale</p>
-        </article>
-        <article class="kayit" data-category="gorsellestirme" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Görselleştirme</p>
-          <div>
-            <h2 class="kayit__baslik">Toplu Konut Sitesi</h2>
-          </div>
-          <p class="kayit__yer">İzmir</p>
-        </article>
-<!-- /OTO:projeler -->      </div>
+      <ul class="proje-galerisi">
+<!-- OTO:proje-galerisi -->
+        <li class="proje-karti" data-category="restorasyon" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="0"
+                  aria-label="Doğanbey Konutu — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Restorasyon</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Restorasyon</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Doğanbey Konutu</span>
+            </span>
+            <span class="proje-karti__yer">Aydın · Söke</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="restorasyon" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="1"
+                  aria-label="Kemeraltı Dükkânı — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Restorasyon</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Restorasyon</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Kemeraltı Dükkânı</span>
+            </span>
+            <span class="proje-karti__yer">İzmir · Konak</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="restorasyon" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="2"
+                  aria-label="Alsancak Dükkânı — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Restorasyon</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Restorasyon</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Alsancak Dükkânı</span>
+            </span>
+            <span class="proje-karti__yer">İzmir · Konak</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="restorasyon" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="3"
+                  aria-label="Karşıyaka Konutu — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Restorasyon</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Restorasyon</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Karşıyaka Konutu</span>
+            </span>
+            <span class="proje-karti__yer">İzmir · Karşıyaka</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="kazi" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="4"
+                  aria-label="Foça Konut Alanı Kazısı — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Kazı Alanı</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Kazı Alanı</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Foça Konut Alanı Kazısı</span>
+            </span>
+            <span class="proje-karti__yer">İzmir · Foça</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="mimari" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="5"
+                  aria-label="SŞ Evi — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Mimari Proje</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Mimari Proje</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">SŞ Evi</span>
+            </span>
+            <span class="proje-karti__yer">İzmir · Mordoğan</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="gorsellestirme" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="6"
+                  aria-label="Şevval Sam Evi — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Görselleştirme</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Görselleştirme</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Şevval Sam Evi</span>
+            </span>
+            <span class="proje-karti__yer">Çanakkale</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="gorsellestirme" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="7"
+                  aria-label="Kekiklibayır Polyesi — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Görselleştirme</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Görselleştirme</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Kekiklibayır Polyesi</span>
+            <p class="proje-karti__not">8 bina ve arazi düzenlemesi</p>
+            </span>
+            <span class="proje-karti__yer">Çanakkale</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="gorsellestirme" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="8"
+                  aria-label="T Evi — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Görselleştirme</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Görselleştirme</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">T Evi</span>
+            </span>
+            <span class="proje-karti__yer">Çanakkale</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="gorsellestirme" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="9"
+                  aria-label="Sosyal Tesis — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Görselleştirme</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Görselleştirme</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Sosyal Tesis</span>
+            </span>
+            <span class="proje-karti__yer">Çanakkale</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="gorsellestirme" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="10"
+                  aria-label="Toplu Konut Sitesi — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Görselleştirme</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2023</span>
+              <span class="proje-karti__tur">Görselleştirme</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Toplu Konut Sitesi</span>
+            </span>
+            <span class="proje-karti__yer">İzmir</span>
+          </button>
+        </li>
+        <li class="proje-karti" data-category="restorasyon" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="11"
+                  aria-label="Çamlıdere Konutu — projeyi aç">
+            <span class="proje-karti__cerceve"><span class="proje-karti__yer-tutucu" aria-hidden="true">Restorasyon</span></span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">2019</span>
+              <span class="proje-karti__tur">Restorasyon</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">Çamlıdere Konutu</span>
+            </span>
+            <span class="proje-karti__yer">Ankara · Çamlıdere</span>
+          </button>
+        </li>
+<!-- /OTO:proje-galerisi -->      </ul>
 
       <p style="margin-top:clamp(2.5rem,5vw,4rem);max-width:60ch;color:var(--muted)" data-reveal>
         Yukarıdaki liste ofisin kendi yürüttüğü işleri kapsar. Önceki kurumlar
@@ -274,6 +346,129 @@
   </section>
 
 </main>
+
+<!-- ================= PROJE MODALI ================= -->
+<div class="modal" id="proje-modal" hidden>
+  <div class="modal__perde" data-modal-kapat></div>
+
+  <div class="modal__kutu" role="dialog" aria-modal="true" aria-labelledby="modal-baslik">
+    <button class="modal__kapat" type="button" data-modal-kapat aria-label="Kapat">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+
+    <div class="modal__govde">
+      <div class="modal__gorseller" data-modal-gorseller></div>
+      <div class="modal__bilgi">
+        <p class="modal__meta" data-modal-meta></p>
+        <h2 class="modal__baslik" id="modal-baslik" data-modal-baslik></h2>
+        <p class="modal__yer" data-modal-yer></p>
+        <p class="modal__metin" data-modal-metin></p>
+        <a class="btn btn--ghost modal__tum" href="iletisim.html">Bize ulaşın</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OTO:proje-verisi -->
+<script type="application/json" id="proje-verisi">[
+ {
+  "baslik": "Doğanbey Konutu",
+  "yil": "2023",
+  "tur": "Restorasyon",
+  "yer": "Aydın · Söke",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Kemeraltı Dükkânı",
+  "yil": "2023",
+  "tur": "Restorasyon",
+  "yer": "İzmir · Konak",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Alsancak Dükkânı",
+  "yil": "2023",
+  "tur": "Restorasyon",
+  "yer": "İzmir · Konak",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Karşıyaka Konutu",
+  "yil": "2023",
+  "tur": "Restorasyon",
+  "yer": "İzmir · Karşıyaka",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Foça Konut Alanı Kazısı",
+  "yil": "2023",
+  "tur": "Kazı Alanı",
+  "yer": "İzmir · Foça",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "SŞ Evi",
+  "yil": "2023",
+  "tur": "Mimari Proje",
+  "yer": "İzmir · Mordoğan",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Şevval Sam Evi",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "Çanakkale",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Kekiklibayır Polyesi",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "Çanakkale",
+  "metin": "8 bina ve arazi düzenlemesi",
+  "gorseller": []
+ },
+ {
+  "baslik": "T Evi",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "Çanakkale",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Sosyal Tesis",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "Çanakkale",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Toplu Konut Sitesi",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "İzmir",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Çamlıdere Konutu",
+  "yil": "2019",
+  "tur": "Restorasyon",
+  "yer": "Ankara · Çamlıdere",
+  "metin": "",
+  "gorseller": []
+ }
+]</script>
+<!-- /OTO:proje-verisi -->
 
 <footer class="site-footer">
   <div class="container">

@@ -398,10 +398,14 @@ def parca_is_serit(projeler):
     (bkz. assets/js/main.js → initProjeModal). Görsel yoksa kart yine
     çalışır, yerine tipografik bir yüzey konur.
     """
-    secili = [p for p in projeler if p.get("oneCikan")] or projeler[:4]
+    # Sıra numarası modalın okuduğu diziye karşılık gelir; sözlükleri
+    # eşitlikle aramak yerine baştan sayıyoruz (aynı içerikli iki proje
+    # olsa bile doğru kart açılır).
+    secili = [(i, p) for i, p in enumerate(projeler) if p.get("oneCikan")]
+    if not secili:
+        secili = list(enumerate(projeler))[:4]
     parcalar = []
-    for p in secili:
-        sira = projeler.index(p)
+    for sira, p in secili:
         gorseller = [g for g in (p.get("gorseller") or []) if str(g).strip()]
         if gorseller:
             adres = gorsel_adresi(gorseller[0], 1200)
@@ -476,6 +480,56 @@ def parca_blog_kartlari(blog):
           <span class="yazi-karti__kategori">{kacis(y['kategori'])}</span>
           <h3 class="yazi-karti__baslik">{kacis(y['baslik'])}</h3>
         </a>""")
+    return "\n".join(parcalar) + "\n"
+
+
+def yila_gore_sirala(projeler):
+    """Yeniden eskiye. Aynı yıl içindeki sıra panelde verilen sıradır
+    (sorted kararlıdır), böylece elle sıralama anlamını korur."""
+    def anahtar(p):
+        try:
+            return int(str(p.get("yil", "")).strip()[:4])
+        except ValueError:
+            return -1  # yılı okunamayanlar en sona
+    return sorted(projeler, key=anahtar, reverse=True)
+
+
+def parca_proje_galerisi(projeler):
+    """Projeler sayfasındaki görselli galeri.
+
+    Kartlar hem filtreye (data-category) hem modala (data-proje) bağlıdır;
+    modal indeksleri sıralanmış listeye göre verilir.
+    """
+    parcalar = []
+    for sira, p in enumerate(projeler):
+        gorseller = [g for g in (p.get("gorseller") or []) if str(g).strip()]
+        if gorseller:
+            seti = gorsel_seti(gorseller[0])
+            ek = (f' srcset="{kacis(seti)}" sizes="(min-width: 1100px) 33vw, '
+                  f'(min-width: 700px) 50vw, 92vw"' if seti else "")
+            yuzey = (f'<img src="{kacis(gorsel_adresi(gorseller[0], 1200))}" alt=""{ek} '
+                     f'loading="lazy" decoding="async">')
+        else:
+            yuzey = (f'<span class="proje-karti__yer-tutucu" aria-hidden="true">'
+                     f'{kacis(p["tur"])}</span>')
+        sayi = (f'<span class="proje-karti__sayi">{len(gorseller)} görsel</span>'
+                if len(gorseller) > 1 else "")
+        notu = (f'\n            <p class="proje-karti__not">{kacis(p["not"])}</p>'
+                if p.get("not") else "")
+        parcalar.append(f"""        <li class="proje-karti" data-category="{kacis(p['turSlug'])}" data-reveal="stagger">
+          <button class="proje-karti__dugme" type="button" data-proje="{sira}"
+                  aria-label="{kacis(p['baslik'])} — projeyi aç">
+            <span class="proje-karti__cerceve">{yuzey}{sayi}</span>
+            <span class="proje-karti__ust">
+              <span class="proje-karti__yil">{kacis(p['yil'])}</span>
+              <span class="proje-karti__tur">{kacis(p['tur'])}</span>
+            </span>
+            <span class="proje-karti__govde">
+              <span class="proje-karti__baslik">{kacis(p['baslik'])}</span>{notu}
+            </span>
+            <span class="proje-karti__yer">{kacis(p['yer'])}</span>
+          </button>
+        </li>""")
     return "\n".join(parcalar) + "\n"
 
 
@@ -617,7 +671,9 @@ def blog_sayfasi(y, kalip):
 def uret():
     s = veri("site")
     hizmetler = veri("hizmetler")
-    projeler = veri("projeler")
+    # Tüm listelerde ortak sıra: yeniden eskiye. Modal indeksleri de bu
+    # sıralanmış listeye göre verildiği için tek yerde sıralanmalıdır.
+    projeler = yila_gore_sirala(veri("projeler"))
     haberler = veri("haberler")
     blog = veri("blog")
 
@@ -635,7 +691,7 @@ def uret():
         "form-etiketi": parca_form_etiketi(s),
         "hizmet-kartlari": parca_hizmet_kartlari(hizmetler),
         "hizmet-satirlari": parca_hizmet_satirlari(hizmetler),
-        "projeler": parca_projeler(projeler),
+        "proje-galerisi": parca_proje_galerisi(projeler),
         "proje-filtreleri": parca_proje_filtreleri(projeler),
         "secili-projeler": parca_projeler(projeler, True, "projeler.html"),
         "is-serit": parca_is_serit(projeler),
