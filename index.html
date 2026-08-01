@@ -330,57 +330,72 @@
     </div>
   </section>
 
-  <!-- ================= PROJELER ================= -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <div data-reveal>
-          <span class="eyebrow">/ 03 — Projeler</span>
-          <h2 class="section-title">Seçili <em>çalışmalar</em></h2>
-        </div>
-        <div data-reveal style="--reveal-delay:120ms">
-          <p class="lead">Farklı ölçek ve dönemlerden, koruma odaklı proje ve uygulamalar.</p>
-          <p style="margin-top:1.25rem">
-            <a class="link-underline" href="projeler.html" style="font-size:var(--fs-xs);letter-spacing:var(--ls-etiket);text-transform:uppercase">Tüm projeler →</a>
-          </p>
-        </div>
+  <!-- ================= PROJELER — kaydırmalı galeri ================= -->
+  <section class="section isler">
+    <div class="container isler__ust">
+      <div data-reveal>
+        <span class="eyebrow eyebrow--invert">/ 03 — Projeler</span>
+        <h2 class="section-title">Seçili<br>çalışmalar</h2>
+        <p style="margin-top:1.5rem">
+          <a class="link-underline" href="projeler.html" style="font-size:var(--fs-xs);letter-spacing:var(--ls-etiket);text-transform:uppercase">Tümünü gör</a>
+        </p>
       </div>
 
-      <div class="kayitlar">
-<!-- OTO:secili-projeler -->
-        <a class="kayit" href="projeler.html" data-category="restorasyon" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Restorasyon</p>
-          <div>
-            <h3 class="kayit__baslik">Doğanbey Konutu</h3>
-          </div>
-          <p class="kayit__yer">Aydın · Söke</p>
-        </a>
-        <a class="kayit" href="projeler.html" data-category="restorasyon" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Restorasyon</p>
-          <div>
-            <h3 class="kayit__baslik">Kemeraltı Dükkânı</h3>
-          </div>
-          <p class="kayit__yer">İzmir · Konak</p>
-        </a>
-        <a class="kayit" href="projeler.html" data-category="kazi" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Kazı Alanı</p>
-          <div>
-            <h3 class="kayit__baslik">Foça Konut Alanı Kazısı</h3>
-          </div>
-          <p class="kayit__yer">İzmir · Foça</p>
-        </a>
-        <a class="kayit" href="projeler.html" data-category="mimari" data-reveal="stagger">
-          <p class="kayit__tarih">2023</p>
-          <p class="kayit__tur">Mimari Proje</p>
-          <div>
-            <h3 class="kayit__baslik">SŞ Evi</h3>
-          </div>
-          <p class="kayit__yer">İzmir · Mordoğan</p>
-        </a>
-<!-- /OTO:secili-projeler -->      </div>
+      <div class="serit__dumen" data-reveal style="--reveal-delay:120ms">
+        <button class="serit__ok" type="button" data-serit-yon="-1" aria-label="Önceki projeler">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+        <button class="serit__ok" type="button" data-serit-yon="1" aria-label="Sonraki projeler">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="serit" data-serit>
+      <ul class="serit__ray" data-serit-ray>
+<!-- OTO:is-serit -->
+        <li class="serit__oge">
+          <button class="is-karti" type="button" data-proje="0"
+                  aria-label="Doğanbey Konutu — projeyi aç">
+            <span class="is-karti__cerceve"><span class="is-karti__yer-tutucu" aria-hidden="true">Restorasyon</span></span>
+            <span class="is-karti__alt">
+              <span class="is-karti__baslik">Doğanbey Konutu</span>
+              <span class="is-karti__meta">2023 · Aydın · Söke</span>
+            </span>
+          </button>
+        </li>
+        <li class="serit__oge">
+          <button class="is-karti" type="button" data-proje="1"
+                  aria-label="Kemeraltı Dükkânı — projeyi aç">
+            <span class="is-karti__cerceve"><span class="is-karti__yer-tutucu" aria-hidden="true">Restorasyon</span></span>
+            <span class="is-karti__alt">
+              <span class="is-karti__baslik">Kemeraltı Dükkânı</span>
+              <span class="is-karti__meta">2023 · İzmir · Konak</span>
+            </span>
+          </button>
+        </li>
+        <li class="serit__oge">
+          <button class="is-karti" type="button" data-proje="5"
+                  aria-label="Foça Konut Alanı Kazısı — projeyi aç">
+            <span class="is-karti__cerceve"><span class="is-karti__yer-tutucu" aria-hidden="true">Kazı Alanı</span></span>
+            <span class="is-karti__alt">
+              <span class="is-karti__baslik">Foça Konut Alanı Kazısı</span>
+              <span class="is-karti__meta">2023 · İzmir · Foça</span>
+            </span>
+          </button>
+        </li>
+        <li class="serit__oge">
+          <button class="is-karti" type="button" data-proje="6"
+                  aria-label="SŞ Evi — projeyi aç">
+            <span class="is-karti__cerceve"><span class="is-karti__yer-tutucu" aria-hidden="true">Mimari Proje</span></span>
+            <span class="is-karti__alt">
+              <span class="is-karti__baslik">SŞ Evi</span>
+              <span class="is-karti__meta">2023 · İzmir · Mordoğan</span>
+            </span>
+          </button>
+        </li>
+<!-- /OTO:is-serit -->
+      </ul>
     </div>
   </section>
 
@@ -456,6 +471,34 @@
     </div>
   </section>
 
+  <!-- ================= BLOG ================= -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="section-head">
+        <div data-reveal>
+          <span class="eyebrow">/ 05 — Blog</span>
+          <h2 class="section-title">Yazılar</h2>
+        </div>
+        <p data-reveal style="--reveal-delay:120ms;align-self:end">
+          <a class="link-underline" href="blog.html" style="font-size:var(--fs-xs);letter-spacing:var(--ls-etiket);text-transform:uppercase">Tümünü gör</a>
+        </p>
+      </div>
+
+      <div class="yazi-kartlari">
+<!-- OTO:blog-kartlari -->
+        <a class="yazi-karti" href="blog-ornek-blog.html" data-reveal="stagger">
+          <span class="yazi-karti__cerceve">
+            <span class="yazi-karti__yer-tutucu">Malzeme</span>
+            <span class="yazi-karti__daha">Oku +</span>
+          </span>
+          <span class="yazi-karti__kategori">Malzeme</span>
+          <h3 class="yazi-karti__baslik">Örnek blog</h3>
+        </a>
+<!-- /OTO:blog-kartlari -->
+      </div>
+    </div>
+  </section>
+
   <!-- ================= ÇAĞRI ================= -->
   <section class="section cta">
     <div class="container">
@@ -486,6 +529,131 @@
   </section>
 
 </main>
+
+<!-- ================= PROJE MODALI =================
+     Kartlara basıldığında açılır. İçerik aşağıdaki JSON bloğundan
+     doldurulur; arka plan perdenin backdrop-filter'ı ile bulanıklaşır. -->
+<div class="modal" id="proje-modal" hidden>
+  <div class="modal__perde" data-modal-kapat></div>
+
+  <div class="modal__kutu" role="dialog" aria-modal="true" aria-labelledby="modal-baslik">
+    <button class="modal__kapat" type="button" data-modal-kapat aria-label="Kapat">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+
+    <div class="modal__govde">
+      <div class="modal__gorseller" data-modal-gorseller></div>
+      <div class="modal__bilgi">
+        <p class="modal__meta" data-modal-meta></p>
+        <h2 class="modal__baslik" id="modal-baslik" data-modal-baslik></h2>
+        <p class="modal__yer" data-modal-yer></p>
+        <p class="modal__metin" data-modal-metin></p>
+        <a class="btn btn--ghost modal__tum" href="projeler.html">Tüm projeler</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OTO:proje-verisi -->
+<script type="application/json" id="proje-verisi">[
+ {
+  "baslik": "Doğanbey Konutu",
+  "yil": "2023",
+  "tur": "Restorasyon",
+  "yer": "Aydın · Söke",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Kemeraltı Dükkânı",
+  "yil": "2023",
+  "tur": "Restorasyon",
+  "yer": "İzmir · Konak",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Alsancak Dükkânı",
+  "yil": "2023",
+  "tur": "Restorasyon",
+  "yer": "İzmir · Konak",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Karşıyaka Konutu",
+  "yil": "2023",
+  "tur": "Restorasyon",
+  "yer": "İzmir · Karşıyaka",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Çamlıdere Konutu",
+  "yil": "2019",
+  "tur": "Restorasyon",
+  "yer": "Ankara · Çamlıdere",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Foça Konut Alanı Kazısı",
+  "yil": "2023",
+  "tur": "Kazı Alanı",
+  "yer": "İzmir · Foça",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "SŞ Evi",
+  "yil": "2023",
+  "tur": "Mimari Proje",
+  "yer": "İzmir · Mordoğan",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Şevval Sam Evi",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "Çanakkale",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Kekiklibayır Polyesi",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "Çanakkale",
+  "metin": "8 bina ve arazi düzenlemesi",
+  "gorseller": []
+ },
+ {
+  "baslik": "T Evi",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "Çanakkale",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Sosyal Tesis",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "Çanakkale",
+  "metin": "",
+  "gorseller": []
+ },
+ {
+  "baslik": "Toplu Konut Sitesi",
+  "yil": "2023",
+  "tur": "Görselleştirme",
+  "yer": "İzmir",
+  "metin": "",
+  "gorseller": []
+ }
+]</script>
+<!-- /OTO:proje-verisi -->
 
 <!-- ================= ALT BİLGİ ================= -->
 <footer class="site-footer">

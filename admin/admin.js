@@ -404,11 +404,181 @@
       s2.appendChild(alan("Not (isteğe bağlı)", p["not"], function (v) { p["not"] = v; isaretle("projeler"); }));
       k.appendChild(s2);
 
+      k.appendChild(alan("Açıklama (modalda görünür)", p.metin, function (v) {
+        p.metin = v; isaretle("projeler");
+      }, { cokSatir: true, aciklama: "Anasayfada karta basıldığında açılan pencerede gösterilir." }));
+
+      k.appendChild(gorselListesi(p, "projeler"));
+
       k.appendChild(onay("Anasayfada öne çıkar", p.oneCikan, function (v) {
         p.oneCikan = v; isaretle("projeler"); cizAll();
       }));
       kap.appendChild(k);
     });
+  }
+
+  /* ------------------------------------------------------ Drive görselleri
+
+     Drive'ın paylaşım adresi bir HTML sayfasıdır, doğrudan görsel değil.
+     Burada yalnızca ÖNİZLEME için adres çevrilir; JSON'a ham bağlantı
+     yazılır ve asıl çeviriyi tools/build.py yapar. Böylece Google adres
+     biçimini değiştirirse tek yerde düzeltmek yeter.
+     -------------------------------------------------------------------- */
+  var DRIVE_DESENLERI = [
+    /drive\.google\.com\/file\/d\/([\w-]{20,})/,
+    /drive\.google\.com\/open\?id=([\w-]{20,})/,
+    /drive\.google\.com\/uc\?(?:export=\w+&)?id=([\w-]{20,})/,
+    /drive\.google\.com\/thumbnail\?id=([\w-]{20,})/,
+    /docs\.google\.com\/uc\?(?:export=\w+&)?id=([\w-]{20,})/
+  ];
+
+  function driveKimligi(ham) {
+    var m = String(ham || "").trim();
+    for (var i = 0; i < DRIVE_DESENLERI.length; i++) {
+      var e = DRIVE_DESENLERI[i].exec(m);
+      if (e) return e[1];
+    }
+    return /^[\w-]{25,}$/.test(m) ? m : null;
+  }
+
+  function onizlemeAdresi(ham, genislik) {
+    var kimlik = driveKimligi(ham);
+    if (kimlik) return "https://lh3.googleusercontent.com/d/" + kimlik + "=w" + (genislik || 600);
+    var m = String(ham || "").trim();
+    // Depo içi göreli yol: panel /admin/ altında olduğu için bir üst dizin
+    return m && m.indexOf("http") !== 0 ? "../" + m : m;
+  }
+
+  function gorselSatiri(dizi, i, dosya, yenile) {
+    var d = el("div", "gorsel-satir");
+
+    var ust = el("div", "gorsel-satir__ust");
+    ust.appendChild(el("span", "kart__no", String(i + 1).padStart(2, "0")));
+    ust.appendChild(el("span", "bosluk"));
+
+    function tasi(yon) {
+      var j = i + yon;
+      if (j < 0 || j >= dizi.length) return;
+      var t = dizi[i]; dizi[i] = dizi[j]; dizi[j] = t;
+      isaretle(dosya); yenile();
+    }
+    var yu = el("button", "btn btn--ikinci btn--kucuk", "↑");
+    yu.addEventListener("click", function () { tasi(-1); });
+    var as = el("button", "btn btn--ikinci btn--kucuk", "↓");
+    as.addEventListener("click", function () { tasi(1); });
+    var si = el("button", "btn btn--tehlike btn--kucuk", "Sil");
+    si.addEventListener("click", function () {
+      dizi.splice(i, 1); isaretle(dosya); yenile();
+    });
+    ust.appendChild(yu); ust.appendChild(as); ust.appendChild(si);
+    d.appendChild(ust);
+
+    var govde = el("div", "gorsel-satir__govde");
+
+    var on = el("div", "onizleme onizleme--kucuk");
+    var kaynak = String(dizi[i] || "").trim();
+    if (kaynak) {
+      var im = el("img");
+      im.src = onizlemeAdresi(kaynak, 600);
+      im.alt = "";
+      im.addEventListener("error", function () {
+        on.textContent = "";
+        var uy = el("span", "ipucu");
+        uy.style.color = "var(--hata)";
+        uy.textContent = "Görsel açılamadı — dosya “Bağlantıya sahip herkes” " +
+                         "olarak paylaşılmamış olabilir.";
+        on.appendChild(uy);
+      });
+      on.appendChild(im);
+    } else {
+      on.appendChild(el("span", "ipucu", "Bağlantı yapıştırın"));
+    }
+    govde.appendChild(on);
+
+    var girdi = el("input");
+    girdi.type = "url";
+    girdi.value = dizi[i] || "";
+    girdi.placeholder = "https://drive.google.com/file/d/.../view?usp=sharing";
+    girdi.addEventListener("input", function () {
+      dizi[i] = girdi.value.trim(); isaretle(dosya);
+    });
+    girdi.addEventListener("change", yenile); // önizlemeyi tazele
+    govde.appendChild(girdi);
+
+    d.appendChild(govde);
+    return d;
+  }
+
+  function kapakGorseli(nesne, dosya, yenile) {
+    var d = el("div", "alan");
+    d.appendChild(el("label", null, "Kapak görseli"));
+
+    var on = el("div", "onizleme onizleme--kucuk");
+    var kaynak = String(nesne.gorsel || "").trim();
+    if (kaynak) {
+      var im = el("img");
+      im.src = onizlemeAdresi(kaynak, 600);
+      im.alt = "";
+      im.addEventListener("error", function () {
+        on.textContent = "";
+        var uy = el("span", "ipucu");
+        uy.style.color = "var(--hata)";
+        uy.textContent = "Görsel açılamadı — paylaşım ayarını kontrol edin.";
+        on.appendChild(uy);
+      });
+      on.appendChild(im);
+    } else {
+      on.appendChild(el("span", "ipucu", "Anasayfadaki kartta görünür. Boşsa kategori adı yazılır."));
+    }
+    d.appendChild(on);
+
+    var girdi = el("input");
+    girdi.type = "url";
+    girdi.value = nesne.gorsel || "";
+    girdi.placeholder = "https://drive.google.com/file/d/.../view?usp=sharing";
+    girdi.addEventListener("input", function () {
+      nesne.gorsel = girdi.value.trim(); isaretle(dosya);
+    });
+    girdi.addEventListener("change", yenile);
+    d.appendChild(girdi);
+    d.appendChild(el("span", "ipucu",
+      "Drive bağlantısı. Dosya “Bağlantıya sahip herkes” olarak paylaşılmış olmalı."));
+    return d;
+  }
+
+  function gorselListesi(nesne, dosya) {
+    var d = el("div", "alan");
+    d.appendChild(el("label", null, "Görseller"));
+
+    var bilgi = el("div", "bildirim bildirim--uyari");
+    bilgi.innerHTML =
+      "<strong>Google Drive bağlantısı yapıştırın.</strong> Dosyaya sağ tıklayın → " +
+      "<em>Paylaş</em> → <em>Genel erişim</em> bölümünü " +
+      "<strong>“Bağlantıya sahip herkes”</strong> yapın → <em>Bağlantıyı kopyala</em>. " +
+      "Paylaşım kapalıysa görsel sitede görünmez.";
+    d.appendChild(bilgi);
+
+    if (!nesne.gorseller) nesne.gorseller = [];
+    var dizi = nesne.gorseller;
+
+    function yenile() { cizProjeler(); }
+
+    if (!dizi.length) {
+      d.appendChild(el("div", "bos", "Henüz görsel eklenmedi."));
+    } else {
+      dizi.forEach(function (_, i) {
+        d.appendChild(gorselSatiri(dizi, i, dosya, yenile));
+      });
+    }
+
+    var ekle = el("button", "btn btn--ikinci btn--kucuk", "+ Görsel ekle");
+    ekle.style.justifySelf = "start";
+    ekle.style.marginTop = ".5rem";
+    ekle.addEventListener("click", function () {
+      dizi.push(""); isaretle(dosya); yenile();
+    });
+    d.appendChild(ekle);
+    return d;
   }
 
   function cizHaberler() {
@@ -469,6 +639,8 @@
       s2.appendChild(alan("Özet", y.ozet, function (v) { y.ozet = v; isaretle("blog"); },
         { aciklama: "Listede ve sayfa başında görünür." }));
       k.appendChild(s2);
+
+      k.appendChild(kapakGorseli(y, "blog", cizBlog));
 
       k.appendChild(onay("Yayında", y.yayinda, function (v) {
         y.yayinda = v; isaretle("blog"); cizAll();

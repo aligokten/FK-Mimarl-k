@@ -170,6 +170,32 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -.02em; margin: 0
   background-image: none;
 }
 
+.onizleme--kucuk {
+  min-height: 0;
+  padding: .6rem;
+  justify-content: flex-start;
+}
+.onizleme--kucuk img { max-height: 110px; width: auto; }
+
+/* ------------------------------------------------------- görsel listesi */
+.gorsel-satir {
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  padding: .7rem;
+  margin-bottom: .6rem;
+}
+.gorsel-satir__ust { display: flex; align-items: center; gap: .4rem; margin-bottom: .5rem; }
+.gorsel-satir__ust .bosluk { flex: 1; }
+.gorsel-satir__govde { display: grid; gap: .5rem; }
+@media (min-width: 760px) {
+  .gorsel-satir__govde { grid-template-columns: 190px 1fr; align-items: start; }
+}
+.gorsel-satir__govde input {
+  width: 100%; padding: .6rem .7rem; font: inherit; color: inherit;
+  background: var(--paper); border: 1px solid var(--line-strong); border-radius: 0;
+}
+.gorsel-satir__govde input:focus { outline: none; border-color: var(--ink); }
+
 .alan input[type="file"] {
   padding: .45rem .5rem;
   background: var(--paper);

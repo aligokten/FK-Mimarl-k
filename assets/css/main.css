@@ -2038,6 +2038,191 @@ main > .cta:last-child {
 
 
 /* --------------------------------------------------------------------------
+   15a. Seçili işler — kaydırmalı galeri
+
+   Ters blok (mürekkep zemin) üzerinde yatay bir şerit. Şerit kapsayıcının
+   sağ kenarından taşar: sonraki kartın bir kısmı görünür kalır, böylece
+   kaydırılabilir olduğu kendiliğinden anlaşılır.
+
+   Kaydırma tarayıcının kendi overflow'u ile yapılır (scroll-snap dahil);
+   oklar yalnızca scrollBy çağırır. Böylece dokunmatik, fare tekeri,
+   klavye ve sürükleme aynı anda çalışır, hiçbiri elle taklit edilmez.
+   -------------------------------------------------------------------------- */
+.isler {
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+}
+
+.isler__ust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.isler .section-title {
+  font-size: var(--fs-2xl);
+}
+
+.isler .link-underline {
+  color: var(--paper);
+  border-bottom-color: rgba(242, 242, 240, 0.4);
+}
+
+.serit__dumen {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.serit__ok {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  color: inherit;
+  border: 1px solid var(--line-invert);
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease),
+    border-color 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+.serit__ok svg {
+  width: 20px;
+  height: 20px;
+}
+
+.serit__ok:hover:not([disabled]) {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink);
+}
+
+.serit__ok[disabled] {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.serit {
+  /* Kapsayıcı ortalanır ama şerit sağa doğru taşar */
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-left: var(--gutter);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  /* Yakalama noktası dolgudan sonra başlamazsa tarayıcı, sayfa açılır
+     açılmaz şeridi sol dolgu kadar kaydırıp ilk karta yapışır. */
+  scroll-padding-left: var(--gutter);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.serit::-webkit-scrollbar {
+  display: none;
+}
+
+.serit__ray {
+  display: flex;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--gutter) 0 0;
+}
+
+.serit__oge {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.is-karti {
+  display: block;
+  width: min(30rem, 78vw);
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.is-karti__cerceve {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--ink-2);
+}
+
+.is-karti__gorsel {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease);
+}
+
+.is-karti:hover .is-karti__gorsel,
+.is-karti:focus-visible .is-karti__gorsel {
+  transform: scale(1.04);
+}
+
+/* Görsel yüklenmemiş proje: uydurma fotoğraf yerine tipografik yüzey */
+.is-karti__yer-tutucu {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-etiket);
+  text-transform: uppercase;
+  color: rgba(242, 242, 240, 0.35);
+  border: 1px solid var(--line-invert);
+}
+
+.is-karti__sayi {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0.5rem 0.85rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-etiket);
+  text-transform: uppercase;
+}
+
+.is-karti__alt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding-top: 1rem;
+}
+
+.is-karti__baslik {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: var(--ls-baslik);
+  line-height: var(--lh-baslik);
+}
+
+.is-karti__meta {
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-etiket);
+  text-transform: uppercase;
+  color: rgba(242, 242, 240, 0.55);
+}
+
+/* --------------------------------------------------------------------------
    15b. Kayıt listesi — Haberler ve Blog
    Fotoğraf yerine tipografiye dayanan satır listesi. Vurgu renk yerine
    ters blokla verilir: satırın üzerine gelindiğinde zemin mürekkebe döner.
@@ -2204,6 +2389,252 @@ a.kayit:hover .kayit__ozet {
   border: 1px solid var(--line);
   text-align: center;
   color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   15c. Blog kartları — anasayfa
+   -------------------------------------------------------------------------- */
+.yazi-kartlari {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+@media (min-width: 700px) {
+  .yazi-kartlari {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.yazi-karti {
+  display: block;
+}
+
+.yazi-karti__cerceve {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--paper-2);
+}
+
+.yazi-karti__cerceve img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease);
+}
+
+.yazi-karti:hover .yazi-karti__cerceve img,
+.yazi-karti:focus-visible .yazi-karti__cerceve img {
+  transform: scale(1.04);
+}
+
+.yazi-karti__yer-tutucu {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-etiket);
+  text-transform: uppercase;
+  color: var(--muted-2);
+  border: 1px solid var(--line);
+}
+
+.yazi-karti__daha {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0.55rem 0.9rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-etiket);
+  text-transform: uppercase;
+}
+
+.yazi-karti__kategori {
+  margin-top: 1rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-etiket);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.yazi-karti__baslik {
+  margin-top: 0.5rem;
+  font-size: var(--fs-lg);
+  letter-spacing: var(--ls-baslik);
+  line-height: var(--lh-baslik);
+  transition: opacity 0.3s var(--ease);
+}
+
+.yazi-karti:hover .yazi-karti__baslik {
+  opacity: 0.6;
+}
+
+/* --------------------------------------------------------------------------
+   15d. Proje modalı
+
+   Perde backdrop-filter ile arkadaki sayfayı bulanıklaştırır. Desteklemeyen
+   tarayıcılarda yalnızca koyu perde kalır — içerik yine okunur.
+   -------------------------------------------------------------------------- */
+.modal[hidden] {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.75rem, 3vw, 2.5rem);
+}
+
+.modal__perde {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 13, 12, 0.62);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .modal__perde {
+    background: rgba(13, 13, 12, 0.45);
+    -webkit-backdrop-filter: blur(16px) saturate(0.9);
+    backdrop-filter: blur(16px) saturate(0.9);
+  }
+}
+
+.modal__kutu {
+  position: relative;
+  width: min(1080px, 100%);
+  max-height: calc(100dvh - clamp(1.5rem, 6vw, 5rem));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--paper);
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.modal.is-acik .modal__perde {
+  opacity: 1;
+}
+
+.modal.is-acik .modal__kutu {
+  opacity: 1;
+  transform: none;
+}
+
+.modal__kapat {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  cursor: pointer;
+  transition: opacity 0.3s var(--ease);
+}
+
+.modal__kapat:hover {
+  opacity: 0.75;
+}
+
+.modal__kapat svg {
+  width: 20px;
+  height: 20px;
+}
+
+.modal__govde {
+  display: grid;
+}
+
+@media (min-width: 900px) {
+  .modal__govde {
+    grid-template-columns: 1.35fr 1fr;
+  }
+}
+
+.modal__gorseller {
+  display: grid;
+  gap: 2px;
+  background: var(--paper-2);
+  align-content: start;
+}
+
+.modal__gorseller img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.modal__gorseller .modal__yer-tutucu {
+  display: grid;
+  place-items: center;
+  min-height: clamp(12rem, 30vw, 22rem);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-etiket);
+  text-transform: uppercase;
+  color: var(--muted-2);
+  text-align: center;
+  padding: 2rem;
+}
+
+.modal__bilgi {
+  padding: clamp(1.75rem, 4vw, 3rem);
+  align-self: start;
+}
+
+.modal__meta {
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-etiket);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.modal__baslik {
+  margin-top: 0.75rem;
+  font-size: var(--fs-2xl);
+  letter-spacing: var(--ls-display);
+  line-height: var(--lh-display);
+}
+
+.modal__yer {
+  margin-top: 0.75rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-etiket);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.modal__metin {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  max-width: 46ch;
+}
+
+.modal__metin:empty {
+  display: none;
+}
+
+.modal__tum {
+  margin-top: 2rem;
 }
 
 /* --------------------------------------------------------------------------

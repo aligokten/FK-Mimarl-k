@@ -6,7 +6,9 @@
     "baslik": "Doğanbey Konutu",
     "yer": "Aydın · Söke",
     "not": "",
-    "oneCikan": true
+    "oneCikan": true,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -15,7 +17,9 @@
     "baslik": "Kemeraltı Dükkânı",
     "yer": "İzmir · Konak",
     "not": "",
-    "oneCikan": true
+    "oneCikan": true,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -24,7 +28,9 @@
     "baslik": "Alsancak Dükkânı",
     "yer": "İzmir · Konak",
     "not": "",
-    "oneCikan": false
+    "oneCikan": false,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -33,7 +39,9 @@
     "baslik": "Karşıyaka Konutu",
     "yer": "İzmir · Karşıyaka",
     "not": "",
-    "oneCikan": false
+    "oneCikan": false,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2019",
@@ -42,7 +50,9 @@
     "baslik": "Çamlıdere Konutu",
     "yer": "Ankara · Çamlıdere",
     "not": "",
-    "oneCikan": false
+    "oneCikan": false,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -51,7 +61,9 @@
     "baslik": "Foça Konut Alanı Kazısı",
     "yer": "İzmir · Foça",
     "not": "",
-    "oneCikan": true
+    "oneCikan": true,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -60,7 +72,9 @@
     "baslik": "SŞ Evi",
     "yer": "İzmir · Mordoğan",
     "not": "",
-    "oneCikan": true
+    "oneCikan": true,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -69,7 +83,9 @@
     "baslik": "Şevval Sam Evi",
     "yer": "Çanakkale",
     "not": "",
-    "oneCikan": false
+    "oneCikan": false,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -78,7 +94,9 @@
     "baslik": "Kekiklibayır Polyesi",
     "yer": "Çanakkale",
     "not": "8 bina ve arazi düzenlemesi",
-    "oneCikan": false
+    "oneCikan": false,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -87,7 +105,9 @@
     "baslik": "T Evi",
     "yer": "Çanakkale",
     "not": "",
-    "oneCikan": false
+    "oneCikan": false,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -96,7 +116,9 @@
     "baslik": "Sosyal Tesis",
     "yer": "Çanakkale",
     "not": "",
-    "oneCikan": false
+    "oneCikan": false,
+    "metin": "",
+    "gorseller": []
   },
   {
     "yil": "2023",
@@ -105,6 +127,8 @@
     "baslik": "Toplu Konut Sitesi",
     "yer": "İzmir",
     "not": "",
-    "oneCikan": false
+    "oneCikan": false,
+    "metin": "",
+    "gorseller": []
   }
 ]

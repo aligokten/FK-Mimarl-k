@@ -517,6 +517,166 @@
   }
 
   /* ---------------------------------------------------------------------
+     Seçili işler şeridi
+
+     Kaydırmayı tarayıcı yapar (overflow-x + scroll-snap). Buradaki iş
+     yalnızca okları bir kart boyu kaydırmak ve şeridin ucuna gelindiğinde
+     ilgili oku söndürmek. Böylece dokunmatik, tekerlek ve klavye
+     kaydırması olduğu gibi çalışmaya devam eder.
+     --------------------------------------------------------------------- */
+  function initSerit() {
+    var serit = document.querySelector("[data-serit]");
+    if (!serit) return;
+    var oklar = document.querySelectorAll("[data-serit-yon]");
+    if (!oklar.length) return;
+
+    function adim() {
+      var oge = serit.querySelector(".serit__oge");
+      if (!oge) return serit.clientWidth * 0.8;
+      var bosluk = parseFloat(getComputedStyle(serit.querySelector(".serit__ray")).columnGap) || 0;
+      return oge.getBoundingClientRect().width + bosluk;
+    }
+
+    function tazele() {
+      var sol = serit.scrollLeft;
+      var kalan = serit.scrollWidth - serit.clientWidth - sol;
+      oklar.forEach(function (o) {
+        var yon = Number(o.getAttribute("data-serit-yon"));
+        o.disabled = yon < 0 ? sol <= 2 : kalan <= 2;
+      });
+    }
+
+    oklar.forEach(function (o) {
+      o.addEventListener("click", function () {
+        serit.scrollBy({
+          left: adim() * Number(o.getAttribute("data-serit-yon")),
+          behavior: "smooth"
+        });
+      });
+    });
+
+    serit.addEventListener("scroll", tazele, { passive: true });
+    window.addEventListener("resize", tazele);
+    /* Görseller yüklendikçe kart genişlikleri değişir; ok durumu da onunla
+       birlikte yenilenmeli. */
+    window.addEventListener("load", tazele);
+    if (window.ResizeObserver) new ResizeObserver(tazele).observe(serit);
+    tazele();
+  }
+
+  /* ---------------------------------------------------------------------
+     Proje modalı
+
+     İçerik sayfadaki JSON bloğundan okunur. Açıkken sayfa kaydırması
+     kilitlenir, odak kutunun içine hapsedilir ve kapanınca çağıran
+     düğmeye geri döner.
+     --------------------------------------------------------------------- */
+  function initProjeModal() {
+    var modal = document.getElementById("proje-modal");
+    var kaynak = document.getElementById("proje-verisi");
+    if (!modal || !kaynak) return;
+
+    var projeler;
+    try {
+      projeler = JSON.parse(kaynak.textContent);
+    } catch (e) {
+      return; // veri bozuksa kartlar sessizce liste gibi davranır
+    }
+    if (!projeler || !projeler.length) return;
+
+    var kutu = modal.querySelector(".modal__kutu");
+    var cagiran = null;
+
+    function doldur(p) {
+      modal.querySelector("[data-modal-baslik]").textContent = p.baslik || "";
+      modal.querySelector("[data-modal-meta]").textContent =
+        [p.yil, p.tur].filter(Boolean).join(" · ");
+      modal.querySelector("[data-modal-yer]").textContent = p.yer || "";
+      modal.querySelector("[data-modal-metin]").textContent = p.metin || "";
+
+      var kap = modal.querySelector("[data-modal-gorseller]");
+      kap.textContent = "";
+      if (p.gorseller && p.gorseller.length) {
+        p.gorseller.forEach(function (g, i) {
+          var im = document.createElement("img");
+          im.src = g.adres;
+          if (g.seti) {
+            im.srcset = g.seti;
+            im.sizes = "(min-width: 900px) 62vw, 100vw";
+          }
+          im.alt = p.baslik ? p.baslik + " — görsel " + (i + 1) : "";
+          im.loading = i === 0 ? "eager" : "lazy";
+          im.decoding = "async";
+          kap.appendChild(im);
+        });
+      } else {
+        var bos = document.createElement("p");
+        bos.className = "modal__yer-tutucu";
+        bos.textContent = "Bu proje için henüz görsel eklenmedi.";
+        kap.appendChild(bos);
+      }
+    }
+
+    function odaklanabilirler() {
+      return kutu.querySelectorAll(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+    }
+
+    function ac(sira, dugme) {
+      var p = projeler[sira];
+      if (!p) return;
+      cagiran = dugme || null;
+      doldur(p);
+      modal.hidden = false;
+      document.body.classList.add("is-locked");
+      // Bir sonraki karede sınıf eklenir ki geçiş animasyonu çalışsın
+      window.requestAnimationFrame(function () {
+        modal.classList.add("is-acik");
+        kutu.scrollTop = 0;
+        var ilk = modal.querySelector(".modal__kapat");
+        if (ilk) ilk.focus();
+      });
+    }
+
+    function kapat() {
+      if (modal.hidden) return;
+      modal.classList.remove("is-acik");
+      document.body.classList.remove("is-locked");
+      var bitir = function () {
+        modal.hidden = true;
+        if (cagiran) { cagiran.focus(); cagiran = null; }
+      };
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) bitir();
+      else window.setTimeout(bitir, 380);
+    }
+
+    document.addEventListener("click", function (e) {
+      var kart = e.target.closest("[data-proje]");
+      if (kart) {
+        ac(Number(kart.getAttribute("data-proje")), kart);
+        return;
+      }
+      if (e.target.closest("[data-modal-kapat]")) kapat();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (modal.hidden) return;
+      if (e.key === "Escape") { kapat(); return; }
+      if (e.key !== "Tab") return;
+      var ogeler = odaklanabilirler();
+      if (!ogeler.length) return;
+      var ilk = ogeler[0];
+      var son = ogeler[ogeler.length - 1];
+      if (e.shiftKey && document.activeElement === ilk) {
+        e.preventDefault(); son.focus();
+      } else if (!e.shiftKey && document.activeElement === son) {
+        e.preventDefault(); ilk.focus();
+      }
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      Yıl bilgisi
      --------------------------------------------------------------------- */
   function initYear() {
@@ -537,6 +697,8 @@
     initToTop();
     initForm();
     initHero();
+    initSerit();
+    initProjeModal();
     initYear();
   }
 

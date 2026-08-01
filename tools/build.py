@@ -44,6 +44,50 @@ def kacis(s):
     return html.escape(str(s), quote=True)
 
 
+# --------------------------------------------------------------- görseller
+# Google Drive'ın paylaşım adresi bir HTML sayfasıdır, doğrudan görsel değil.
+# Dosya kimliği çıkarılıp Google'ın görsel sunucusuna çevrilir; oradan
+# istenen genişlikte servis edilir (=w1600 gibi bir sonek yeterlidir).
+DRIVE_DESENLERI = (
+    re.compile(r"drive\.google\.com/file/d/([\w-]{20,})"),
+    re.compile(r"drive\.google\.com/open\?id=([\w-]{20,})"),
+    re.compile(r"drive\.google\.com/uc\?(?:export=\w+&)?id=([\w-]{20,})"),
+    re.compile(r"drive\.google\.com/thumbnail\?id=([\w-]{20,})"),
+    re.compile(r"docs\.google\.com/uc\?(?:export=\w+&)?id=([\w-]{20,})"),
+)
+
+
+def drive_kimligi(ham):
+    """Drive adresinden dosya kimliğini çıkarır; Drive değilse None."""
+    metin = (ham or "").strip()
+    for desen in DRIVE_DESENLERI:
+        m = desen.search(metin)
+        if m:
+            return m.group(1)
+    # Yalnızca kimliğin kendisi yapıştırılmış olabilir
+    if re.fullmatch(r"[\w-]{25,}", metin):
+        return metin
+    return None
+
+
+def gorsel_adresi(ham, genislik=1600):
+    """Ham adresi tarayıcının doğrudan gösterebileceği bir adrese çevirir.
+    Drive değilse (depo içi yol, başka bir CDN) olduğu gibi bırakılır."""
+    kimlik = drive_kimligi(ham)
+    if kimlik:
+        return f"https://lh3.googleusercontent.com/d/{kimlik}=w{genislik}"
+    return (ham or "").strip()
+
+
+def gorsel_seti(ham):
+    """srcset için iki ölçek. Drive dışı adreslerde srcset üretilmez."""
+    kimlik = drive_kimligi(ham)
+    if not kimlik:
+        return ""
+    tabun = f"https://lh3.googleusercontent.com/d/{kimlik}"
+    return f"{tabun}=w800 800w, {tabun}=w1600 1600w"
+
+
 def slugla(metin):
     tr = str.maketrans("çğıöşüÇĞİÖŞÜ", "cgiosucgiosu")
     s = metin.translate(tr).lower()
@@ -347,6 +391,94 @@ def parca_projeler(projeler, sadece_one_cikan=False, link=None):
     return "\n".join(parcalar) + "\n"
 
 
+def parca_is_serit(projeler):
+    """Anasayfadaki kaydırmalı seçili işler galerisi.
+
+    Her kart bir düğmedir; tıklanınca ilgili proje modal olarak açılır
+    (bkz. assets/js/main.js → initProjeModal). Görsel yoksa kart yine
+    çalışır, yerine tipografik bir yüzey konur.
+    """
+    secili = [p for p in projeler if p.get("oneCikan")] or projeler[:4]
+    parcalar = []
+    for p in secili:
+        sira = projeler.index(p)
+        gorseller = [g for g in (p.get("gorseller") or []) if str(g).strip()]
+        if gorseller:
+            adres = gorsel_adresi(gorseller[0], 1200)
+            seti = gorsel_seti(gorseller[0])
+            ek = f' srcset="{kacis(seti)}" sizes="(min-width: 900px) 30rem, 78vw"' if seti else ""
+            yuzey = (f'<img class="is-karti__gorsel" src="{kacis(adres)}" alt=""{ek} '
+                     f'loading="lazy" decoding="async">')
+        else:
+            yuzey = ('<span class="is-karti__yer-tutucu" aria-hidden="true">'
+                     f'{kacis(p["tur"])}</span>')
+        sayi = len(gorseller)
+        rozet = (f'<span class="is-karti__sayi">{sayi} görsel</span>' if sayi > 1 else "")
+        parcalar.append(f"""        <li class="serit__oge">
+          <button class="is-karti" type="button" data-proje="{sira}"
+                  aria-label="{kacis(p['baslik'])} — projeyi aç">
+            <span class="is-karti__cerceve">{yuzey}{rozet}</span>
+            <span class="is-karti__alt">
+              <span class="is-karti__baslik">{kacis(p['baslik'])}</span>
+              <span class="is-karti__meta">{kacis(p['yil'])} · {kacis(p['yer'])}</span>
+            </span>
+          </button>
+        </li>""")
+    return "\n".join(parcalar) + "\n"
+
+
+def parca_proje_verisi(projeler):
+    """Modalın okuduğu veri. Öznitelik yerine JSON blok: kaçış derdi yok."""
+    sade = []
+    for p in projeler:
+        sade.append({
+            "baslik": p["baslik"],
+            "yil": p["yil"],
+            "tur": p["tur"],
+            "yer": p["yer"],
+            "metin": p.get("metin") or p.get("not") or "",
+            "gorseller": [
+                {"adres": gorsel_adresi(g, 1600), "seti": gorsel_seti(g)}
+                for g in (p.get("gorseller") or []) if str(g).strip()
+            ],
+        })
+    govde = json.dumps(sade, ensure_ascii=False, indent=1)
+    # </script> dizisi JSON içinde geçerse blok erken kapanır.
+    govde = govde.replace("</", "<\\/")
+    # Etiket de burada üretilir: işaret yorumları script'in içine düşerse
+    # JSON.parse yorumlara takılır ve modal sessizce çalışmaz.
+    return f'<script type="application/json" id="proje-verisi">{govde}</script>\n'
+
+
+def parca_blog_kartlari(blog):
+    """Anasayfadaki üç sütunlu blog kartları."""
+    yazilar = yayindaki_yazilar(blog)[:3]
+    if not yazilar:
+        return """      <p class="bos-durum" style="grid-column:1/-1">
+        İlk yazılar hazırlanıyor.
+      </p>
+"""
+    parcalar = []
+    for y in yazilar:
+        ham = (y.get("gorsel") or "").strip()
+        if ham:
+            seti = gorsel_seti(ham)
+            ek = f' srcset="{kacis(seti)}" sizes="(min-width: 900px) 26rem, 88vw"' if seti else ""
+            yuzey = (f'<img src="{kacis(gorsel_adresi(ham, 1200))}" alt=""{ek} '
+                     f'loading="lazy" decoding="async">')
+        else:
+            yuzey = f'<span class="yazi-karti__yer-tutucu">{kacis(y["kategori"])}</span>'
+        parcalar.append(f"""        <a class="yazi-karti" href="blog-{kacis(y['slug'])}.html" data-reveal="stagger">
+          <span class="yazi-karti__cerceve">
+            {yuzey}
+            <span class="yazi-karti__daha">Oku +</span>
+          </span>
+          <span class="yazi-karti__kategori">{kacis(y['kategori'])}</span>
+          <h3 class="yazi-karti__baslik">{kacis(y['baslik'])}</h3>
+        </a>""")
+    return "\n".join(parcalar) + "\n"
+
+
 def parca_proje_filtreleri(projeler):
     gorulen = []
     for p in projeler:
@@ -506,6 +638,9 @@ def uret():
         "projeler": parca_projeler(projeler),
         "proje-filtreleri": parca_proje_filtreleri(projeler),
         "secili-projeler": parca_projeler(projeler, True, "projeler.html"),
+        "is-serit": parca_is_serit(projeler),
+        "proje-verisi": parca_proje_verisi(projeler),
+        "blog-kartlari": parca_blog_kartlari(blog),
         "haberler": parca_haberler(haberler),
         "blog-listesi": parca_blog_listesi(blog),
     }
