@@ -5,7 +5,7 @@
     "koyu": "assets/img/logo-koyu.png",
     "acikOran": 2.288,
     "koyuOran": 2.288,
-    "yukseklikBaslik": 60,
+    "yukseklikBaslik": 50,
     "yukseklikAlt": 84,
     "not": "tur: 'yazi' = site tipografisiyle kurulan marka kilidi | 'tekGorsel' = tek dosya, koyu zeminde ters çevrilir | 'ikiGorsel' = açık ve koyu zemin için ayrı dosya. Dosya yolları ve oranlar yönetim panelinden yazılır."
   },
