@@ -1,14 +1,14 @@
 [
   {
-    "yil": "2023",
-    "tur": "3D Görsel ve Animasyon",
-    "turSlug": "3d-gorsel-ve-animasyon",
+    "yil": "2026",
+    "tur": "Restorasyon",
+    "turSlug": "restorasyon",
     "baslik": "Kemeraltı Konutu",
     "yer": "İzmir · Konak",
     "not": "",
     "oneCikan": true,
-    "metin": "Kemeraltı’nın tarihî dokusu içinde yer alan Kestelli bölgesi, geçmişte İzmir’in varlıklı ailelerinin konutlarına ev sahipliği yapıyordu.\nO dönemden kalma bir konut örneği olan bu yapı, zaman içinde pek çok kez işlev değiştirerek günümüze ulaşmıştır.\nRestorasyon projesi kapsamında, yapının günümüze ulaşan özgün mimari özellikleri korunmuş, tarihî katmanları belgelenmiş ve yapının sürekliliğinin sağlanması amaçlanmıştır.",
-    "gorseller": []
+    "gorseller": [],
+    "metin": "Kemeraltı’nın tarihî dokusu içinde yer alan Kestelli bölgesi, geçmişte İzmir’in varlıklı ailelerinin konutlarına ev sahipliği yapıyordu.\nO dönemden kalma bir konut örneği olan bu yapı, zaman içinde pek çok kez işlev değiştirerek günümüze ulaşmıştır.\nRestorasyon projesi kapsamında, yapının günümüze ulaşan özgün mimari özellikleri korunmuş, tarihî katmanları belgelenmiş ve yapının sürekliliğinin sağlanması amaçlanmıştır."
   },
   {
     "yil": "2023",
@@ -41,94 +41,6 @@
     "not": "",
     "oneCikan": false,
     "metin": "Her kullanıcının ihtiyacına yönelik özel olarak tasarlanan konutlar ve bir sosyal tesisin yer aldığı, topografyanın korunduğu, insana ve doğaya uyumlu bir yaşam alanı. Taşıyıcı sistem ahşap karkas ve sıkıştırılmış toprak duvar. Yapı Biyoloğu And Akman tarafından tasarlanmış, Fatma Kocaova tarafından üç boyutlu görsel ve animasyonları hazırlanmıştır.",
-    "gorseller": []
-  },
-  {
-    "yil": "2019",
-    "tur": "Restorasyon",
-    "turSlug": "restorasyon",
-    "baslik": "Çamlıdere Konutu",
-    "yer": "Ankara · Çamlıdere",
-    "not": "",
-    "oneCikan": false,
-    "metin": "",
-    "gorseller": []
-  },
-  {
-    "yil": "2023",
-    "tur": "Kazı Alanı",
-    "turSlug": "kazi",
-    "baslik": "Foça Konut Alanı Kazısı",
-    "yer": "İzmir · Foça",
-    "not": "",
-    "oneCikan": true,
-    "metin": "",
-    "gorseller": []
-  },
-  {
-    "yil": "2023",
-    "tur": "Mimari Proje",
-    "turSlug": "mimari",
-    "baslik": "SŞ Evi",
-    "yer": "İzmir · Mordoğan",
-    "not": "",
-    "oneCikan": true,
-    "metin": "",
-    "gorseller": []
-  },
-  {
-    "yil": "2023",
-    "tur": "Görselleştirme",
-    "turSlug": "gorsellestirme",
-    "baslik": "Şevval Sam Evi",
-    "yer": "Çanakkale",
-    "not": "",
-    "oneCikan": false,
-    "metin": "",
-    "gorseller": []
-  },
-  {
-    "yil": "2023",
-    "tur": "Görselleştirme",
-    "turSlug": "gorsellestirme",
-    "baslik": "Kekiklibayır Polyesi",
-    "yer": "Çanakkale",
-    "not": "8 bina ve arazi düzenlemesi",
-    "oneCikan": false,
-    "metin": "",
-    "gorseller": []
-  },
-  {
-    "yil": "2023",
-    "tur": "Görselleştirme",
-    "turSlug": "gorsellestirme",
-    "baslik": "T Evi",
-    "yer": "Çanakkale",
-    "not": "",
-    "oneCikan": false,
-    "metin": "",
-    "gorseller": []
-  },
-  {
-    "yil": "2023",
-    "tur": "Görselleştirme",
-    "turSlug": "gorsellestirme",
-    "baslik": "Sosyal Tesis",
-    "yer": "Çanakkale",
-    "not": "",
-    "oneCikan": false,
-    "metin": "",
-    "gorseller": []
-  },
-  {
-    "yil": "2023",
-    "tur": "Görselleştirme",
-    "turSlug": "gorsellestirme",
-    "baslik": "Toplu Konut Sitesi",
-    "yer": "İzmir",
-    "not": "",
-    "oneCikan": false,
-    "metin": "",
     "gorseller": []
   }
 ]
