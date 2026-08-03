@@ -1,49 +1,46 @@
 [
   {
     "yil": "2023",
-    "tur": "Restorasyon",
-    "turSlug": "restorasyon",
-    "baslik": "Doğanbey Konutu",
-    "yer": "Aydın · Söke",
-    "not": "",
-    "oneCikan": true,
-    "metin": "",
-    "gorseller": [
-      "https://drive.google.com/file/d/1l7j1Vz0-a6i2ipcu7ynT2-TjfjZ6XS_K/view?usp=drive_link",
-      "https://drive.google.com/file/d/1_LBOOgu_8DbT44972LQHxP52p0EpPW9j/view?usp=drive_link"
-    ]
-  },
-  {
-    "yil": "2023",
-    "tur": "Restorasyon",
-    "turSlug": "restorasyon",
-    "baslik": "Kemeraltı Dükkânı",
+    "tur": "3D Görsel ve Animasyon",
+    "turSlug": "3d-gorsel-ve-animasyon",
+    "baslik": "Kemeraltı Konutu",
     "yer": "İzmir · Konak",
     "not": "",
     "oneCikan": true,
-    "metin": "",
+    "metin": "Kemeraltı’nın tarihî dokusu içinde yer alan Kestelli bölgesi, geçmişte İzmir’in varlıklı ailelerinin konutlarına ev sahipliği yapıyordu.\nO dönemden kalma bir konut örneği olan bu yapı, zaman içinde pek çok kez işlev değiştirerek günümüze ulaşmıştır.\nRestorasyon projesi kapsamında, yapının günümüze ulaşan özgün mimari özellikleri korunmuş, tarihî katmanları belgelenmiş ve yapının sürekliliğinin sağlanması amaçlanmıştır.",
     "gorseller": []
   },
   {
     "yil": "2023",
     "tur": "Restorasyon",
     "turSlug": "restorasyon",
-    "baslik": "Alsancak Dükkânı",
-    "yer": "İzmir · Konak",
+    "baslik": "Sultan Abdülmecid Türbesi",
+    "yer": "İstanbul · Fatih",
     "not": "",
-    "oneCikan": false,
-    "metin": "",
+    "oneCikan": true,
+    "metin": "İstanbul Fatih’te, Yavuz Sultan Selim Camii Haziresi’nde yer alan türbe; sekizgen planlı, kesme taştan yapılmış ve kubbe ile örtülmüştür.\nGiriş kapısında, Hattat Hulusi Efendi’nin 1910 tarihli ayet yazısı bulunur.\nİçinde Sultan Abdülmecid’in sandukasıyla birlikte oğulları Şehzade Abdüssamed, Şehzade Seyfeddin ve Şehzade Burhaneddin’in sandukaları yer alır.\nSultan Abdülmecid Han (1823–1861)\nOsmanlı’nın 31. padişahı ve 110. İslam halifesidir. II. Mahmud ile Bezmialem Valide Sultan’ın oğludur. 1839’da tahta çıkmış, aynı yıl ilan edilen Tanzimat Fermanı ile tarihe geçmiştir.\nBatı kültürüyle yetişmiş, iyi derecede Fransızca konuşmuş ve batı müziğine ilgi duymuştur. Yenilikçi kişiliğiyle tanınır.\nOsmanlı’nın son dört padişahının babası olan Abdülmecid Han, bu yönüyle en çok oğlu tahta çıkan Osmanlı hükümdarıdır.\nHenüz 38 yaşındayken vereme yenik düşerek 1861’de Ihlamur Kasrı’nda vefat etmiştir.",
     "gorseller": []
   },
   {
     "yil": "2023",
     "tur": "Restorasyon",
     "turSlug": "restorasyon",
-    "baslik": "Karşıyaka Konutu",
-    "yer": "İzmir · Karşıyaka",
+    "baslik": "Sultan Abdülmecid Türbe Haziresi",
+    "yer": "İstanbul · Fatih",
     "not": "",
     "oneCikan": false,
-    "metin": "",
+    "metin": "Servet Seza Kadınefendi Türbesi\nSultan Abdülmecid'in baş kadını.\nCemile Sultan Kabri\nSultan Abdülmecid'in kızı.",
+    "gorseller": []
+  },
+  {
+    "yil": "2023",
+    "tur": "3D Görsel ve Animasyon",
+    "turSlug": "3d-gorsel-ve-animasyon",
+    "baslik": "Sosyal Tesis",
+    "yer": "Çanakale · Kekliklibayır",
+    "not": "",
+    "oneCikan": false,
+    "metin": "Her kullanıcının ihtiyacına yönelik özel olarak tasarlanan konutlar ve bir sosyal tesisin yer aldığı, topografyanın korunduğu, insana ve doğaya uyumlu bir yaşam alanı. Taşıyıcı sistem ahşap karkas ve sıkıştırılmış toprak duvar. Yapı Biyoloğu And Akman tarafından tasarlanmış, Fatma Kocaova tarafından üç boyutlu görsel ve animasyonları hazırlanmıştır.",
     "gorseller": []
   },
   {
