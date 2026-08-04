@@ -12,8 +12,9 @@
   --ok: #2f6b45;
   --uyari: #8a6a1f;
   --hata: #8c2f2f;
-  --font: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-display: "Saira", "Archivo", system-ui, sans-serif;
+  /* Site ile aynı aile — bkz. assets/css/fonts.css */
+  --font: "Maison Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Maison Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }

@@ -1,0 +1,46 @@
+/* ==========================================================================
+   Maison Neue — sitenin tek yazı ailesi
+
+   Dosyalar depoda barındırılır (assets/fonts). Üçüncü taraf bir yazı tipi
+   sunucusuna istek gitmez: hem daha hızlıdır hem de ziyaretçinin IP'si
+   başka bir şirkete gitmez (KVKK açısından da temiz).
+
+   Ağırlık eşlemesi — Maison Neue'nun kendi adlandırması:
+       Book   → 400   Medium → 500   Demi → 600   Bold → 700
+   Light (300) ve italikler sitede kullanılmadığı için yüklenmiyor;
+   gerekirse aynı biçimde eklenebilir.
+
+   font-display: swap — yazı tipi inene kadar metin yedek aileyle çizilir,
+   yani içerik hiçbir zaman görünmez kalmaz.
+   ========================================================================== */
+@font-face {
+  font-family: "Maison Neue";
+  src: url("../fonts/maison-neue-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Maison Neue";
+  src: url("../fonts/maison-neue-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Maison Neue";
+  src: url("../fonts/maison-neue-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Maison Neue";
+  src: url("../fonts/maison-neue-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
