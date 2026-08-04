@@ -805,6 +805,51 @@
       "Boş bıraktığınız hesabın simgesi başlıkta, mobil menüde ve alt bilgide görünmez."));
     kap.appendChild(k3);
 
+    /* --- kurucu fotoğrafı --- */
+    var k4 = el("div", "kart");
+    k4.appendChild(el("strong", null, "Kurucu fotoğrafı"));
+    var k4Bilgi = el("p", "ipucu");
+    k4Bilgi.style.marginBottom = ".5rem";
+    k4Bilgi.textContent =
+      "Hakkımızda sayfasındaki Kurucu bölümünde görünür. Boş bırakılırsa yer tutucu görsel kullanılır.";
+    k4.appendChild(k4Bilgi);
+
+    var k4Alan = el("div", "alan");
+
+    var k4On = el("div", "onizleme onizleme--kucuk");
+    var k4Kaynak = String(s.kurucuFoto || "").trim();
+    if (k4Kaynak) {
+      var k4Img = el("img");
+      k4Img.src = onizlemeAdresi(k4Kaynak, 600);
+      k4Img.alt = "";
+      k4Img.addEventListener("error", function () {
+        k4On.textContent = "";
+        var uy = el("span", "ipucu");
+        uy.style.color = "var(--hata)";
+        uy.textContent = "Görsel açılamadı — dosya “Bağlantıya sahip herkes” " +
+                         "olarak paylaşılmamış olabilir.";
+        k4On.appendChild(uy);
+      });
+      k4On.appendChild(k4Img);
+    } else {
+      k4On.appendChild(el("span", "ipucu", "Yer tutucu görsel kullanılıyor."));
+    }
+    k4Alan.appendChild(k4On);
+
+    var k4Girdi = el("input");
+    k4Girdi.type = "url";
+    k4Girdi.value = s.kurucuFoto || "";
+    k4Girdi.placeholder = "https://drive.google.com/file/d/.../view?usp=sharing";
+    k4Girdi.addEventListener("input", function () {
+      s.kurucuFoto = k4Girdi.value.trim(); isaretle("site");
+    });
+    k4Girdi.addEventListener("change", cizSite);
+    k4Alan.appendChild(k4Girdi);
+    k4Alan.appendChild(el("span", "ipucu",
+      "Drive bağlantısı. Dosya “Bağlantıya sahip herkes” olarak paylaşılmış olmalı."));
+    k4.appendChild(k4Alan);
+    kap.appendChild(k4);
+
     /* --- anasayfadaki rakamlar --- */
     var ks = el("div", "kart");
     ks.appendChild(el("strong", null, "Anasayfadaki rakamlar"));

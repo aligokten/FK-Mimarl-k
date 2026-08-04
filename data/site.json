@@ -38,6 +38,7 @@
     "ozelAdres": "",
     "not": "saglayici: 'yok' (e-posta uygulamasını açar) | 'web3forms' (erişim anahtarı gerekir) | 'ozel' (Formspree vb. adres)"
   },
+  "kurucuFoto": "",
   "sayaclar": [
     {
       "deger": "13",

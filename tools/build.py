@@ -285,6 +285,20 @@ def parca_sayaclar(s):
     return "\n".join(kutular) + "\n" if kutular else ""
 
 
+def parca_kurucu_portre(s):
+    """Hakkımızda sayfasındaki kurucu fotoğrafı. Boşsa yer tutucu görsel kalır."""
+    ham = (s.get("kurucuFoto") or "").strip()
+    etiket = 'alt="Fatma Kocaova — Yüksek Mimar, restorasyon uzmanı"'
+    if not ham:
+        return (f'            <img src="assets/img/portre-yer-tutucu.svg" {etiket}\n'
+                f'                 width="1000" height="1250" loading="lazy">')
+    adres = gorsel_adresi(ham, 1000)
+    seti = gorsel_seti(ham)
+    ek = f' srcset="{kacis(seti)}" sizes="(min-width: 900px) 24rem, 80vw"' if seti else ""
+    return (f'            <img src="{kacis(adres)}" {etiket}{ek}\n'
+            f'                 width="1000" height="1250" loading="lazy">')
+
+
 def parca_footer_alt(s):
     f = s["footer"]
     # Yönetim bağlantısı tüm sayfalarda kök dizinde olduğu için göreli adres
@@ -754,6 +768,7 @@ def uret():
         "sosyal-mobil": parca_sosyal_mobil(s),
         "footer-marka": parca_footer_marka(s),
         "sayaclar": parca_sayaclar(s),
+        "kurucu-portre": parca_kurucu_portre(s),
         "footer-alt": parca_footer_alt(s),
         "mobil-iletisim": parca_mobil_iletisim(s),
         "iletisim-kartlari": parca_iletisim_kartlari(s),
