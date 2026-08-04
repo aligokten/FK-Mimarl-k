@@ -235,6 +235,28 @@ def parca_sosyal_mobil(s):
     return sosyal_ogeler(s, 6)
 
 
+def parca_sayaclar(s):
+    """Anasayfadaki rakamlar. Sayı bölümü data-count ile sıfırdan hedefe
+    sayar (bkz. assets/js/main.js → initCounters); sayıya bitişik yazılan
+    "+" veya "%" gibi ekler data-suffix'e ayrılır ki sayaç bozulmasın."""
+    kutular = []
+    for k in (s.get("sayaclar") or []):
+        ham = str(k.get("deger", "")).strip()
+        m = re.match(r"^(\d+(?:[.,]\d+)?)(.*)$", ham)
+        if m:
+            sayi, ek = m.group(1).replace(",", "."), m.group(2).strip()
+            ekOz = f' data-suffix="{kacis(ek)}"' if ek else ""
+            deger = f'<span data-count="{kacis(sayi)}"{ekOz}>0</span>'
+        else:
+            # Sayı ile başlamıyorsa (ör. "2013—") olduğu gibi yazılır
+            deger = kacis(ham)
+        kutular.append(f"""        <div class="stat" data-reveal="stagger">
+          <div class="stat__value">{deger}</div>
+          <p class="stat__label">{kacis(k.get('etiket', ''))}</p>
+        </div>""")
+    return "\n".join(kutular) + "\n" if kutular else ""
+
+
 def parca_footer_alt(s):
     f = s["footer"]
     # Yönetim bağlantısı tüm sayfalarda kök dizinde olduğu için göreli adres
@@ -684,6 +706,7 @@ def uret():
         "sosyal-baslik": parca_sosyal_baslik(s),
         "sosyal-mobil": parca_sosyal_mobil(s),
         "footer-marka": parca_footer_marka(s),
+        "sayaclar": parca_sayaclar(s),
         "footer-alt": parca_footer_alt(s),
         "mobil-iletisim": parca_mobil_iletisim(s),
         "iletisim-kartlari": parca_iletisim_kartlari(s),

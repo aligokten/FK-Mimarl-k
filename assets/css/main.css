@@ -1714,19 +1714,25 @@ body.is-locked .site-header .logo__img--tersle,
 /* --------------------------------------------------------------------------
    12. İstatistikler
    -------------------------------------------------------------------------- */
-/* Sütun sayısı kutu adedine (3) göre verilir. auto-fit denendi ancak orta
-   genişliklerde 2 sütun seçip üçüncü kutuyu tek başına alt satıra düşürüyor,
-   satır yarım kalıyordu. Kutu sayısı değişirse bu sayı da güncellenmeli. */
+/* Kutu sayısı panelden değişebildiği için sabit sütun verilmez. Esnek
+   kutu düzeni kullanılır: kutular satıra sığdığı kadar dizilir, artan
+   kutular ortalanır — böylece hiçbir kutu satırın bir ucunda tek başına
+   asılı kalmaz. Izgarada bu davranışı kurmak mümkün değildir. */
 .stats {
-  display: grid;
-  gap: clamp(1.75rem, 4vw, 2.5rem);
+  --stat-bosluk: clamp(1.75rem, 4vw, 2.5rem);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--stat-bosluk);
   text-align: center;
 }
 
-@media (min-width: 560px) {
-  .stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+/* Genişlik üç kutu bir satırı dolduracak biçimde hesaplanır ama kutular
+   büyümez (flex-grow: 0): böylece alt satıra taşan kutu da diğerleriyle
+   aynı genişlikte kalır, tek başına satır boyunca yayılmaz. */
+.stat {
+  flex: 0 1 calc((100% - 2 * var(--stat-bosluk)) / 3);
+  min-width: 9rem;
 }
 
 .stat__value {

@@ -37,5 +37,19 @@
     "erisimAnahtari": "d28dd096-592f-4f67-bdf2-177f89217216",
     "ozelAdres": "",
     "not": "saglayici: 'yok' (e-posta uygulamasını açar) | 'web3forms' (erişim anahtarı gerekir) | 'ozel' (Formspree vb. adres)"
-  }
+  },
+  "sayaclar": [
+    {
+      "deger": "13",
+      "etiket": "Yıllık Deneyim"
+    },
+    {
+      "deger": "35",
+      "etiket": "Tamamlanan Proje"
+    },
+    {
+      "deger": "12",
+      "etiket": "Sempozyum ve Panel"
+    }
+  ]
 }

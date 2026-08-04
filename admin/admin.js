@@ -782,6 +782,68 @@
       "Boş bıraktığınız hesabın simgesi başlıkta, mobil menüde ve alt bilgide görünmez."));
     kap.appendChild(k3);
 
+    /* --- anasayfadaki rakamlar --- */
+    var ks = el("div", "kart");
+    ks.appendChild(el("strong", null, "Anasayfadaki rakamlar"));
+    var ksBilgi = el("p", "ipucu");
+    ksBilgi.style.marginBottom = ".75rem";
+    ksBilgi.textContent =
+      "Süreç bölümünün altında görünür. Sayı, ziyaretçi o kısma geldiğinde " +
+      "sıfırdan yazdığınız değere doğru sayar. Değere “+” gibi bir ek " +
+      "yazabilirsiniz (örn. 35+); sayaç yalnızca rakamı sayar, eki sonuna ekler.";
+    ks.appendChild(ksBilgi);
+
+    if (!s.sayaclar) s.sayaclar = [];
+    var sayaclar = s.sayaclar;
+
+    if (!sayaclar.length) {
+      ks.appendChild(el("div", "bos", "Henüz rakam eklenmedi."));
+    }
+
+    sayaclar.forEach(function (sy, i) {
+      var satir = el("div", "gorsel-satir");
+
+      var ust = el("div", "gorsel-satir__ust");
+      ust.appendChild(el("span", "kart__no", String(i + 1).padStart(2, "0")));
+      ust.appendChild(el("span", "bosluk"));
+
+      function tasi(yon) {
+        var j = i + yon;
+        if (j < 0 || j >= sayaclar.length) return;
+        var t = sayaclar[i]; sayaclar[i] = sayaclar[j]; sayaclar[j] = t;
+        isaretle("site"); cizSite();
+      }
+      var yu = el("button", "btn btn--ikinci btn--kucuk", "↑");
+      yu.addEventListener("click", function () { tasi(-1); });
+      var as = el("button", "btn btn--ikinci btn--kucuk", "↓");
+      as.addEventListener("click", function () { tasi(1); });
+      var si = el("button", "btn btn--tehlike btn--kucuk", "Sil");
+      si.addEventListener("click", function () {
+        sayaclar.splice(i, 1); isaretle("site"); cizSite();
+      });
+      ust.appendChild(yu); ust.appendChild(as); ust.appendChild(si);
+      satir.appendChild(ust);
+
+      var ikili = el("div", "satir satir--2");
+      ikili.appendChild(alan("Sayı", sy.deger, function (v) {
+        sy.deger = v.trim(); isaretle("site");
+      }, { ipucu: "13" }));
+      ikili.appendChild(alan("Etiket", sy.etiket, function (v) {
+        sy.etiket = v; isaretle("site");
+      }, { ipucu: "Yıllık Deneyim" }));
+      satir.appendChild(ikili);
+      ks.appendChild(satir);
+    });
+
+    var ksEkle = el("button", "btn btn--ikinci btn--kucuk", "+ Rakam ekle");
+    ksEkle.style.marginTop = ".5rem";
+    ksEkle.addEventListener("click", function () {
+      sayaclar.push({ deger: "", etiket: "" });
+      isaretle("site"); cizSite();
+    });
+    ks.appendChild(ksEkle);
+    kap.appendChild(ks);
+
     var k4 = el("div", "kart");
     k4.appendChild(el("strong", null, "İletişim formu"));
     var f = s.form || (s.form = { saglayici: "yok", erisimAnahtari: "", ozelAdres: "" });
