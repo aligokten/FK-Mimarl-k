@@ -1,5 +1,22 @@
 [
   {
+    "slug": "aydin-eski-hamam-siva-ozellikleri",
+    "baslik": "AYDIN ESKİ HAMAM SIVA ÖZELLİKLERİ",
+    "ay": "Kasım",
+    "yil": "2017",
+    "kategori": "Malzeme",
+    "sure": "",
+    "ozet": "Aydın Eski Hamam, konumu, planlama özellikleri, yapım tekniği ve malzeme özellikleri ile Osmanlı Dönemi hamam yapılarının seçkin örneklerinden birisidir. Yapıdan gelen izler ve mimari özelliklerinden 15 ve 16. yüzyıllarda inşa edildiği anlaşılan hamam, daha sonra üç defa kapsamlı müdahale görmüştür. Dikdörtgen planlı, bir soyunmalık-ılıklık, iki adet halvet hücresi ve su deposundan oluşan biçimde inşa edilmiş olan hamama, ihtiyaç üzerine sonradan bir halvet bölümü ilave edilmiş, bunu takip eden dönemlerde ise su deposu genişletilmiş, bir çeşme yapılmış ve çeşitli açıklıklar kapatılmıştır. 2001 yılında tescil edilen yapıda 2016 yılında kazı, temizlik ve rölöve çalışmaları gerçekleştirilmiştir. Yapının restorasyonu için proje çalışmaları halen devam etmektedir. Bu çalışmanın amacı, Aydın Eski Hamam’da kullanılmış sıva, harç ve tuğlaların özelliklerinin belirlenmesidir. Bu amaçla, yapının soyunmalık-ılıklık, sıcaklık mekanlarının ve su deposunun farklı seviyelerinden ve sıvaların farklı katmanlarından horasan sıva, kireç sıva, harç ve yapı tuğlası örnekleri alınmıştır. Örneklerin temel fiziksel özellikleri, hammadde kompozisyonları, mikroyapısal ve hidrolik özellikleri; bağlayıcı kısımların ve agregaların mineralojik ve kimyasal kompozisyonları ile agregaların puzolanik aktiviteleri standart test yöntemleri, XRD, SEM-EDS analizleri ile belirlenmiştir. Elde edilen sonuçlara göre, incelenen sıvaların tamamı düşük yoğunluklu ve yüksek gözenekli malzemelerdir. Horasan sıvaların fiziksel, kimyasal ve mikroyapısal özellikleri kullanıldıkları mekana, seviyeye ve katmana göre farklılık göstermemektedir. Horasan sıvaları 1/2 ile 1/1 arasında değişen oranlarda saf kireç ile tuğla agregalar kullanılarak hazırlanmıştır. Agrega olarak kullanılan tuğlaların puzolanik özelliğe sahip olmalarından dolayı horasan sıvaları hidroliktir. Bu tuğlalar, yüksek miktarlarda kil içeren hammadde kaynaklarından hazırlanmış ve düşük sıcaklıklarda (<900ºC) pişirilmişlerdir. Üst seviyelerde, horasan sıvaların üstüne uygulanmış kireç sıvalar ise saf kireç ve çok az miktarda çok ince kum ile üretilmiştir. Restorasyon uygulamalarında, özgün sıvaların yerlerinde korunması, korunamadığı durumlarda kullanılacak yeni sıvaların bu çalışma ile belirlenmiş özelliklere uygun olarak üretilmesi önemlidir.",
+    "yayinda": true,
+    "bloklar": [
+      {
+        "tip": "p",
+        "metin": ""
+      }
+    ],
+    "slugKilit": true
+  },
+  {
     "slug": "cocciopesto-lime-plaster",
     "baslik": "Cocciopesto lime plaster: a traditional composition from the Roman to the Ottoman period in Anatolia",
     "ay": "Haziran",
