@@ -159,13 +159,13 @@
     "baslik": "Mordoğan Villa",
     "yer": "İzmir · Mordoğan",
     "not": "",
-    "oneCikan": false,
+    "oneCikan": true,
     "gorseller": [
+      "https://drive.google.com/file/d/1cuwOOMHPZaRkOYjmNMrsyfQdYFgxgnkl/view?usp=drive_link",
       {
         "adres": "https://drive.google.com/file/d/18UUPpn7-kyPXUYGSZRAYpFE3Uac-YhHs/view?usp=drive_link",
         "video": true
       },
-      "https://drive.google.com/file/d/1cuwOOMHPZaRkOYjmNMrsyfQdYFgxgnkl/view?usp=drive_link",
       "https://drive.google.com/file/d/1P1HeLu2fU9Y3VeyZf1ddkxlWggVS26ju/view?usp=drive_link",
       "https://drive.google.com/file/d/13yN4ehL51PNh9XPGNmyXtWnOYQZOZcG0/view?usp=drive_link",
       "https://drive.google.com/file/d/16f3JB-kdzbRgz2TjmyISCpnK7JVyYeXv/view?usp=drive_link",
@@ -190,7 +190,11 @@
       "https://drive.google.com/file/d/1xGFm-LwxFbXI3gFCNlj_ymzmVw2fuFjh/view?usp=drive_link",
       "https://drive.google.com/file/d/1EX3jkEoQYrXIw0v3_z8zgGIHafQ5uvv8/view?usp=drive_link",
       "https://drive.google.com/file/d/1olcjTNgkeL6pERYoH7ASv5231l9UuQDJ/view?usp=drive_link",
-      "https://drive.google.com/file/d/1QJfOXyrtDtBarDHrCFDkhw4t2UPqToJJ/view?usp=drive_link"
+      "https://drive.google.com/file/d/1QJfOXyrtDtBarDHrCFDkhw4t2UPqToJJ/view?usp=drive_link",
+      {
+        "adres": "https://drive.google.com/file/d/1bqz__n4wJp2u1PnEclNWm4vIS_6Y0pOO/view?usp=drivesdk",
+        "video": true
+      }
     ],
     "metin": "Her kullanıcının ihtiyacına yönelik özel olarak tasarlanan konutlar ve bir sosyal tesisin yer aldığı, topografyanın korunduğu, insana ve doğaya uyumlu bir yaşam alanı. Taşıyıcı sistem ahşap karkas ve sıkıştırılmış toprak duvar. Yapı Biyoloğu And Akman tarafından tasarlanmış, Fatma Kocaova tarafından üç boyutlu görsel ve animasyonları hazırlanmıştır."
   },
