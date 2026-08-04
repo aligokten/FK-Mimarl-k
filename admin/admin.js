@@ -1281,8 +1281,23 @@
       var ekle = e.target.closest("[data-ekle]");
       if (ekle) {
         var d = ekle.dataset.ekle;
-        veri[d].unshift(YENI[d]());
+        /* Projeler listenin sonuna eklenir; haber ve yazılarda yeni kayıt
+           en yeni olduğu için başa eklenmeye devam eder. */
+        var sona = d === "projeler";
+        if (sona) veri[d].push(YENI[d]());
+        else veri[d].unshift(YENI[d]());
         isaretle(d); cizAll();
+
+        /* Uzun listede sona eklenen kart ekranın dışında kalır; kullanıcı
+           bir şey olmadığını sanmasın diye kart görünür alana getirilip
+           başlık alanına odaklanılır. */
+        var kartlar = document.querySelectorAll("#" + d + "Liste .kart");
+        var yeni = kartlar[sona ? kartlar.length - 1 : 0];
+        if (yeni) {
+          yeni.scrollIntoView({ block: "center", behavior: "smooth" });
+          var ilkAlan = yeni.querySelector("input, textarea");
+          if (ilkAlan) ilkAlan.focus({ preventScroll: true });
+        }
         return;
       }
       var kay = e.target.closest("[data-kaydet]");
