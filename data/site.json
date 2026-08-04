@@ -38,7 +38,7 @@
     "ozelAdres": "",
     "not": "saglayici: 'yok' (e-posta uygulamasını açar) | 'web3forms' (erişim anahtarı gerekir) | 'ozel' (Formspree vb. adres)"
   },
-  "kurucuFoto": "",
+  "kurucuFoto": "https://drive.google.com/file/d/1c33UxeRMfGOBelM_BX0uKfQPKcZ7crYK/view?usp=drivesdk",
   "sayaclar": [
     {
       "deger": "13",
