@@ -88,10 +88,11 @@ def gorsel_seti(ham):
     return f"{tabun}=w800 800w, {tabun}=w1600 1600w"
 
 
-def drive_video_adresi(ham):
-    """Video ögeleri için Drive'ın kendi oynatıcısını gömme adresi.
-    lh3 yalnızca görsel/kare üretir; oynatma için Drive'ın /preview
-    çerçevesi gerekir (Drive dosyayı kendi oynatıcısıyla akıtır)."""
+def drive_onizleme_adresi(ham):
+    """Video ve PDF gibi oynatılan/gömülen ögeler için Drive'ın kendi
+    önizleyicisinin adresi. lh3 yalnızca görsel/kare üretir; oynatma ya da
+    belge görüntüleme için Drive'ın /preview çerçevesi gerekir (Drive
+    dosyayı kendi görüntüleyicisiyle akıtır)."""
     kimlik = drive_kimligi(ham)
     if kimlik:
         return f"https://drive.google.com/file/d/{kimlik}/preview"
@@ -513,7 +514,7 @@ def parca_proje_verisi(projeler):
                     "adres": gorsel_adresi(g["adres"], 1600),
                     "seti": gorsel_seti(g["adres"]),
                     "video": g["video"],
-                    **({"videoAdres": drive_video_adresi(g["adres"])} if g["video"] else {}),
+                    **({"videoAdres": drive_onizleme_adresi(g["adres"])} if g["video"] else {}),
                 }
                 for g in medya_listesi(p)
             ],
@@ -705,6 +706,39 @@ def bloklari_ciz(bloklar):
 
 
 # ============================================================ blog sayfası
+def parca_pdf_dugmesi(y):
+    """Dergide yayınlanmış özgün dosyaya (PDF) bağlantı düğmesi. Alan
+    panelde boş bırakılırsa hiçbir şey basılmaz."""
+    ham = (y.get("pdf") or "").strip()
+    if not ham:
+        return ""
+    return f"""
+        <p class="makale-pdf-cta">
+          <button class="btn btn--ghost" type="button" data-pdf-ac="pdf-{kacis(y['slug'])}">
+            Yazının tamamını okumak için tıklayınız
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+        </p>"""
+
+
+def parca_pdf_modali(y):
+    ham = (y.get("pdf") or "").strip()
+    if not ham:
+        return ""
+    adres = drive_onizleme_adresi(ham)
+    kimlik = f"pdf-{kacis(y['slug'])}"
+    return f"""
+  <div class="modal modal--pdf" id="{kimlik}" hidden>
+    <div class="modal__perde" data-pdf-kapat></div>
+    <div class="modal__kutu" role="dialog" aria-modal="true" aria-label="{kacis(y['baslik'])} — PDF">
+      <button class="modal__kapat" type="button" data-pdf-kapat aria-label="Kapat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </button>
+      <iframe class="pdf-cerceve" data-pdf-src="{kacis(adres)}" title="{kacis(y['baslik'])} — PDF" loading="lazy"></iframe>
+    </div>
+  </div>"""
+
+
 def blog_sayfasi(y, kalip):
     govde = f"""
   <section class="page-hero">
@@ -730,6 +764,7 @@ def blog_sayfasi(y, kalip):
           <span>{kacis(y.get('sure', ''))}</span>
           <span>Fatma Kocaova</span>
         </div>
+{parca_pdf_dugmesi(y)}
 
 {bloklari_ciz(y.get('bloklar', []))}
 
@@ -741,6 +776,7 @@ def blog_sayfasi(y, kalip):
       </nav>
     </div>
   </section>
+{parca_pdf_modali(y)}
 """
     s = kalip
     s = s.replace("@@BASLIK@@", kacis(y["baslik"]))

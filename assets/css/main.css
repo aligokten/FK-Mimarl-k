@@ -2413,6 +2413,32 @@ a.kayit:hover .kayit__ozet {
   color: var(--muted);
 }
 
+.makale-pdf-cta {
+  margin-top: 1.75rem;
+}
+
+.makale-pdf-cta .btn svg {
+  width: 16px;
+  height: 16px;
+  margin-left: 0.4rem;
+}
+
+/* Belge (PDF) modalı: proje modalının perde/kutu/kapat düzenini paylaşır,
+   yalnızca kutunun içeriği bir çerçeve dolusu görüntüleyicidir. */
+.modal--pdf .modal__kutu {
+  width: min(920px, 100%);
+  height: calc(100dvh - clamp(1.5rem, 6vw, 5rem));
+  padding: 0;
+  background: var(--ink-2);
+}
+
+.pdf-cerceve {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 /* Boş durum bildirimi */
 .bos-durum {
   padding: clamp(2.5rem, 6vw, 4rem);

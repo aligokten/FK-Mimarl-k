@@ -665,6 +665,16 @@
 
       k.appendChild(kapakGorseli(y, "blog", cizBlog));
 
+      k.appendChild(alan("Dergi dosyası (PDF)", y.pdf, function (v) {
+        y.pdf = v.trim(); isaretle("blog");
+      }, {
+        tip: "url",
+        ipucu: "https://drive.google.com/file/d/.../view?usp=sharing",
+        aciklama: "Doldurulursa yazı sayfasında “Yazının tamamını okumak için tıklayınız” " +
+                  "düğmesi görünür ve PDF açılır pencerede gösterilir. Drive bağlantısı " +
+                  "“Bağlantıya sahip herkes” olarak paylaşılmış olmalı."
+      }));
+
       k.appendChild(onay("Yayında", y.yayinda, function (v) {
         y.yayinda = v; isaretle("blog"); cizAll();
       }));
@@ -1288,7 +1298,7 @@
     },
     blog: function () {
       return { slug: "yeni-yazi", baslik: "Yeni yazı", ay: "", yil: String(new Date().getFullYear()),
-               kategori: "Malzeme", sure: "", ozet: "", yayinda: false,
+               kategori: "Malzeme", sure: "", ozet: "", pdf: "", yayinda: false,
                bloklar: [{ tip: "p", metin: "" }] };
     },
     hizmetler: function () {

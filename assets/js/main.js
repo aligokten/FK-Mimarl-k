@@ -698,6 +698,72 @@
   }
 
   /* ---------------------------------------------------------------------
+     Belge (PDF) modalı — blog yazısındaki dergi dosyası
+     --------------------------------------------------------------------- */
+  function initPdfModal() {
+    var modaller = document.querySelectorAll(".modal--pdf");
+    if (!modaller.length) return;
+
+    modaller.forEach(function (modal) {
+      var kutu = modal.querySelector(".modal__kutu");
+      var cerceve = modal.querySelector(".pdf-cerceve");
+      var cagiran = null;
+
+      function odaklanabilirler() {
+        return kutu.querySelectorAll(
+          'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+      }
+
+      function ac(dugme) {
+        cagiran = dugme || null;
+        // Kapalıyken yüklenmesin diye adres yalnızca ilk açılışta atanır.
+        if (!cerceve.src && cerceve.dataset.pdfSrc) cerceve.src = cerceve.dataset.pdfSrc;
+        modal.hidden = false;
+        document.body.classList.add("is-locked");
+        window.requestAnimationFrame(function () {
+          modal.classList.add("is-acik");
+          var ilk = modal.querySelector(".modal__kapat");
+          if (ilk) ilk.focus();
+        });
+      }
+
+      function kapat() {
+        if (modal.hidden) return;
+        modal.classList.remove("is-acik");
+        document.body.classList.remove("is-locked");
+        var bitir = function () {
+          modal.hidden = true;
+          if (cagiran) { cagiran.focus(); cagiran = null; }
+        };
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) bitir();
+        else window.setTimeout(bitir, 380);
+      }
+
+      document.addEventListener("click", function (e) {
+        var dugme = e.target.closest('[data-pdf-ac="' + modal.id + '"]');
+        if (dugme) { ac(dugme); return; }
+        if (e.target.closest("[data-pdf-kapat]") && e.target.closest(".modal--pdf") === modal) kapat();
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (modal.hidden) return;
+        if (e.key === "Escape") { kapat(); return; }
+        if (e.key !== "Tab") return;
+        var ogeler = odaklanabilirler();
+        if (!ogeler.length) return;
+        var ilk = ogeler[0];
+        var son = ogeler[ogeler.length - 1];
+        if (e.shiftKey && document.activeElement === ilk) {
+          e.preventDefault(); son.focus();
+        } else if (!e.shiftKey && document.activeElement === son) {
+          e.preventDefault(); ilk.focus();
+        }
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      Yıl bilgisi
      --------------------------------------------------------------------- */
   function initYear() {
@@ -720,6 +786,7 @@
     initHero();
     initSerit();
     initProjeModal();
+    initPdfModal();
     initYear();
   }
 
