@@ -88,6 +88,34 @@ def gorsel_seti(ham):
     return f"{tabun}=w800 800w, {tabun}=w1600 1600w"
 
 
+def drive_video_adresi(ham):
+    """Video ögeleri için Drive'ın kendi oynatıcısını gömme adresi.
+    lh3 yalnızca görsel/kare üretir; oynatma için Drive'ın /preview
+    çerçevesi gerekir (Drive dosyayı kendi oynatıcısıyla akıtır)."""
+    kimlik = drive_kimligi(ham)
+    if kimlik:
+        return f"https://drive.google.com/file/d/{kimlik}/preview"
+    return (ham or "").strip()
+
+
+def medya_listesi(p):
+    """gorseller dizisini {'adres':..., 'video': bool} sözlüklerine
+    normalleştirir. Panelde eskiden beri düz metin (adres) olarak
+    tutuluyordu; video işaretlemesi gerektiğinde öge yerine
+    {"adres": ..., "video": true} nesnesi de kabul edilir."""
+    sonuc = []
+    for oge in p.get("gorseller") or []:
+        if isinstance(oge, dict):
+            adres = str(oge.get("adres") or "").strip()
+            video = bool(oge.get("video"))
+        else:
+            adres = str(oge or "").strip()
+            video = False
+        if adres:
+            sonuc.append({"adres": adres, "video": video})
+    return sonuc
+
+
 def slugla(metin):
     tr = str.maketrans("çğıöşüÇĞİÖŞÜ", "cgiosucgiosu")
     s = metin.translate(tr).lower()
@@ -428,13 +456,16 @@ def parca_is_serit(projeler):
         secili = list(enumerate(projeler))[:4]
     parcalar = []
     for sira, p in secili:
-        gorseller = [g for g in (p.get("gorseller") or []) if str(g).strip()]
+        gorseller = medya_listesi(p)
         if gorseller:
-            adres = gorsel_adresi(gorseller[0], 1200)
-            seti = gorsel_seti(gorseller[0])
+            ilk = gorseller[0]
+            adres = gorsel_adresi(ilk["adres"], 1200)
+            seti = gorsel_seti(ilk["adres"])
             ek = f' srcset="{kacis(seti)}" sizes="(min-width: 900px) 30rem, 78vw"' if seti else ""
+            oynat = ('<span class="is-karti__oynat" aria-hidden="true"></span>'
+                     if ilk["video"] else "")
             yuzey = (f'<img class="is-karti__gorsel" src="{kacis(adres)}" alt=""{ek} '
-                     f'loading="lazy" decoding="async">')
+                     f'loading="lazy" decoding="async">{oynat}')
         else:
             yuzey = ('<span class="is-karti__yer-tutucu" aria-hidden="true">'
                      f'{kacis(p["tur"])}</span>')
@@ -464,8 +495,13 @@ def parca_proje_verisi(projeler):
             "yer": p["yer"],
             "metin": p.get("metin") or p.get("not") or "",
             "gorseller": [
-                {"adres": gorsel_adresi(g, 1600), "seti": gorsel_seti(g)}
-                for g in (p.get("gorseller") or []) if str(g).strip()
+                {
+                    "adres": gorsel_adresi(g["adres"], 1600),
+                    "seti": gorsel_seti(g["adres"]),
+                    "video": g["video"],
+                    **({"videoAdres": drive_video_adresi(g["adres"])} if g["video"] else {}),
+                }
+                for g in medya_listesi(p)
             ],
         })
     govde = json.dumps(sade, ensure_ascii=False, indent=1)
@@ -524,13 +560,16 @@ def parca_proje_galerisi(projeler):
     """
     parcalar = []
     for sira, p in enumerate(projeler):
-        gorseller = [g for g in (p.get("gorseller") or []) if str(g).strip()]
+        gorseller = medya_listesi(p)
         if gorseller:
-            seti = gorsel_seti(gorseller[0])
+            ilk = gorseller[0]
+            seti = gorsel_seti(ilk["adres"])
             ek = (f' srcset="{kacis(seti)}" sizes="(min-width: 1100px) 33vw, '
                   f'(min-width: 700px) 50vw, 92vw"' if seti else "")
-            yuzey = (f'<img src="{kacis(gorsel_adresi(gorseller[0], 1200))}" alt=""{ek} '
-                     f'loading="lazy" decoding="async">')
+            oynat = ('<span class="proje-karti__oynat" aria-hidden="true"></span>'
+                     if ilk["video"] else "")
+            yuzey = (f'<img src="{kacis(gorsel_adresi(ilk["adres"], 1200))}" alt=""{ek} '
+                     f'loading="lazy" decoding="async">{oynat}')
         else:
             yuzey = (f'<span class="proje-karti__yer-tutucu" aria-hidden="true">'
                      f'{kacis(p["tur"])}</span>')

@@ -604,6 +604,21 @@
       kap.textContent = "";
       if (p.gorseller && p.gorseller.length) {
         p.gorseller.forEach(function (g, i) {
+          if (g.video && g.videoAdres) {
+            var sarici = document.createElement("div");
+            sarici.className = "modal__video";
+            var cerceve = document.createElement("iframe");
+            cerceve.src = g.videoAdres;
+            cerceve.loading = "lazy";
+            cerceve.allow = "autoplay; encrypted-media; fullscreen";
+            cerceve.allowFullscreen = true;
+            cerceve.title = p.baslik
+              ? p.baslik + " — video " + (i + 1)
+              : "Video " + (i + 1);
+            sarici.appendChild(cerceve);
+            kap.appendChild(sarici);
+            return;
+          }
           var im = document.createElement("img");
           im.src = g.adres;
           if (g.seti) {

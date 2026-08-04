@@ -449,6 +449,13 @@
     return m && m.indexOf("http") !== 0 ? "../" + m : m;
   }
 
+  function medyaAdresi(oge) {
+    return typeof oge === "object" && oge ? String(oge.adres || "") : String(oge || "");
+  }
+  function medyaVideoMu(oge) {
+    return typeof oge === "object" && oge ? !!oge.video : false;
+  }
+
   function gorselSatiri(dizi, i, dosya, yenile) {
     var d = el("div", "gorsel-satir");
 
@@ -475,8 +482,10 @@
 
     var govde = el("div", "gorsel-satir__govde");
 
+    var video = medyaVideoMu(dizi[i]);
+    var kaynak = medyaAdresi(dizi[i]).trim();
+
     var on = el("div", "onizleme onizleme--kucuk");
-    var kaynak = String(dizi[i] || "").trim();
     if (kaynak) {
       var im = el("img");
       im.src = onizlemeAdresi(kaynak, 600);
@@ -497,13 +506,27 @@
 
     var girdi = el("input");
     girdi.type = "url";
-    girdi.value = dizi[i] || "";
+    girdi.value = kaynak;
     girdi.placeholder = "https://drive.google.com/file/d/.../view?usp=sharing";
+    function yaz(adres, videoMu) {
+      dizi[i] = videoMu ? { adres: adres, video: true } : adres;
+    }
     girdi.addEventListener("input", function () {
-      dizi[i] = girdi.value.trim(); isaretle(dosya);
+      yaz(girdi.value.trim(), video); isaretle(dosya);
     });
     girdi.addEventListener("change", yenile); // önizlemeyi tazele
     govde.appendChild(girdi);
+
+    var videoAlan = el("label", "onay-satiri");
+    var videoKutu = el("input");
+    videoKutu.type = "checkbox";
+    videoKutu.checked = video;
+    videoKutu.addEventListener("change", function () {
+      yaz(girdi.value.trim(), videoKutu.checked); isaretle(dosya);
+    });
+    videoAlan.appendChild(videoKutu);
+    videoAlan.appendChild(document.createTextNode(" Bu bir video (Drive oynatıcısıyla açılır)"));
+    govde.appendChild(videoAlan);
 
     d.appendChild(govde);
     return d;

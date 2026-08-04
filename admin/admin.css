@@ -196,6 +196,17 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -.02em; margin: 0
   background: var(--paper); border: 1px solid var(--line-strong); border-radius: 0;
 }
 .gorsel-satir__govde input:focus { outline: none; border-color: var(--ink); }
+.gorsel-satir__govde .onay-satiri {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .85rem;
+  color: var(--muted);
+}
+@media (min-width: 760px) {
+  .gorsel-satir__govde .onay-satiri { grid-column: 2; }
+}
+.gorsel-satir__govde .onay-satiri input[type="checkbox"] { width: auto; }
 
 .alan input[type="file"] {
   padding: .45rem .5rem;
