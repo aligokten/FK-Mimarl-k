@@ -117,7 +117,13 @@
           observer.unobserve(entry.target);
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 }
+      /* threshold 0 olmalı: kesişim oranı ögenin KENDİ yüksekliğine göre
+         hesaplanır, görüntü alanına göre değil. Ekrandan uzun bir öge
+         (uzun bir blog yazısının gövdesi 13.000 px'e çıkabiliyor) oranı
+         hiçbir zaman 0.12'ye ulaştıramaz; gözlemci tetiklenmez ve öge
+         opacity: 0'da kalıp görünmez olur. Ne zaman belireceğini
+         rootMargin'deki -%8 belirliyor, eşik değil. */
+      { rootMargin: "0px 0px -8% 0px", threshold: 0 }
     );
 
     items.forEach(function (el, i) {

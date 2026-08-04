@@ -639,7 +639,15 @@ def bloklari_ciz(bloklar):
                                for x in metin.split("\n") if x.strip())
             cikti.append(f"        <ul>\n{ogeler}\n        </ul>")
         else:
-            cikti.append(f"        <p>{kacis(metin)}</p>")
+            # Boş satır yeni paragraf açar. Tek satır sonları birleştirilir:
+            # metinler çoğu zaman PDF'ten sabit genişlikte sarılmış hâlde
+            # yapıştırılıyor; bunları <br> yapmak cümleleri ortasından
+            # kırar. Bilerek satır başı isteniyorsa araya boş satır konur,
+            # başlık ve listeler için panelde ayrı blok türleri var.
+            for parca in re.split(r"\n\s*\n", metin):
+                satir = " ".join(x.strip() for x in parca.split("\n") if x.strip())
+                if satir:
+                    cikti.append(f"        <p>{kacis(satir)}</p>")
     return "\n\n".join(cikti)
 
 
