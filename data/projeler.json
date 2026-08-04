@@ -161,7 +161,10 @@
     "not": "",
     "oneCikan": false,
     "gorseller": [
-      "https://drive.google.com/file/d/18UUPpn7-kyPXUYGSZRAYpFE3Uac-YhHs/view?usp=drive_link",
+      {
+        "adres": "https://drive.google.com/file/d/18UUPpn7-kyPXUYGSZRAYpFE3Uac-YhHs/view?usp=drive_link",
+        "video": true
+      },
       "https://drive.google.com/file/d/1cuwOOMHPZaRkOYjmNMrsyfQdYFgxgnkl/view?usp=drive_link",
       "https://drive.google.com/file/d/1P1HeLu2fU9Y3VeyZf1ddkxlWggVS26ju/view?usp=drive_link",
       "https://drive.google.com/file/d/13yN4ehL51PNh9XPGNmyXtWnOYQZOZcG0/view?usp=drive_link",
