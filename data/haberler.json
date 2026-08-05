@@ -4,62 +4,80 @@
     "tur": "Bildiri",
     "baslik": "Costruire con la terra III, İtalya Sempozyumu",
     "yer": "İtalya",
-    "ozet": "İkinci yazar olarak katkı sağladığım araştırma, Tuğçe Aydınalp tarafından İtalya’da düzenlenen uluslararası sempozyumda sunuldu.\n«Cocciopesto lime plaster: a traditional composition from the Roman to the Ottoman period in Anatolia»"
+    "ozet": "İkinci yazar olarak katkı sağladığım araştırma, Tuğçe Aydınalp tarafından İtalya’da düzenlenen uluslararası sempozyumda sunuldu.\n«Cocciopesto lime plaster: a traditional composition from the Roman to the Ottoman period in Anatolia»",
+    "banner": "https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz012345/view?usp=drive_link",
+    "link": "https://example.org/sempozyum"
   },
   {
     "yil": "2025",
     "tur": "Bildiri",
     "baslik": "3. Uluslararası Yapı Biyolojisi Forumu",
     "yer": "İzmir",
-    "ozet": "3. Uluslararası Yapı Biyolojisi Forumu DYMD Ana partnerliği\n"
+    "ozet": "3. Uluslararası Yapı Biyolojisi Forumu DYMD Ana partnerliği\n",
+    "banner": "",
+    "link": ""
   },
   {
     "yil": "2024",
     "tur": "Bildiri",
     "baslik": "Tarihi Yapılarda Yangın Güvenliği",
     "yer": "İzmir",
-    "ozet": "İzmir Yangın Sempozyumu\n\n5. Uluslararası Katılımlı Yangın Sempozyumu ve Sergisi — TMMOB Mimarlar Odası'nı temsilen bildiri yayını ve sunumu."
+    "ozet": "İzmir Yangın Sempozyumu\n\n5. Uluslararası Katılımlı Yangın Sempozyumu ve Sergisi — TMMOB Mimarlar Odası'nı temsilen bildiri yayını ve sunumu.",
+    "banner": "",
+    "link": ""
   },
   {
     "yil": "2023",
     "tur": "Haber",
     "baslik": "Fatma Kocaova Mimarlık kuruldu",
     "yer": "İzmir",
-    "ozet": "Kurucu"
+    "ozet": "Kurucu",
+    "banner": "",
+    "link": ""
   },
   {
     "yil": "2023",
     "tur": "Forum",
     "baslik": "2. Uluslararası Yapı Biyolojisi Forumu",
     "yer": "İzmir",
-    "ozet": "Doğal Yapı Malzemeleri ve Yöntemleri Derneği (DYMD) ana partnerliğiyle katılım."
+    "ozet": "Doğal Yapı Malzemeleri ve Yöntemleri Derneği (DYMD) ana partnerliğiyle katılım.",
+    "banner": "",
+    "link": ""
   },
   {
     "yil": "2021",
     "tur": "Haber",
     "baslik": "Doğal Yapı Malzemeleri ve Yöntemleri Derneği",
     "yer": "",
-    "ozet": "Kurucu Üye & Yönetim Kurulu Asıl Üye"
+    "ozet": "Kurucu Üye & Yönetim Kurulu Asıl Üye",
+    "banner": "",
+    "link": ""
   },
   {
     "yil": "2018",
     "tur": "Akademi",
     "baslik": "Tezli Yüksek Lisans Mezuniyeti",
     "yer": "İzmir",
-    "ozet": "İYTE Mimarlık, Mimari Restorasyon Anabilim Dalı\n«Plaster Characteristics of Historic Eski Hamam in Aydın»\nTez sayfası: https://tez.yok.gov.tr/UlusalTezMerkezi/tezSorguSonucYeni.jsp"
+    "ozet": "İYTE Mimarlık, Mimari Restorasyon Anabilim Dalı\n«Plaster Characteristics of Historic Eski Hamam in Aydın»\nTez sayfası: https://tez.yok.gov.tr/UlusalTezMerkezi/tezSorguSonucYeni.jsp",
+    "banner": "",
+    "link": ""
   },
   {
     "yil": "2017",
     "tur": "Bildiri",
     "baslik": "Tarihi Yapıların Korunması ve Güçlendirilmesi",
     "yer": "Trabzon",
-    "ozet": "6. Uluslararası Katılımlı Tarihi Yapıların Korunması ve Güçlendirilmesi Sempozyumu — bildiri yayını ve sunumu.\n\"Aydın Eski Hamam Sıva Özellikleri\""
+    "ozet": "6. Uluslararası Katılımlı Tarihi Yapıların Korunması ve Güçlendirilmesi Sempozyumu — bildiri yayını ve sunumu.\n\"Aydın Eski Hamam Sıva Özellikleri\"",
+    "banner": "",
+    "link": ""
   },
   {
     "yil": "2013",
     "tur": "Akademi",
     "baslik": "Lisans Mezuniyeti",
     "yer": "Balıkesir",
-    "ozet": "Balıkesir Üniversitesi Mimarlık Bölümü"
+    "ozet": "Balıkesir Üniversitesi Mimarlık Bölümü",
+    "banner": "",
+    "link": ""
   }
 ]

@@ -632,14 +632,39 @@ def parca_haberler(haberler):
     parcalar = []
     for h in haberler:
         ozet = f'\n            <p class="kayit__ozet">{kacis(h["ozet"])}</p>' if h.get("ozet") else ""
-        parcalar.append(f"""        <article class="kayit" data-reveal="stagger">
+
+        banner_ham = (h.get("banner") or "").strip()
+        if banner_ham:
+            seti = gorsel_seti(banner_ham)
+            ek = f' srcset="{kacis(seti)}" sizes="72px"' if seti else ""
+            gorsel = (f'<img src="{kacis(gorsel_adresi(banner_ham, 200))}" alt=""{ek} '
+                      f'loading="lazy" decoding="async">')
+        else:
+            gorsel = ""
+        # Boş bırakılan kayıtlarda da sütun sayısı korunsun diye ög her
+        # zaman basılır; görselsiz kayıtlarda içi boş kalır.
+        banner = f'\n          <span class="kayit__banner">{gorsel}</span>'
+
+        link = (h.get("link") or "").strip()
+        if link:
+            etiket = "a"
+            ekstra = f' href="{kacis(link)}" target="_blank" rel="noopener"'
+            disa = (' <svg class="kayit__disa" viewBox="0 0 24 24" aria-hidden="true">'
+                    '<path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
+                    '<span class="visually-hidden"> (yeni sekmede açılır)</span>')
+        else:
+            etiket = "article"
+            ekstra = ""
+            disa = ""
+
+        parcalar.append(f"""        <{etiket} class="kayit kayit--haber" data-reveal="stagger"{ekstra}>{banner}
           <p class="kayit__tarih">{kacis(h['yil'])}</p>
           <p class="kayit__tur">{kacis(h['tur'])}</p>
           <div>
-            <h2 class="kayit__baslik">{kacis(h['baslik'])}</h2>{ozet}
+            <h2 class="kayit__baslik">{kacis(h['baslik'])}{disa}</h2>{ozet}
           </div>
           <p class="kayit__yer">{kacis(h['yer'])}</p>
-        </article>""")
+        </{etiket}>""")
     return "\n".join(parcalar) + "\n"
 
 

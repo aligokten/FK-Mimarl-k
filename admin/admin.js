@@ -532,12 +532,14 @@
     return d;
   }
 
-  function kapakGorseli(nesne, dosya, yenile) {
+  function kapakGorseli(nesne, dosya, yenile, secenek) {
+    secenek = secenek || {};
+    var alanAdi = secenek.alan || "gorsel";
     var d = el("div", "alan");
-    d.appendChild(el("label", null, "Kapak görseli"));
+    d.appendChild(el("label", null, secenek.etiket || "Kapak görseli"));
 
     var on = el("div", "onizleme onizleme--kucuk");
-    var kaynak = String(nesne.gorsel || "").trim();
+    var kaynak = String(nesne[alanAdi] || "").trim();
     if (kaynak) {
       var im = el("img");
       im.src = onizlemeAdresi(kaynak, 600);
@@ -551,16 +553,17 @@
       });
       on.appendChild(im);
     } else {
-      on.appendChild(el("span", "ipucu", "Anasayfadaki kartta görünür. Boşsa kategori adı yazılır."));
+      on.appendChild(el("span", "ipucu",
+        secenek.bosIpucu || "Anasayfadaki kartta görünür. Boşsa kategori adı yazılır."));
     }
     d.appendChild(on);
 
     var girdi = el("input");
     girdi.type = "url";
-    girdi.value = nesne.gorsel || "";
+    girdi.value = nesne[alanAdi] || "";
     girdi.placeholder = "https://drive.google.com/file/d/.../view?usp=sharing";
     girdi.addEventListener("input", function () {
-      nesne.gorsel = girdi.value.trim(); isaretle(dosya);
+      nesne[alanAdi] = girdi.value.trim(); isaretle(dosya);
     });
     girdi.addEventListener("change", yenile);
     d.appendChild(girdi);
@@ -622,6 +625,23 @@
       k.appendChild(alan("Yer", h.yer, function (v) { h.yer = v; isaretle("haberler"); }));
       k.appendChild(alan("Özet", h.ozet, function (v) { h.ozet = v; isaretle("haberler"); },
         { cokSatir: true }));
+
+      k.appendChild(kapakGorseli(h, "haberler", cizHaberler, {
+        alan: "banner",
+        etiket: "Banner görseli",
+        bosIpucu: "İsteğe bağlı. Eklenirse kayıtta küçük bir görsel olarak görünür " +
+                  "(sitede siyah-beyaz, üzerine gelince renkli görünür)."
+      }));
+
+      k.appendChild(alan("Harici bağlantı", h.link, function (v) {
+        h.link = v.trim(); isaretle("haberler");
+      }, {
+        tip: "url",
+        ipucu: "https://...",
+        aciklama: "Doldurulursa kayıt tıklanabilir olur ve yeni sekmede bu adresi açar " +
+                  "(ör. sempozyumun kendi sitesi, haberin yayınlandığı sayfa)."
+      }));
+
       kap.appendChild(k);
     });
   }
@@ -1294,7 +1314,7 @@
     },
     haberler: function () {
       return { yil: String(new Date().getFullYear()), tur: "Bildiri",
-               baslik: "Yeni haber", yer: "", ozet: "" };
+               baslik: "Yeni haber", yer: "", ozet: "", banner: "", link: "" };
     },
     blog: function () {
       return { slug: "yeni-yazi", baslik: "Yeni yazı", ay: "", yil: String(new Date().getFullYear()),
