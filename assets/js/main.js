@@ -531,43 +531,47 @@
      kaydırması olduğu gibi çalışmaya devam eder.
      --------------------------------------------------------------------- */
   function initSerit() {
-    var serit = document.querySelector("[data-serit]");
-    if (!serit) return;
-    var oklar = document.querySelectorAll("[data-serit-yon]");
-    if (!oklar.length) return;
+    /* Sayfada birden fazla şerit olabilir (projeler, blog…); her biri
+       yalnızca kendi bölümündeki oklarla eşleştirilir, aksi hâlde bir
+       şeridin okları diğerini kaydırır. */
+    document.querySelectorAll("[data-serit]").forEach(function (serit) {
+      var kapsam = serit.closest("section") || serit.parentElement || document;
+      var oklar = kapsam.querySelectorAll("[data-serit-yon]");
+      if (!oklar.length) return;
 
-    function adim() {
-      var oge = serit.querySelector(".serit__oge");
-      if (!oge) return serit.clientWidth * 0.8;
-      var bosluk = parseFloat(getComputedStyle(serit.querySelector(".serit__ray")).columnGap) || 0;
-      return oge.getBoundingClientRect().width + bosluk;
-    }
+      function adim() {
+        var oge = serit.querySelector(".serit__oge");
+        if (!oge) return serit.clientWidth * 0.8;
+        var bosluk = parseFloat(getComputedStyle(serit.querySelector(".serit__ray")).columnGap) || 0;
+        return oge.getBoundingClientRect().width + bosluk;
+      }
 
-    function tazele() {
-      var sol = serit.scrollLeft;
-      var kalan = serit.scrollWidth - serit.clientWidth - sol;
+      function tazele() {
+        var sol = serit.scrollLeft;
+        var kalan = serit.scrollWidth - serit.clientWidth - sol;
+        oklar.forEach(function (o) {
+          var yon = Number(o.getAttribute("data-serit-yon"));
+          o.disabled = yon < 0 ? sol <= 2 : kalan <= 2;
+        });
+      }
+
       oklar.forEach(function (o) {
-        var yon = Number(o.getAttribute("data-serit-yon"));
-        o.disabled = yon < 0 ? sol <= 2 : kalan <= 2;
-      });
-    }
-
-    oklar.forEach(function (o) {
-      o.addEventListener("click", function () {
-        serit.scrollBy({
-          left: adim() * Number(o.getAttribute("data-serit-yon")),
-          behavior: "smooth"
+        o.addEventListener("click", function () {
+          serit.scrollBy({
+            left: adim() * Number(o.getAttribute("data-serit-yon")),
+            behavior: "smooth"
+          });
         });
       });
-    });
 
-    serit.addEventListener("scroll", tazele, { passive: true });
-    window.addEventListener("resize", tazele);
-    /* Görseller yüklendikçe kart genişlikleri değişir; ok durumu da onunla
-       birlikte yenilenmeli. */
-    window.addEventListener("load", tazele);
-    if (window.ResizeObserver) new ResizeObserver(tazele).observe(serit);
-    tazele();
+      serit.addEventListener("scroll", tazele, { passive: true });
+      window.addEventListener("resize", tazele);
+      /* Görseller yüklendikçe kart genişlikleri değişir; ok durumu da onunla
+         birlikte yenilenmeli. */
+      window.addEventListener("load", tazele);
+      if (window.ResizeObserver) new ResizeObserver(tazele).observe(serit);
+      tazele();
+    });
   }
 
   /* ---------------------------------------------------------------------

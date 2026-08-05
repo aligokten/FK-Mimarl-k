@@ -177,6 +177,11 @@ p {
   padding-block: clamp(3rem, 6vw, 6rem);
 }
 
+/* Bir şerit (bkz. .serit) taştığı için kesilmesi gereken bölüm. */
+.section--tasan {
+  overflow: hidden;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -2111,6 +2116,19 @@ main > .cta:last-child {
   cursor: default;
 }
 
+/* --line-invert koyu zeminler için tasarlandı (bkz. .isler); açık zeminde
+   kullanılan şeritlerde (ör. blog) oklar bunun yerine bu varyantı alır. */
+.serit__dumen--acik .serit__ok {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.serit__dumen--acik .serit__ok:hover:not([disabled]) {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
 .serit {
   /* Kapsayıcı ortalanır ama şerit sağa doğru taşar */
   max-width: var(--max-w);
@@ -2644,19 +2662,9 @@ a.kayit:hover .kayit__ozet {
 /* --------------------------------------------------------------------------
    15c. Blog kartları — anasayfa
    -------------------------------------------------------------------------- */
-.yazi-kartlari {
-  display: grid;
-  gap: clamp(1.25rem, 2.5vw, 2rem);
-}
-
-@media (min-width: 700px) {
-  .yazi-kartlari {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 .yazi-karti {
   display: block;
+  width: min(26rem, 88vw);
 }
 
 .yazi-karti__cerceve {

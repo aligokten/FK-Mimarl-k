@@ -506,47 +506,62 @@
     </div>
   </section>
 
-  <!-- ================= BLOG ================= -->
-  <section class="section section--tight">
-    <div class="container">
-      <div class="section-head">
-        <div data-reveal>
-          <span class="eyebrow">/ 05 — Blog</span>
-          <h2 class="section-title">Yazılar</h2>
-        </div>
-        <p data-reveal style="--reveal-delay:120ms;align-self:end">
+  <!-- ================= BLOG — kaydırmalı şerit ================= -->
+  <section class="section section--tight section--tasan">
+    <div class="container isler__ust">
+      <div data-reveal>
+        <span class="eyebrow">/ 05 — Blog</span>
+        <h2 class="section-title">Yazılar</h2>
+        <p style="margin-top:1.5rem">
           <a class="link-underline" href="blog.html" style="font-size:var(--fs-xs);letter-spacing:var(--ls-etiket);text-transform:uppercase">Tümünü gör</a>
         </p>
       </div>
 
-      <div class="yazi-kartlari">
-<!-- OTO:blog-kartlari -->
-        <a class="yazi-karti" href="blog-aydin-eski-hamam-siva-ozellikleri.html" data-reveal="stagger">
-          <span class="yazi-karti__cerceve">
-            <span class="yazi-karti__yer-tutucu">Malzeme</span>
-            <span class="yazi-karti__daha">Oku +</span>
-          </span>
-          <span class="yazi-karti__kategori">Malzeme</span>
-          <h3 class="yazi-karti__baslik">AYDIN ESKİ HAMAM SIVA ÖZELLİKLERİ</h3>
-        </a>
-        <a class="yazi-karti" href="blog-cocciopesto-lime-plaster.html" data-reveal="stagger">
-          <span class="yazi-karti__cerceve">
-            <span class="yazi-karti__yer-tutucu">Malzeme</span>
-            <span class="yazi-karti__daha">Oku +</span>
-          </span>
-          <span class="yazi-karti__kategori">Malzeme</span>
-          <h3 class="yazi-karti__baslik">Cocciopesto lime plaster: a traditional composition from the Roman to the Ottoman period in Anatolia</h3>
-        </a>
-        <a class="yazi-karti" href="blog-tarihi-yapilarda-yangin-guvenligi.html" data-reveal="stagger">
-          <span class="yazi-karti__cerceve">
-            <img src="https://lh3.googleusercontent.com/d/1HzKvNeUOgjygY6-kZJo-wZao4iAcUJhI=w1200" alt="" srcset="https://lh3.googleusercontent.com/d/1HzKvNeUOgjygY6-kZJo-wZao4iAcUJhI=w800 800w, https://lh3.googleusercontent.com/d/1HzKvNeUOgjygY6-kZJo-wZao4iAcUJhI=w1600 1600w" sizes="(min-width: 900px) 26rem, 88vw" loading="lazy" decoding="async">
-            <span class="yazi-karti__daha">Oku +</span>
-          </span>
-          <span class="yazi-karti__kategori">Koruyucu Bakım</span>
-          <h3 class="yazi-karti__baslik">TARİHİ YAPILARDA YANGIN GÜVENLİĞİ</h3>
-        </a>
-<!-- /OTO:blog-kartlari -->
+      <div class="serit__dumen serit__dumen--acik" data-reveal style="--reveal-delay:120ms">
+        <button class="serit__ok" type="button" data-serit-yon="-1" aria-label="Önceki yazılar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+        <button class="serit__ok" type="button" data-serit-yon="1" aria-label="Sonraki yazılar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
       </div>
+    </div>
+
+    <div class="serit" data-serit>
+      <ul class="serit__ray" data-serit-ray>
+<!-- OTO:blog-kartlari -->
+        <li class="serit__oge">
+          <a class="yazi-karti" href="blog-aydin-eski-hamam-siva-ozellikleri.html" data-reveal="stagger">
+            <span class="yazi-karti__cerceve">
+              <span class="yazi-karti__yer-tutucu">Malzeme</span>
+              <span class="yazi-karti__daha">Oku +</span>
+            </span>
+            <span class="yazi-karti__kategori">Malzeme</span>
+            <h3 class="yazi-karti__baslik">AYDIN ESKİ HAMAM SIVA ÖZELLİKLERİ</h3>
+          </a>
+        </li>
+        <li class="serit__oge">
+          <a class="yazi-karti" href="blog-cocciopesto-lime-plaster.html" data-reveal="stagger">
+            <span class="yazi-karti__cerceve">
+              <span class="yazi-karti__yer-tutucu">Malzeme</span>
+              <span class="yazi-karti__daha">Oku +</span>
+            </span>
+            <span class="yazi-karti__kategori">Malzeme</span>
+            <h3 class="yazi-karti__baslik">Cocciopesto lime plaster: a traditional composition from the Roman to the Ottoman period in Anatolia</h3>
+          </a>
+        </li>
+        <li class="serit__oge">
+          <a class="yazi-karti" href="blog-tarihi-yapilarda-yangin-guvenligi.html" data-reveal="stagger">
+            <span class="yazi-karti__cerceve">
+              <img src="https://lh3.googleusercontent.com/d/1HzKvNeUOgjygY6-kZJo-wZao4iAcUJhI=w1200" alt="" srcset="https://lh3.googleusercontent.com/d/1HzKvNeUOgjygY6-kZJo-wZao4iAcUJhI=w800 800w, https://lh3.googleusercontent.com/d/1HzKvNeUOgjygY6-kZJo-wZao4iAcUJhI=w1600 1600w" sizes="(min-width: 900px) 26rem, 88vw" loading="lazy" decoding="async">
+              <span class="yazi-karti__daha">Oku +</span>
+            </span>
+            <span class="yazi-karti__kategori">Koruyucu Bakım</span>
+            <h3 class="yazi-karti__baslik">TARİHİ YAPILARDA YANGIN GÜVENLİĞİ</h3>
+          </a>
+        </li>
+<!-- /OTO:blog-kartlari -->
+      </ul>
     </div>
   </section>
 

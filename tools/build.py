@@ -528,12 +528,12 @@ def parca_proje_verisi(projeler):
 
 
 def parca_blog_kartlari(blog):
-    """Anasayfadaki üç sütunlu blog kartları."""
-    yazilar = yayindaki_yazilar(blog)[:3]
+    """Anasayfadaki kaydırmalı blog şeridi (en fazla 10 yazı)."""
+    yazilar = yayindaki_yazilar(blog)[:10]
     if not yazilar:
-        return """      <p class="bos-durum" style="grid-column:1/-1">
-        İlk yazılar hazırlanıyor.
-      </p>
+        return """        <li class="serit__oge">
+          <p class="bos-durum">İlk yazılar hazırlanıyor.</p>
+        </li>
 """
     parcalar = []
     for y in yazilar:
@@ -545,14 +545,16 @@ def parca_blog_kartlari(blog):
                      f'loading="lazy" decoding="async">')
         else:
             yuzey = f'<span class="yazi-karti__yer-tutucu">{kacis(y["kategori"])}</span>'
-        parcalar.append(f"""        <a class="yazi-karti" href="blog-{kacis(y['slug'])}.html" data-reveal="stagger">
-          <span class="yazi-karti__cerceve">
-            {yuzey}
-            <span class="yazi-karti__daha">Oku +</span>
-          </span>
-          <span class="yazi-karti__kategori">{kacis(y['kategori'])}</span>
-          <h3 class="yazi-karti__baslik">{kacis(y['baslik'])}</h3>
-        </a>""")
+        parcalar.append(f"""        <li class="serit__oge">
+          <a class="yazi-karti" href="blog-{kacis(y['slug'])}.html" data-reveal="stagger">
+            <span class="yazi-karti__cerceve">
+              {yuzey}
+              <span class="yazi-karti__daha">Oku +</span>
+            </span>
+            <span class="yazi-karti__kategori">{kacis(y['kategori'])}</span>
+            <h3 class="yazi-karti__baslik">{kacis(y['baslik'])}</h3>
+          </a>
+        </li>""")
     return "\n".join(parcalar) + "\n"
 
 
