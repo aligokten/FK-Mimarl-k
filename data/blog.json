@@ -1,7 +1,7 @@
 [
   {
     "slug": "thesis",
-    "baslik": "Plaster characteristics of historic Eski Hamam in Aydın",
+    "baslik": "Plaster Characteristics of Historic Eski Hamam in Aydın",
     "ay": "",
     "yil": "2018",
     "kategori": "Yüksek Lisans Tezi",
@@ -11,12 +11,12 @@
     "yayinda": true,
     "bloklar": [
       {
-        "tip": "p",
+        "tip": "liste",
         "metin": "Yazar: FATMA GÜRHAN \nYıl: 2018 \nTür: Yüksek Lisans \nDil: İngilizce \nKonu: Mimarlık \nYer Bilgisi: İZMİR YÜKSEK TEKNOLOJİ ENSTİTÜSÜ / MÜHENDİSLİK VE FEN BİLİMLERİ ENSTİTÜSÜ / MİMARİ RESTORASYON ANABİLİM DALI \nDanışman: PROF. DR. HASAN BÖKE"
       },
       {
         "tip": "altbaslik",
-        "metin": "İngilizce Özet"
+        "metin": "English Summary"
       },
       {
         "tip": "p",
@@ -39,7 +39,8 @@
         "metin": "APA | GÜRHAN, F. (2018). Plaster characteristics of historic Eski Hamam in Aydın (Tez No. 535489) [Yüksek lisans tezi, İZMİR YÜKSEK TEKNOLOJİ ENSTİTÜSÜ]. Ulusal Tez Merkezi.\nIEEE | F. GÜRHAN, \"Plaster characteristics of historic Eski Hamam in Aydın,\" Yüksek lisans tezi, MÜHENDİSLİK VE FEN BİLİMLERİ ENSTİTÜSÜ, İZMİR YÜKSEK TEKNOLOJİ ENSTİTÜSÜ, 2018.\nMLA | GÜRHAN, FATMA. Plaster characteristics of historic Eski Hamam in Aydın. 2018. İZMİR YÜKSEK TEKNOLOJİ ENSTİTÜSÜ, Yüksek lisans tezi.\nCHICAGO | GÜRHAN, FATMA. \"Plaster characteristics of historic Eski Hamam in Aydın.\" Yüksek lisans tezi, İZMİR YÜKSEK TEKNOLOJİ ENSTİTÜSÜ, 2018.\nHARVARD | GÜRHAN, F. (2018) Plaster characteristics of historic Eski Hamam in Aydın. Yüksek lisans tezi. İZMİR YÜKSEK TEKNOLOJİ ENSTİTÜSÜ."
       }
     ],
-    "slugKilit": true
+    "slugKilit": true,
+    "gorsel": "https://drive.google.com/file/d/1sDYgp4R4oCJneCGYCE2kyfGN-K-6UBpF/view?usp=drive_link"
   },
   {
     "slug": "aydin-eski-hamam-siva-ozellikleri",
