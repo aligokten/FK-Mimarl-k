@@ -44,6 +44,21 @@
     "gorsel": "https://drive.google.com/file/d/1sDYgp4R4oCJneCGYCE2kyfGN-K-6UBpF/view?usp=drive_link"
   },
   {
+    "slug": "tarihi-yapilarda-yangin-guvenligi",
+    "baslik": "TARİHİ YAPILARDA YANGIN GÜVENLİĞİ",
+    "ay": "Ekim",
+    "yil": "2024",
+    "kategori": "Koruyucu Bakım",
+    "sure": "",
+    "ozet": "Tarihi yapılar, kültürel mirasımızın önemli bir parçasını oluşturarak geçmişin izlerini günümüze taşımaktadır. Ancak, bu yapılar, yangın gibi felaketler karşısında ciddi risk altındadır. Yangınlar, tarihi yapılarda geri döndürülemez hasarlara yol açabilir ve bu yapıların korunması için özel önlemler alınmasını gerektirir. Tarihi yapıların yangından korunması hem yapıların fiziksel bütünlüğünü korumak hem de içerdikleri kültürel ve tarihi değerleri muhafaza etmek açısından büyük önem taşır. Bu doğrultuda, yangın güvenliği stratejilerinin geliştirilmesi ve uygulanması, tarihi yapıların sürdürülebilirliği için kritik bir rol oynar. Bu çalışma, tarihi yapıların yangın güvenliği konusundaki mevcut durumunu değerlendirerek, bina ve malzeme ölçeğinde alınabilecek önlemleri tartışmaktadır.",
+    "pdf": "https://drive.google.com/file/d/15tUiWTxkg6gbBd9pKk-3WwWPyfqtHPMB/view?usp=drivesdk",
+    "link": "",
+    "yayinda": true,
+    "bloklar": [],
+    "gorsel": "https://drive.google.com/file/d/1wDySu1jjQgTpyKL1nm6LMSQJWbnTh1oN/view?usp=drive_link",
+    "slugKilit": true
+  },
+  {
     "slug": "aydin-eski-hamam-siva-ozellikleri",
     "baslik": "AYDIN ESKİ HAMAM SIVA ÖZELLİKLERİ",
     "ay": "Kasım",
@@ -75,20 +90,5 @@
     "slugKilit": true,
     "pdf": "",
     "link": "https://doi.org/10.1016/j.culher.2026.06.018"
-  },
-  {
-    "slug": "tarihi-yapilarda-yangin-guvenligi",
-    "baslik": "TARİHİ YAPILARDA YANGIN GÜVENLİĞİ",
-    "ay": "Ekim",
-    "yil": "2024",
-    "kategori": "Koruyucu Bakım",
-    "sure": "",
-    "ozet": "Tarihi yapılar, kültürel mirasımızın önemli bir parçasını oluşturarak geçmişin izlerini günümüze taşımaktadır. Ancak, bu yapılar, yangın gibi felaketler karşısında ciddi risk altındadır. Yangınlar, tarihi yapılarda geri döndürülemez hasarlara yol açabilir ve bu yapıların korunması için özel önlemler alınmasını gerektirir. Tarihi yapıların yangından korunması hem yapıların fiziksel bütünlüğünü korumak hem de içerdikleri kültürel ve tarihi değerleri muhafaza etmek açısından büyük önem taşır. Bu doğrultuda, yangın güvenliği stratejilerinin geliştirilmesi ve uygulanması, tarihi yapıların sürdürülebilirliği için kritik bir rol oynar. Bu çalışma, tarihi yapıların yangın güvenliği konusundaki mevcut durumunu değerlendirerek, bina ve malzeme ölçeğinde alınabilecek önlemleri tartışmaktadır.",
-    "pdf": "https://drive.google.com/file/d/15tUiWTxkg6gbBd9pKk-3WwWPyfqtHPMB/view?usp=drivesdk",
-    "link": "",
-    "yayinda": true,
-    "bloklar": [],
-    "gorsel": "https://drive.google.com/file/d/1wDySu1jjQgTpyKL1nm6LMSQJWbnTh1oN/view?usp=drive_link",
-    "slugKilit": true
   }
 ]
