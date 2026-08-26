@@ -71,19 +71,10 @@
     "sure": "",
     "ozet": "",
     "yayinda": true,
-    "bloklar": [
-      {
-        "tip": "baslik",
-        "metin": "Makale linki:"
-      },
-      {
-        "tip": "alinti",
-        "metin": "https://doi.org/10.1016/j.culher.2026.06.018"
-      }
-    ],
+    "bloklar": [],
     "slugKilit": true,
     "pdf": "",
-    "link": ""
+    "link": "https://doi.org/10.1016/j.culher.2026.06.018"
   },
   {
     "slug": "tarihi-yapilarda-yangin-guvenligi",
