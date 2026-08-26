@@ -747,33 +747,48 @@ def belge_kaynagi(y):
 
 
 def parca_pdf_dugmesi(y):
-    """Tam metni açan düğme (bkz. belge_kaynagi)."""
-    if not belge_kaynagi(y):
+    """Tam metni açan düğme (bkz. belge_kaynagi).
+
+    Drive PDF'i açılır pencerede gösterilir. Harici adresler için pencere
+    kullanılmaz: siteler çoğunlukla çerçeve içine alınmayı engellediğinden
+    (X-Frame-Options) pencere boş kalıyordu; bağlantı doğrudan yeni sekmede
+    açılır.
+    """
+    kaynak = belge_kaynagi(y)
+    if not kaynak:
         return ""
+    ok = ('<svg viewBox="0 0 24 24" aria-hidden="true">'
+          '<path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>')
+    if kaynak["harici"]:
+        return f"""
+        <p class="makale-pdf-cta">
+          <a class="btn btn--ghost" href="{kacis(kaynak['adres'])}" target="_blank" rel="noopener">
+            Yazının tamamını okumak için tıklayınız
+            {ok}<span class="visually-hidden"> (yeni sekmede açılır)</span>
+          </a>
+        </p>"""
     return f"""
         <p class="makale-pdf-cta">
           <button class="btn btn--ghost" type="button" data-pdf-ac="pdf-{kacis(y['slug'])}">
             Yazının tamamını okumak için tıklayınız
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            {ok}
           </button>
         </p>"""
 
 
 def parca_pdf_modali(y):
     kaynak = belge_kaynagi(y)
-    if not kaynak:
+    # Harici bağlantılar yeni sekmede açılır; pencere üretilmez.
+    if not kaynak or kaynak["harici"]:
         return ""
     adres = kaynak["adres"]
     kimlik = f"pdf-{kacis(y['slug'])}"
-    # Kimi siteler kendilerinin çerçeve içine alınmasını engeller
-    # (X-Frame-Options). Çerçeve boş kalırsa okur çıkmaz kalmasın diye
-    # kaynağı yeni sekmede açan bir bağlantı da konur.
     return f"""
   <div class="modal modal--pdf" id="{kimlik}" hidden>
     <div class="modal__perde" data-pdf-kapat></div>
     <div class="modal__kutu" role="dialog" aria-modal="true" aria-label="{kacis(y['baslik'])}">
       <a class="modal__disa" href="{kacis(adres)}" target="_blank" rel="noopener"
-         aria-label="Kaynağı yeni sekmede aç">
+         aria-label="Dosyayı yeni sekmede aç">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
       </a>
       <button class="modal__kapat" type="button" data-pdf-kapat aria-label="Kapat">

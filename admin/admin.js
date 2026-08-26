@@ -701,10 +701,9 @@
         tip: "url",
         ipucu: "https://dergi.example.com/makale",
         aciklama: "PDF yerine kullanılabilir: yazının yayımlandığı sayfanın adresi. " +
-                  "Aynı düğme görünür, bağlantı açılır pencerede gösterilir. " +
-                  "İkisi de doluysa PDF öncelenir. Not: bazı siteler pencere içinde " +
-                  "gösterilmeye izin vermez; o durumda okuyucu pencerenin " +
-                  "üstündeki okla sayfayı yeni sekmede açabilir."
+                  "Aynı düğme görünür, tıklanınca bağlantı yeni sekmede açılır " +
+                  "(siteler çoğunlukla açılır pencere içinde gösterilmeye izin vermiyor). " +
+                  "İkisi de doluysa PDF öncelenir."
       }));
 
       k.appendChild(onay("Yayında", y.yayinda, function (v) {
