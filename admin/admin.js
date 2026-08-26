@@ -695,6 +695,18 @@
                   "“Bağlantıya sahip herkes” olarak paylaşılmış olmalı."
       }));
 
+      k.appendChild(alan("… veya harici bağlantı", y.link, function (v) {
+        y.link = v.trim(); isaretle("blog");
+      }, {
+        tip: "url",
+        ipucu: "https://dergi.example.com/makale",
+        aciklama: "PDF yerine kullanılabilir: yazının yayımlandığı sayfanın adresi. " +
+                  "Aynı düğme görünür, bağlantı açılır pencerede gösterilir. " +
+                  "İkisi de doluysa PDF öncelenir. Not: bazı siteler pencere içinde " +
+                  "gösterilmeye izin vermez; o durumda okuyucu pencerenin " +
+                  "üstündeki okla sayfayı yeni sekmede açabilir."
+      }));
+
       k.appendChild(onay("Yayında", y.yayinda, function (v) {
         y.yayinda = v; isaretle("blog"); cizAll();
       }));
@@ -1318,7 +1330,7 @@
     },
     blog: function () {
       return { slug: "yeni-yazi", baslik: "Yeni yazı", ay: "", yil: String(new Date().getFullYear()),
-               kategori: "Malzeme", sure: "", ozet: "", pdf: "", yayinda: false,
+               kategori: "Malzeme", sure: "", ozet: "", pdf: "", link: "", yayinda: false,
                bloklar: [{ tip: "p", metin: "" }] };
     },
     hizmetler: function () {

@@ -8,6 +8,7 @@
     "sure": "",
     "ozet": "Aydın'da bulunan tarihi Eski Hamam'ın sıva özellikleri",
     "pdf": "https://drive.google.com/file/d/1SpPQ49Y2yPij9qVtWqdbl_snhYiQbln-/view?usp=drive_link",
+    "link": "",
     "yayinda": true,
     "bloklar": [
       {
@@ -58,7 +59,8 @@
       }
     ],
     "slugKilit": true,
-    "pdf": "https://drive.google.com/file/d/1H__TMaSISLDWZOYOngAfQhk3RRsavWrn/view?usp=drivesdk"
+    "pdf": "https://drive.google.com/file/d/1H__TMaSISLDWZOYOngAfQhk3RRsavWrn/view?usp=drivesdk",
+    "link": ""
   },
   {
     "slug": "cocciopesto-lime-plaster",
@@ -80,7 +82,8 @@
       }
     ],
     "slugKilit": true,
-    "pdf": ""
+    "pdf": "",
+    "link": ""
   },
   {
     "slug": "tarihi-yapilarda-yangin-guvenligi",
@@ -91,6 +94,7 @@
     "sure": "",
     "ozet": "Tarihi yapılar, kültürel mirasımızın önemli bir parçasını oluşturarak geçmişin izlerini günümüze taşımaktadır. Ancak, bu yapılar, yangın gibi felaketler karşısında ciddi risk altındadır. Yangınlar, tarihi yapılarda geri döndürülemez hasarlara yol açabilir ve bu yapıların korunması için özel önlemler alınmasını gerektirir. Tarihi yapıların yangından korunması hem yapıların fiziksel bütünlüğünü korumak hem de içerdikleri kültürel ve tarihi değerleri muhafaza etmek açısından büyük önem taşır. Bu doğrultuda, yangın güvenliği stratejilerinin geliştirilmesi ve uygulanması, tarihi yapıların sürdürülebilirliği için kritik bir rol oynar. Bu çalışma, tarihi yapıların yangın güvenliği konusundaki mevcut durumunu değerlendirerek, bina ve malzeme ölçeğinde alınabilecek önlemleri tartışmaktadır.",
     "pdf": "https://drive.google.com/file/d/15tUiWTxkg6gbBd9pKk-3WwWPyfqtHPMB/view?usp=drivesdk",
+    "link": "",
     "yayinda": true,
     "bloklar": [],
     "gorsel": "https://drive.google.com/file/d/1wDySu1jjQgTpyKL1nm6LMSQJWbnTh1oN/view?usp=drive_link",

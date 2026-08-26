@@ -2816,6 +2816,31 @@ a.kayit:hover .kayit__ozet {
   height: 20px;
 }
 
+/* Kaynağı yeni sekmede açar; kapat düğmesinin soluna oturur. */
+.modal__disa {
+  position: absolute;
+  top: 0;
+  right: 52px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  background: var(--ink);
+  color: var(--paper);
+  border-right: 1px solid rgba(242, 242, 240, 0.25);
+  transition: opacity 0.3s var(--ease);
+}
+
+.modal__disa:hover {
+  opacity: 0.75;
+}
+
+.modal__disa svg {
+  width: 18px;
+  height: 18px;
+}
+
 .modal__govde {
   display: grid;
 }

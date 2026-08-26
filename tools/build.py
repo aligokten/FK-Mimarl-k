@@ -733,11 +733,22 @@ def bloklari_ciz(bloklar):
 
 
 # ============================================================ blog sayfası
+def belge_kaynagi(y):
+    """Yazının tam metnine götüren kaynak: ya Drive'daki PDF ya da harici
+    bir adres. İkisi de doluysa PDF öncelenir; ikisi de boşsa düğme hiç
+    basılmaz."""
+    pdf = (y.get("pdf") or "").strip()
+    if pdf:
+        return {"adres": drive_onizleme_adresi(pdf), "harici": False}
+    link = (y.get("link") or "").strip()
+    if link:
+        return {"adres": link, "harici": True}
+    return None
+
+
 def parca_pdf_dugmesi(y):
-    """Dergide yayınlanmış özgün dosyaya (PDF) bağlantı düğmesi. Alan
-    panelde boş bırakılırsa hiçbir şey basılmaz."""
-    ham = (y.get("pdf") or "").strip()
-    if not ham:
+    """Tam metni açan düğme (bkz. belge_kaynagi)."""
+    if not belge_kaynagi(y):
         return ""
     return f"""
         <p class="makale-pdf-cta">
@@ -749,19 +760,26 @@ def parca_pdf_dugmesi(y):
 
 
 def parca_pdf_modali(y):
-    ham = (y.get("pdf") or "").strip()
-    if not ham:
+    kaynak = belge_kaynagi(y)
+    if not kaynak:
         return ""
-    adres = drive_onizleme_adresi(ham)
+    adres = kaynak["adres"]
     kimlik = f"pdf-{kacis(y['slug'])}"
+    # Kimi siteler kendilerinin çerçeve içine alınmasını engeller
+    # (X-Frame-Options). Çerçeve boş kalırsa okur çıkmaz kalmasın diye
+    # kaynağı yeni sekmede açan bir bağlantı da konur.
     return f"""
   <div class="modal modal--pdf" id="{kimlik}" hidden>
     <div class="modal__perde" data-pdf-kapat></div>
-    <div class="modal__kutu" role="dialog" aria-modal="true" aria-label="{kacis(y['baslik'])} — PDF">
+    <div class="modal__kutu" role="dialog" aria-modal="true" aria-label="{kacis(y['baslik'])}">
+      <a class="modal__disa" href="{kacis(adres)}" target="_blank" rel="noopener"
+         aria-label="Kaynağı yeni sekmede aç">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+      </a>
       <button class="modal__kapat" type="button" data-pdf-kapat aria-label="Kapat">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
       </button>
-      <iframe class="pdf-cerceve" data-pdf-src="{kacis(adres)}" title="{kacis(y['baslik'])} — PDF" loading="lazy"></iframe>
+      <iframe class="pdf-cerceve" data-pdf-src="{kacis(adres)}" title="{kacis(y['baslik'])}" loading="lazy"></iframe>
     </div>
   </div>"""
 
