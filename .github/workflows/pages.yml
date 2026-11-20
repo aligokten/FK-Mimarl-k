@@ -11,6 +11,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Asistan iş akışı, kendi commit'inden sonra yayını buradan çağırır:
+  # GITHUB_TOKEN ile atılan push yukarıdaki push tetikleyicisini
+  # çalıştırmaz (bkz. .github/workflows/asistan.yml).
+  workflow_call:
 
 permissions:
   contents: read

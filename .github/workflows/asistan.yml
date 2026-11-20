@@ -1,0 +1,113 @@
+# Yönetim panelindeki asistan: yazılan isteği Claude Code ile uygular.
+#
+# Panel bu iş akışını workflow_dispatch ile tetikler (bkz. admin/admin.js).
+# API anahtarı yalnızca burada, GitHub Secrets içinde durur; tarayıcıya
+# hiçbir zaman inmez.
+#
+# Tek seferlik ayar:
+#   1. Depo > Settings > Secrets and variables > Actions > New repository
+#      secret: ANTHROPIC_API_KEY
+#   2. Panelin kullandığı erişim anahtarına (PAT) "Actions: Read and write"
+#      izni eklenmeli; yoksa panel bu akışı tetikleyemez.
+
+name: Asistan
+
+on:
+  workflow_dispatch:
+    inputs:
+      istek:
+        description: "Sitede yapılmasını istediğiniz değişiklik"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+# Aynı anda tek istek işlensin; sıradaki beklesin. İki asistan çalışması
+# aynı dosyaları aynı anda değiştirirse biri diğerinin işini ezer.
+concurrency:
+  group: asistan
+  cancel-in-progress: false
+
+jobs:
+  duzenle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      sonuc: ${{ steps.isle.outputs.sonuc }}
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+
+      - name: Node kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Claude Code kur
+        run: npm install -g @anthropic-ai/claude-code@latest
+
+      # İstek metni kabuğa doğrudan gömülmez; $ISTEK olarak ortamdan okunur.
+      # Aksi hâlde panele yazılan metin komut olarak çalıştırılabilirdi.
+      - name: İsteği uygula
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ISTEK: ${{ inputs.istek }}
+        run: |
+          claude --bare -p "$ISTEK" \
+            --permission-mode acceptEdits \
+            --allowedTools "Read,Edit,Write,Glob,Grep" \
+            --append-system-prompt "$(cat .github/asistan-yonerge.md)" \
+            | tee /tmp/asistan-cikti.txt
+
+      # Asistan yayın hattına ya da panele dokunduysa o değişiklikler geri
+      # alınır: oradaki bir hata sahibin siteyi yönetmesini engeller.
+      - name: Korunan klasörleri geri al
+        run: |
+          if ! git diff --quiet -- .github admin; then
+            echo "::warning::Asistan .github/ veya admin/ içinde değişiklik yaptı; bunlar geri alındı."
+            git checkout -- .github admin
+          fi
+          git clean -fd -- .github admin
+
+      # Derleme elle değil burada çalışır: data/*.json değiştiğinde
+      # sayfaların yeniden üretilmesi asistanın hatırlamasına bırakılmaz.
+      - name: Sayfaları derle
+        run: python3 tools/build.py
+
+      - name: Değişiklikleri işle
+        id: isle
+        env:
+          ISTEK: ${{ inputs.istek }}
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Değişiklik üretilmedi."
+            echo "sonuc=degisiklik-yok" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          KONU=$(printf '%s' "$ISTEK" | head -n 1 | cut -c1-60)
+          {
+            printf 'Asistan: %s\n\n' "$KONU"
+            printf 'Panelden gelen istek:\n%s\n\n' "$ISTEK"
+            printf 'Bu değişiklik yönetim panelindeki asistan tarafından yapıldı.\n'
+          } > /tmp/asistan-mesaj.txt
+
+          git commit -F /tmp/asistan-mesaj.txt
+          git push origin HEAD:main
+          echo "sonuc=islendi" >> "$GITHUB_OUTPUT"
+
+  # Yayın. Push GITHUB_TOKEN ile yapıldığı için pages.yml kendiliğinden
+  # tetiklenmez; bu yüzden aynı iş akışı buradan açıkça çağrılır.
+  yayinla:
+    needs: duzenle
+    if: needs.duzenle.outputs.sonuc == 'islendi'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml

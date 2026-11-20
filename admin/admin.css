@@ -228,3 +228,38 @@ code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   background: var(--paper-3); padding: .1rem .35rem; font-size: .9em;
 }
+
+/* ------------------------------------------------------------- asistan */
+.asistan-etiket {
+  display: block; margin-bottom: .4rem;
+  font-family: var(--font-display); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+#asistanIstek {
+  width: 100%; padding: .7rem .8rem; font: inherit; color: inherit;
+  background: var(--paper); border: 1px solid var(--line-strong);
+  border-radius: 0; resize: vertical; min-height: 92px;
+}
+#asistanIstek:focus { outline: none; border-color: var(--ink); }
+
+#asistanOrnek { margin-top: .6rem; }
+
+.asistan-durum {
+  margin-top: .75rem; display: grid; gap: .45rem;
+  max-height: 260px; overflow-y: auto;
+}
+
+.asistan-satir {
+  font-size: 13px; color: var(--muted);
+  padding-left: 1.1rem; position: relative;
+}
+.asistan-satir::before {
+  content: "•"; position: absolute; left: 0; color: var(--line-strong);
+}
+.asistan-satir--ok { color: var(--ok); }
+.asistan-satir--ok::before { content: "✓"; color: var(--ok); }
+.asistan-satir--hata { color: var(--hata); }
+.asistan-satir--hata::before { content: "!"; color: var(--hata); font-weight: 700; }
+
+.asistan-bag { color: inherit; text-decoration: underline; }

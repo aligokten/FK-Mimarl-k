@@ -134,6 +134,7 @@
     <button class="sekme" role="tab" data-sekme="logo" aria-selected="false">Logo</button>
     <button class="sekme" role="tab" data-sekme="site" aria-selected="false">Site &amp; Footer</button>
     <button class="sekme" role="tab" data-sekme="mesajlar" aria-selected="false">Mesajlar</button>
+    <button class="sekme" role="tab" data-sekme="asistan" aria-selected="false">Asistan</button>
   </div>
 
   <!-- ---------------- PROJELER ---------------- -->
@@ -225,6 +226,40 @@
       <p>İletişim formundan gelen mesajlar.</p>
     </header>
     <div id="mesajlarIcerik"></div>
+  </section>
+
+  <!-- ---------------- ASİSTAN ---------------- -->
+  <section class="panel" id="panel-asistan" role="tabpanel" hidden>
+    <header>
+      <h2>Asistan</h2>
+      <p>
+        Sitede ne değişmesini istediğinizi gündelik dille yazın; yapay zekâ
+        değişikliği yapıp yayınlasın. Diğer sekmelerin ulaşmadığı yerler
+        (metinler, tasarım, yeni bölümler) için kullanın.
+      </p>
+    </header>
+
+    <div class="kart">
+      <label class="asistan-etiket" for="asistanIstek">İsteğiniz</label>
+      <textarea id="asistanIstek" rows="4"
+        placeholder="Örnek: Anasayfadaki &quot;Tarihten geleceğe&quot; başlığının altındaki yazıyı kısalt ve daha davetkâr yap."></textarea>
+      <p class="ipucu" id="asistanOrnek">
+        Ne kadar açık yazarsanız sonuç o kadar isabetli olur. Örnekler:
+        “İletişim sayfasındaki çalışma saatlerini cumartesi de kapsayacak
+        şekilde güncelle”, “Hizmetler sayfasındaki kartların arasındaki
+        boşluğu biraz artır”, “Footer'daki tanıtım metnini iki cümleye indir”.
+      </p>
+      <div class="eylemler">
+        <button class="btn" id="asistanGonder">Gönder</button>
+      </div>
+    </div>
+
+    <div class="kart" id="asistanDurumKart" hidden>
+      <strong>Durum</strong>
+      <div id="asistanDurum" class="asistan-durum"></div>
+    </div>
+
+    <div class="bildirim bildirim--uyari" id="asistanKurulum" hidden></div>
   </section>
 
 </div>

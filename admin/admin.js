@@ -1375,12 +1375,186 @@
       .then(function () { dugme.disabled = false; });
   }
 
+  /* ------------------------------------------------------------- asistan
+
+     Panel, isteği doğrudan bir yapay zekâ servisine göndermez: depodaki
+     "Asistan" iş akışını tetikler (bkz. .github/workflows/asistan.yml).
+     Böylece API anahtarı GitHub Secrets içinde kalır, tarayıcıya inmez.
+     Tetikleme yanıt gövdesi döndürmediği için çalışma, tetiklemeden önceki
+     en son çalışma numarasıyla karşılaştırılarak bulunur.
+     --------------------------------------------------------------------- */
+  var AKIS = "asistan.yml";
+  var asistanCalisiyor = false;
+
+  function eylemYolu(ek) {
+    return "/repos/" + ayar.sahip + "/" + ayar.repo + "/actions" + ek;
+  }
+
+  function bekle(ms) {
+    return new Promise(function (coz) { window.setTimeout(coz, ms); });
+  }
+
+  function asistanYaz(metin, tur) {
+    $("#asistanDurumKart").hidden = false;
+    var kap = $("#asistanDurum");
+    var satir = el("div", "asistan-satir" + (tur ? " asistan-satir--" + tur : ""), metin);
+    kap.appendChild(satir);
+    kap.scrollTop = kap.scrollHeight;
+    return satir;
+  }
+
+  function asistanKurulumUyarisi(mesaj) {
+    var k = $("#asistanKurulum");
+    k.innerHTML = mesaj;
+    k.hidden = false;
+  }
+
+  function sonCalismaNo() {
+    return istek(eylemYolu("/workflows/" + AKIS + "/runs?per_page=1"))
+      .then(function (y) {
+        var l = y.workflow_runs || [];
+        return l.length ? l[0].id : 0;
+      })
+      .catch(function () { return 0; });
+  }
+
+  /* Tetiklemeden sonra oluşan yeni çalışmayı yakalar. */
+  function yeniCalismaBul(oncekiNo, sonTarih) {
+    return istek(eylemYolu("/workflows/" + AKIS + "/runs?per_page=5"))
+      .then(function (y) {
+        var l = y.workflow_runs || [];
+        for (var i = 0; i < l.length; i++) {
+          if (l[i].id > oncekiNo) return l[i];
+        }
+        if (Date.now() > sonTarih) {
+          throw new Error("Çalışma başlamadı. GitHub → Actions sekmesinden kontrol edin.");
+        }
+        return bekle(3000).then(function () {
+          return yeniCalismaBul(oncekiNo, sonTarih);
+        });
+      });
+  }
+
+  function calismaBekle(no, bildirDurum) {
+    return istek(eylemYolu("/runs/" + no)).then(function (c) {
+      if (c.status === "completed") return c;
+      bildirDurum(c.status);
+      return bekle(5000).then(function () { return calismaBekle(no, bildirDurum); });
+    });
+  }
+
+  function asistanGonder() {
+    if (asistanCalisiyor) return;
+
+    var alan = $("#asistanIstek");
+    var metin = alan.value.trim();
+    if (!metin) {
+      bildir("Önce ne yapılmasını istediğinizi yazın.", "uyari");
+      alan.focus();
+      return;
+    }
+
+    /* Kaydedilmemiş panel değişiklikleri asistanın göreceği hâle dahil
+       değildir; asistan commit atınca bu değişiklikler kaydedilemez hâle
+       gelir (sha eskir). Bu yüzden önce kaydettirilir. */
+    var bekleyen = Object.keys(kirli).filter(function (k) { return kirli[k]; });
+    if (bekleyen.length) {
+      bildir("Önce kaydedilmemiş değişiklikleri kaydedin (" +
+             bekleyen.join(", ") + "), sonra asistanı çalıştırın.", "uyari");
+      return;
+    }
+
+    var dugme = $("#asistanGonder");
+    asistanCalisiyor = true;
+    dugme.disabled = true;
+    dugme.textContent = "Çalışıyor…";
+    $("#asistanKurulum").hidden = true;
+    $("#asistanDurum").textContent = "";
+    asistanYaz("İstek gönderiliyor…");
+
+    var baslangic = Date.now();
+    function gecenSure() {
+      var sn = Math.round((Date.now() - baslangic) / 1000);
+      return sn < 60 ? sn + " sn" : Math.floor(sn / 60) + " dk " + (sn % 60) + " sn";
+    }
+
+    sonCalismaNo()
+      .then(function (oncekiNo) {
+        return istek(eylemYolu("/workflows/" + AKIS + "/dispatches"), {
+          method: "POST",
+          body: { ref: ayar.dal, inputs: { istek: metin } }
+        }).then(function () {
+          asistanYaz("İstek alındı, asistan başlatılıyor…");
+          return yeniCalismaBul(oncekiNo, Date.now() + 60000);
+        });
+      })
+      .then(function (calisma) {
+        var satir = asistanYaz("Asistan çalışıyor… (" + gecenSure() + ")");
+        var bag = el("a", "asistan-bag", "GitHub'da izle");
+        bag.href = calisma.html_url;
+        bag.target = "_blank";
+        bag.rel = "noopener";
+        satir.appendChild(document.createTextNode(" "));
+        satir.appendChild(bag);
+
+        return calismaBekle(calisma.id, function () {
+          satir.firstChild.textContent = "Asistan çalışıyor… (" + gecenSure() + ")";
+        }).then(function (son) {
+          return { calisma: son, bag: calisma.html_url };
+        });
+      })
+      .then(function (y) {
+        if (y.calisma.conclusion !== "success") {
+          asistanYaz("Asistan tamamlanamadı (" + y.calisma.conclusion +
+                     "). Ayrıntı için GitHub'daki çalışma kaydına bakın.", "hata");
+          asistanKurulumUyarisi(
+            "<strong>Çalışma başarısız oldu.</strong> En sık nedeni " +
+            "<code>ANTHROPIC_API_KEY</code> anahtarının tanımlı olmaması veya " +
+            "kredisinin bitmesidir. Depo → Settings → Secrets and variables → " +
+            "Actions bölümünden kontrol edin.");
+          return;
+        }
+        asistanYaz("Tamamlandı (" + gecenSure() + "). Değişiklik yayınlanıyor; " +
+                   "sitede görünmesi birkaç dakika sürebilir.", "ok");
+        alan.value = "";
+        /* Asistan içerik dosyalarını değiştirmiş olabilir; panelin elindeki
+           kopya ve sha değerleri tazelenir, yoksa sonraki kayıt çakışır. */
+        return Promise.all(DOSYALAR.map(function (ad) {
+          return dosyaOku(ad).then(function (v) { veri[ad] = v; });
+        })).then(function () {
+          cizAll();
+          asistanYaz("Paneldeki içerik yenilendi.");
+        });
+      })
+      .catch(function (e) {
+        var m = String(e.message || e);
+        asistanYaz("Hata: " + m, "hata");
+        if (/bulunamadı|Not Found|404/i.test(m)) {
+          asistanKurulumUyarisi(
+            "<strong>Asistan iş akışı tetiklenemedi.</strong> İki şeyi kontrol edin: " +
+            "(1) erişim anahtarınızda <em>Actions: Read and write</em> izni olmalı; " +
+            "(2) depoda <code>.github/workflows/asistan.yml</code> dosyası bulunmalı.");
+        } else if (/403/.test(m) || /izin|permission/i.test(m)) {
+          asistanKurulumUyarisi(
+            "<strong>Yetki yetersiz.</strong> Erişim anahtarına (PAT) " +
+            "<em>Actions: Read and write</em> izni ekleyip paneli yeniden " +
+            "kurmanız gerekiyor.");
+        }
+      })
+      .then(function () {
+        asistanCalisiyor = false;
+        dugme.disabled = false;
+        dugme.textContent = "Gönder";
+      });
+  }
+
   /* ------------------------------------------------------------- olaylar */
   function olaylariBagla() {
     $("#girisBtn").addEventListener("click", girisDene);
     $("#kurulumBtn").addEventListener("click", kurulumDene);
     $("#sifirlaBtn").addEventListener("click", kilidiSifirla);
     $("#cikis").addEventListener("click", cikis);
+    $("#asistanGonder").addEventListener("click", asistanGonder);
 
     [$("#kullaniciGiris"), $("#sifreGiris")].forEach(function (g) {
       g.addEventListener("keydown", function (e) {
