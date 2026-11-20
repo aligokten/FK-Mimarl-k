@@ -779,6 +779,31 @@
   }
 
   /* ---------------------------------------------------------------------
+     WhatsApp düğmesi — telefonda okurken metnin üstünü kapatmasın:
+     aşağı kaydırırken gizlenir, yukarı kaydırınca ya da durunca geri gelir.
+     (Görünürlük kuralı CSS'te yalnızca dar ekranlarda uygulanır.)
+     --------------------------------------------------------------------- */
+  function initWaFloat() {
+    var dugme = document.querySelector(".wa-float");
+    if (!dugme) return;
+    var son = window.pageYOffset || 0;
+    var zamanlayici = null;
+    window.addEventListener("scroll", function () {
+      var y = window.pageYOffset || 0;
+      if (y > son + 4 && y > 200) {
+        document.body.classList.add("wa-gizli");
+      } else if (y < son - 4) {
+        document.body.classList.remove("wa-gizli");
+      }
+      son = y;
+      clearTimeout(zamanlayici);
+      zamanlayici = setTimeout(function () {
+        document.body.classList.remove("wa-gizli");
+      }, 1500);
+    }, { passive: true });
+  }
+
+  /* ---------------------------------------------------------------------
      Yıl bilgisi
      --------------------------------------------------------------------- */
   function initYear() {
@@ -803,6 +828,7 @@
     initProjeModal();
     initPdfModal();
     initYear();
+    initWaFloat();
   }
 
   if (document.readyState === "loading") {

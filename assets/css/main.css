@@ -3201,6 +3201,37 @@ body.hero-gorunur .to-top {
   height: 22px;
 }
 
+/* Telefonda: WhatsApp ve "yukarı çık" düğmeleri aynı ölçüde (44 px) ve
+   köşelere aynı uzaklıkta; WhatsApp aşağı kaydırırken gizlenir
+   (bkz. main.js → initWaFloat) */
+@media (max-width: 700px) {
+  .wa-float,
+  .to-top {
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    width: 44px;
+    height: 44px;
+  }
+
+  .wa-float {
+    left: 0.75rem;
+  }
+
+  .to-top {
+    right: 0.75rem;
+  }
+
+  .wa-float svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  body.wa-gizli .wa-float {
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+  }
+}
+
 /* --------------------------------------------------------------------------
    17. Kaydırma animasyonları
    -------------------------------------------------------------------------- */
