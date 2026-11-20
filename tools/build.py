@@ -300,6 +300,32 @@ def parca_kurucu_portre(s):
             f'                 width="1000" height="1250" loading="lazy">')
 
 
+VARSAYILAN_FAVICON = "assets/img/favicon.svg"
+
+
+def parca_favicon(s):
+    """Sekme simgesi. Panelde boş bırakılırsa depodaki varsayılan SVG kalır.
+
+    Drive bağlantısı verildiğinde tür bildirilmez: dosyanın PNG mi SVG mi
+    olduğunu adresten bilemeyiz, yanlış type tarayıcıyı yanıltır; type
+    yokken tarayıcı içeriğe bakarak karar verir."""
+    ham = (s.get("favicon") or "").strip()
+    if not ham:
+        return (f'<link rel="icon" href="{VARSAYILAN_FAVICON}" type="image/svg+xml">\n'
+                f'<link rel="apple-touch-icon" href="{VARSAYILAN_FAVICON}">')
+    adres = gorsel_adresi(ham, 512)
+    return (f'<link rel="icon" href="{kacis(adres)}">\n'
+            f'<link rel="apple-touch-icon" href="{kacis(adres)}">')
+
+
+def favicon_adresi(s):
+    """Web uygulaması künyesi (site.webmanifest) için mutlak/kök yol."""
+    ham = (s.get("favicon") or "").strip()
+    if not ham:
+        return "/" + VARSAYILAN_FAVICON, "image/svg+xml"
+    return gorsel_adresi(ham, 512), None
+
+
 def parca_footer_alt(s):
     f = s["footer"]
     # Yönetim bağlantısı tüm sayfalarda kök dizinde olduğu için göreli adres
@@ -865,6 +891,7 @@ def uret():
         "footer-marka": parca_footer_marka(s),
         "sayaclar": parca_sayaclar(s),
         "kurucu-portre": parca_kurucu_portre(s),
+        "favicon": parca_favicon(s),
         "footer-alt": parca_footer_alt(s),
         "mobil-iletisim": parca_mobil_iletisim(s),
         "iletisim-kartlari": parca_iletisim_kartlari(s),
@@ -921,6 +948,24 @@ def uret():
         if f.startswith("blog-") and f.endswith(".html") and f not in gecerli:
             os.remove(os.path.join(KOK, f))
             degisen.append(f + " (silindi)")
+
+    # ---- web uygulaması künyesi
+    # Sekme simgesi panelden değiştiğinde telefona eklenen kısayolun simgesi
+    # de onunla birlikte güncellensin diye künye burada yeniden üretilir.
+    kunye_yolu = os.path.join(KOK, "site.webmanifest")
+    if os.path.exists(kunye_yolu):
+        with open(kunye_yolu, encoding="utf-8") as f:
+            kunye = json.load(f)
+        simge_adres, simge_turu = favicon_adresi(s)
+        simge = {"src": simge_adres, "sizes": "any", "purpose": "any"}
+        if simge_turu:
+            simge["type"] = simge_turu
+        kunye["icons"] = [simge]
+        yeni_kunye = json.dumps(kunye, ensure_ascii=False, indent=2) + "\n"
+        if open(kunye_yolu, encoding="utf-8").read() != yeni_kunye:
+            with open(kunye_yolu, "w", encoding="utf-8") as f:
+                f.write(yeni_kunye)
+            degisen.append("site.webmanifest")
 
     # ---- sitemap
     adresler = ["", "hakkimizda.html", "hizmetler.html", "projeler.html",

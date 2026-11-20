@@ -891,6 +891,24 @@
     k4.appendChild(k4Alan);
     kap.appendChild(k4);
 
+    /* --- sekme simgesi (favicon) --- */
+    var k5 = el("div", "kart");
+    k5.appendChild(el("strong", null, "Sekme simgesi (favicon)"));
+    var k5Bilgi = el("p", "ipucu");
+    k5Bilgi.style.marginBottom = ".5rem";
+    k5Bilgi.textContent =
+      "Tarayıcı sekmesinde, yer imlerinde ve telefona eklenen kısayolda görünen küçük " +
+      "simge. Kare (1:1) bir görsel kullanın; 512×512 piksel PNG idealdir. Boş " +
+      "bırakılırsa sitenin varsayılan simgesi kalır. Değişikliğin görünmesi için " +
+      "tarayıcıyı yenilemeniz (bazen önbelleği temizlemeniz) gerekebilir.";
+    k5.appendChild(k5Bilgi);
+    k5.appendChild(kapakGorseli(s, "site", cizSite, {
+      alan: "favicon",
+      etiket: "Simge görseli",
+      bosIpucu: "Varsayılan simge kullanılıyor."
+    }));
+    kap.appendChild(k5);
+
     /* --- anasayfadaki rakamlar --- */
     var ks = el("div", "kart");
     ks.appendChild(el("strong", null, "Anasayfadaki rakamlar"));
