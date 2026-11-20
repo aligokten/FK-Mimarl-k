@@ -1,5 +1,72 @@
 [
   {
+    "slug": "restorasyon-projesi-ne-kadar-surer",
+    "baslik": "Restorasyon Projesi Ne Kadar Sürer?",
+    "ay": "Kasım",
+    "yil": "2026",
+    "kategori": "Rehber",
+    "sure": "3 dk okuma",
+    "ozet": "Mal sahiplerinin en sık sorduğu soru. Bir restorasyon projesinde uzmanların neden zincirleme çalıştığını ve süreyi neyin belirlediğini anlatıyoruz.",
+    "pdf": "",
+    "link": "",
+    "yayinda": true,
+    "slugKilit": true,
+    "bloklar": [
+      {
+        "tip": "p",
+        "metin": "Tescilli bir yapının sahibiyle ilk görüşmede en sık duyduğumuz soru şudur: Proje ne kadar sürer? Cevap, yapının büyüklüğünden çok işin yapısında saklıdır. Restorasyon projesi tek bir masada biten bir çizim değildir; birbirinin sonucunu bekleyen uzmanların zincirleme çalıştığı bir süreçtir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Bir projede kimler çalışır?"
+      },
+      {
+        "tip": "liste",
+        "metin": "Ölçüm ekibi: yapıyı ölçer ve çizime esas olacak veriyi hazırlar\nMimari çizim ekibi: rölöve, restitüsyon ve restorasyon projelerini çizer, analizleri ve raporları hazırlar\nHarita mühendisi: LİHKAB lisanslı harita mühendisi aplikasyon krokisini hazırlar\nSanat tarihçi: yapının tarihsel ve mimari değerlendirmesini içeren sanat tarihi raporunu yazar"
+      },
+      {
+        "tip": "p",
+        "metin": "Çizimin kendisi zaten zaman ve emek isteyen, hassas bir iştir. Yapının her duvarı, açıklığı, malzemesi ve bozulması tek tek belgelenir. Ancak süreyi asıl belirleyen, bu uzmanların işlerinin birbirine bağlı olmasıdır."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Neden zincirleme ilerler?"
+      },
+      {
+        "tip": "p",
+        "metin": "Her aşama bir öncekinin sonucuna dayanır:"
+      },
+      {
+        "tip": "liste",
+        "metin": "Ölçüm ve veri hazırlığı bitmeden rölöve çizimine başlanamaz.\nSanat tarihçi değerlendirmesini rölöve çizimleri üzerinden yapar; rölöve tamamlanana kadar bekler.\nRestitüsyon, sanat tarihi raporundaki verilere dayanır; bu rapor beklenir.\nRestorasyon projesi, restitüsyon bitmeden çizilemez."
+      },
+      {
+        "tip": "p",
+        "metin": "Bu nedenle küçük bir yapı bile olsa restorasyon projesi zaman ve koordinasyon gerektiren bir iştir. Aşamalardan birindeki gecikme, ardından gelen bütün işleri öteler."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Kurul süreci de takvime eklenir"
+      },
+      {
+        "tip": "p",
+        "metin": "Proje takımı tamamlandıktan sonra belediye aracılığıyla koruma bölge kuruluna gider. Kurullar ayda bir toplanır ve revizyon istenen her proje bir sonraki toplantıyı bekler. Kurul onayının ardından uygulama ruhsatı için mühendislik projeleriyle birlikte belediyeye başvurulur. Bu aşamaların ayrıntılarını Tescilli Yapıda Koruma Kurulu Süreci yazımızda anlattık."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Koordinasyonu kim yapar?"
+      },
+      {
+        "tip": "p",
+        "metin": "Bu zinciri kuran ve yöneten mimardır. Ölçüm ekibi, harita mühendisi ve sanat tarihçiyle iş takvimini biz planlarız; her aşamanın zamanında başlamasını ve bir sonrakine eksiksiz veri aktarmasını biz takip ederiz. Koordinasyon bedeli mimari proje teklifimizin içinde yer alır, böylece mal sahibinin her uzmanla ayrı ayrı uğraşması gerekmez."
+      },
+      {
+        "tip": "p",
+        "metin": "Yapınız için gerçekçi bir takvimi, yapıyı yerinde gördükten sonra çıkarırız. Ön görüşme için bizimle iletişime geçebilirsiniz."
+      }
+    ]
+  },
+  {
     "slug": "tescilli-yapida-koruma-kurulu-sureci",
     "baslik": "Tescilli Yapıda Koruma Kurulu Süreci: Adım Adım",
     "ay": "Kasım",
