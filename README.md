@@ -88,7 +88,18 @@ gönderilmez. Ortak bilgisayarda iş bitince **Çıkış**'a basın — anahtar 
 Paneldeki **Asistan** sekmesinden gündelik dille istek yazılır (“footer'daki
 tanıtım metnini kısalt”, “hizmet kartlarının arasını aç”), değişikliği Claude
 yapar ve yayınlar. Diğer sekmelerin kapsamadığı her şey — metin, tasarım, yeni
-bölüm — buradan değiştirilebilir.
+bölüm — buradan değiştirilebilir. Ayrıca iki uzmanlık alanı yüklüdür:
+
+- **SEO** — [searchfit-seo](https://github.com/searchfit/searchfit-seo)
+  eklentisi (MIT, üçüncü taraf) iş akışında belirli bir commit'e sabitlenmiş
+  hâlde yüklenir. SEO denetimi, teknik SEO, sayfa içi optimizasyon, şema
+  işaretleme, iç bağlantı, bozuk bağlantı taraması, anahtar kelime kümeleme
+  ve içerik stratejisi becerileri gelir. Eklenti saf Markdown'dır
+  (çalıştırılabilir betik içermez); alınamazsa asistan eklentisiz devam eder.
+- **Medya yönetimi** — hangi görselin nerede kullanıldığı, önerilen boyutlar
+  ve eksik/yanlış yerleştirilmiş medya `.github/asistan-yonerge.md` içinde
+  tanımlıdır. Asistan Drive'a erişemez: yeni görsel yükleyemez, yalnızca
+  verdiğiniz Drive bağlantılarını yerleştirir ve düzenler.
 
 Akış şöyledir; **yapay zekâ anahtarı tarayıcıya hiç inmez**, yalnızca GitHub
 tarafında durur:
@@ -116,7 +127,8 @@ Güvenlik sınırları:
 - Asistan `.github/` ve `admin/` klasörlerine yazamaz. Yazmaya çalışırsa iş
   akışı bu değişiklikleri işlemeden geri alır — yayın hattı ve panel, hatalı
   bir istekle bozulamaz.
-- Asistana kabuk (Bash) erişimi verilmez; yalnızca dosya okuyup yazabilir.
+- Asistana kabuk (Bash) erişimi verilmez; yalnızca dosya okuyup yazabilir ve
+  web sayfası getirebilir (SEO denetimi için gerekir).
 - İstek metni kabuğa gömülmez, ortam değişkeni olarak aktarılır.
 - Asistanın uyacağı proje kuralları `.github/asistan-yonerge.md` dosyasındadır;
   değiştirerek davranışını şekillendirebilirsiniz.

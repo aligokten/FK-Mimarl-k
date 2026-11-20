@@ -47,6 +47,21 @@ jobs:
       - name: Claude Code kur
         run: npm install -g @anthropic-ai/claude-code@latest
 
+      # SEO becerileri (denetim, şema işaretleme, iç bağlantı, bozuk bağlantı,
+      # anahtar kelime, içerik stratejisi) bu eklentiden gelir. Üçüncü taraf
+      # olduğu için sürüm bir commit'e sabitlenir; eklenti saf Markdown'dır,
+      # çalıştırılabilir betik içermez. Alınamazsa asistan eklentisiz devam
+      # eder: SEO dışındaki istekler bundan etkilenmemeli.
+      - name: SEO eklentisini al
+        id: eklenti
+        continue-on-error: true
+        env:
+          EKLENTI_SURUM: c324a2e87c4dd84fe6bd6d55e45272acdd090afd
+        run: |
+          git clone -q https://github.com/searchfit/searchfit-seo.git /tmp/eklenti
+          git -C /tmp/eklenti checkout -q "$EKLENTI_SURUM"
+          test -f /tmp/eklenti/.claude-plugin/plugin.json
+
       # İstek metni kabuğa doğrudan gömülmez; $ISTEK olarak ortamdan okunur.
       # Aksi hâlde panele yazılan metin komut olarak çalıştırılabilirdi.
       - name: İsteği uygula
@@ -54,11 +69,21 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ISTEK: ${{ inputs.istek }}
         run: |
-          claude --bare -p "$ISTEK" \
-            --permission-mode acceptEdits \
-            --allowedTools "Read,Edit,Write,Glob,Grep" \
-            --append-system-prompt "$(cat .github/asistan-yonerge.md)" \
-            | tee /tmp/asistan-cikti.txt
+          ARGS=(
+            --bare
+            -p "$ISTEK"
+            --permission-mode acceptEdits
+            --allowedTools "Read,Edit,Write,Glob,Grep,WebFetch"
+            --append-system-prompt "$(cat .github/asistan-yonerge.md)"
+          )
+          # --bare eklentileri kendiliğinden yüklemez; açıkça verilmesi gerekir.
+          if [ -f /tmp/eklenti/.claude-plugin/plugin.json ]; then
+            ARGS+=(--plugin-dir /tmp/eklenti)
+            echo "SEO eklentisi yüklendi."
+          else
+            echo "::warning::SEO eklentisi alınamadı; asistan eklentisiz çalışıyor."
+          fi
+          claude "${ARGS[@]}" | tee /tmp/asistan-cikti.txt
 
       # Asistan yayın hattına ya da panele dokunduysa o değişiklikler geri
       # alınır: oradaki bir hata sahibin siteyi yönetmesini engeller.

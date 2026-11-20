@@ -263,3 +263,7 @@ code {
 .asistan-satir--hata::before { content: "!"; color: var(--hata); font-weight: 700; }
 
 .asistan-bag { color: inherit; text-decoration: underline; }
+
+.asistan-ornekler { margin: .4rem 0 0; padding-left: 1.1rem; }
+.asistan-ornekler li { margin-bottom: .3rem; }
+.asistan-ornekler em { font-style: normal; color: var(--ink); }

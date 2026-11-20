@@ -57,6 +57,71 @@ Görseller depoda durmaz; Google Drive paylaşım bağlantısı olarak
 `lh3.googleusercontent.com` adresine çevirir. Yeni görsel ekleyemezsin;
 kullanıcıdan Drive bağlantısı gelmediyse görsel alanını boş bırak.
 
+## Medya yönetimi
+
+Sitedeki tüm medya Drive bağlantısı olarak JSON'da durur. Hangi alan nerede
+görünür:
+
+| Alan | Dosya | Nerede görünür | Önerilen görsel |
+|---|---|---|---|
+| `gorseller[]` | `projeler.json` | Proje kartı ve modal galerisi | yatay, 1600 px geniş |
+| `gorseller[].video` | `projeler.json` | `true` ise Drive oynatıcısıyla açılır | — |
+| `banner` | `haberler.json` | Haber kaydındaki küçük görsel | kare, 800×800 |
+| `link` | `haberler.json` | Kaydı tıklanabilir yapar (yeni sekme) | — |
+| `gorsel` | `blog.json` | Anasayfa blog şeridindeki kapak | 4:3, 1600×1200 |
+| `pdf` / `link` | `blog.json` | “Tamamını oku” düğmesi (PDF pencerede, link yeni sekmede) | — |
+| `kurucuFoto` | `site.json` | Hakkımızda sayfasındaki portre | dikey 4:5 |
+| `favicon` | `site.json` | Sekme simgesi | kare, 512×512 |
+| `logo.*` | `site.json` | Başlık ve alt bilgi logosu | — |
+
+Medya ile ilgili yapabileceklerin: bir görseli başka bir Drive bağlantısıyla
+değiştirmek, sırasını değiştirmek, kaldırmak; boş kalmış ya da yanlış alana
+konmuş medya alanlarını bulup bildirmek; bir görselin video olarak
+işaretlenmesi gerekip gerekmediğini sormak.
+
+Yapamayacakların: dosya yükleyemez, Drive'a erişemez, görsel üretemez,
+boyut değiştiremez. Kullanıcı yeni bir görsel istiyorsa ondan Drive
+bağlantısı iste; bağlantı yoksa alanı boş bırak ve bunu söyle.
+
+Drive bağlantısının biçimi önemli değildir (`/file/d/<kimlik>/view`, `?id=`,
+`/thumbnail?id=` hepsi çalışır); `tools/build.py` kimliği kendisi ayıklar.
+Dosyanın Drive'da “Bağlantıya sahip herkes” olarak paylaşılmış olması
+gerekir — bunu sen kontrol edemezsin, sorun varsa kullanıcıya hatırlat.
+
+## SEO
+
+`searchfit-seo` eklentisinin becerileri yüklüdür (SEO denetimi, teknik SEO,
+sayfa içi optimizasyon, şema işaretleme, iç bağlantı, bozuk bağlantı,
+anahtar kelime kümeleme, içerik stratejisi). Kullanırken bu projeye özgü şu
+gerçekleri bil:
+
+- Site **statiktir ve üretilmiş HTML'in tamamı depodadır**. Denetimi canlı
+  siteye istek atmadan, depodaki `*.html` dosyalarını okuyarak yapabilirsin;
+  en doğru ve en hızlı yol budur.
+- Alan adı `https://fatmakocaovamimarlik.com`. Mutlak adres üreten her yer
+  `tools/build.py` içindeki `ALAN_ADI` sabitinden gelir.
+- **`<title>`, `meta description`, `canonical`, Open Graph ve Twitter
+  etiketleri** her sayfanın `<head>` bölümünde elle yazılıdır; işaretli
+  bölge değildir, doğrudan düzenlenebilir.
+- Blog yazısı sayfaları `tools/kalip-yazi.html` kalıbından üretilir;
+  oradaki `@@BASLIK@@` ve `@@ACIKLAMA@@` yer tutucuları `blog.json`
+  içindeki `baslik` ve `ozet` alanlarından doldurulur. Bir yazının meta
+  açıklamasını değiştirmek için `ozet` alanını düzenle, HTML'i değil.
+- **`sitemap.xml` üretilir**, elle düzenleme; sayfa listesi ve öncelikler
+  `tools/build.py` içindeki sitemap bölümündedir.
+- **`robots.txt`** elle yazılıdır. `/admin/` kasıtlı olarak kapatılmıştır,
+  açma.
+- **Yapılandırılmış veri** (`application/ld+json`) `index.html` içinde elle
+  durur. Yeni şema eklerken mevcut bloğun yanına ekle.
+- `404.html` bilinçli olarak dış dosyaya bağlanmaz (her derinlikte
+  sunulabildiği için göreli yollar kırılır). Oraya stil veya betik bağlama.
+- İçerik Türkçedir, `lang="tr"` değiştirilmez.
+
+Dikkat: sayfalardaki birçok `<img>` etiketi `alt=""` ile üretilir. Bunu
+toplu hâlde düzeltmek `tools/build.py` içindeki `parca_*` fonksiyonlarını ve
+muhtemelen yeni bir JSON alanını gerektirir; kullanıcı açıkça istemeden bu
+çaplı değişikliğe girişme, önce ne gerektiğini anlat.
+
 ## Üslup
 
 - Yorumlar ve kullanıcıya görünen metinler Türkçe.
