@@ -45,9 +45,13 @@ tools/
   kalip-yazi.html            Blog yazısı sayfa kalıbı
   generate-placeholders.py   Geçici görselleri yeniden üretir
 .github/
-  workflows/pages.yml        Derleyip GitHub Pages'e yayınlar
-  workflows/asistan.yml      Panelden gelen yapay zekâ isteğini uygular
-  asistan-yonerge.md         Asistanın uyacağı proje kuralları
+  workflows/pages.yml               Derleyip GitHub Pages'e yayınlar
+  workflows/asistan.yml             Panelden gelen yapay zekâ isteğini uygular
+  workflows/degisiklik-raporu.yml   Sahip dışındaki değişiklikleri raporlar
+  workflows/geri-al.yml             Rapora yazılan /geri-al komutunu uygular
+  scripts/rapor.py                  Rapor metnini üretir
+  scripts/geri_al.sh                Geri alma işlemini yapar
+  asistan-yonerge.md                Asistanın uyacağı proje kuralları
 ```
 
 ---
@@ -69,12 +73,31 @@ birkaç dakika içinde güncellenir.
 
 ### Giriş
 
-Panel, GitHub'ın *fine-grained* erişim anahtarını kullanır:
+Panel, GitHub kişisel erişim anahtarıyla (PAT) çalışır. Herkes **kendi
+hesabının** anahtarını kullanmalıdır: değişiklik raporları kimin ne yaptığını
+anahtarın sahibinden anlar (bkz. *Yetki ve denetim*).
+
+**Depo sahibi** (`aligokten`) — *fine-grained* anahtar:
 
 1. GitHub → Settings → Developer settings → **Fine-grained tokens** → Generate new token
 2. *Repository access*: yalnızca bu depo
-3. *Permissions* → Repository permissions → **Contents: Read and write** (başka izin gerekmez)
+3. *Permissions* → Repository permissions → **Contents: Read and write** ve
+   **Actions: Read and write** (ikincisi Asistan sekmesi için)
 4. Süreyi sınırlı tutun (örn. 90 gün); dolunca yenileyin
+
+**Ortak çalışan** (`fatmakocaovamimarlik`) — *classic* anahtar. Fine-grained
+anahtarlar yalnızca anahtarın sahibine (ya da üyesi olunan kuruluşa) ait
+depolara erişebilir; başka bir kişinin deposunda ortak çalışan olan hesap bu
+depoyu seçemez ya da 404 alır.
+
+1. GitHub → Settings → Developer settings → **Tokens (classic)** → Generate new token (classic)
+2. *Scopes*: yalnızca **`repo`** işaretlenir. `workflow` işaretlenmez — bu
+   sayede bu anahtarla iş akışı dosyaları (yayın hattı, raporlar)
+   değiştirilemez.
+3. Süre: sınırlı (örn. 90 gün)
+
+> Classic anahtar o hesabın erişebildiği tüm depolara açılır; anahtarı
+> yalnızca bu panelde kullanın ve başka yerle paylaşmayın.
 
 Anahtar yalnızca tarayıcının `localStorage` alanında saklanır, hiçbir sunucuya
 gönderilmez. Ortak bilgisayarda iş bitince **Çıkış**'a basın — anahtar silinir.
@@ -118,9 +141,11 @@ alınabilir. Bir istek tipik olarak 1–3 dakika sürer, panel ilerlemeyi göste
    ödeme; tipik bir düzenleme birkaç senttir). Sonra depoda:
    Settings → Secrets and variables → Actions → *New repository secret* →
    ad: `ANTHROPIC_API_KEY`, değer: anahtar.
-2. **Panelin anahtarına Actions izni.** Yukarıdaki fine-grained token'a
-   *Contents: Read and write* yanında **Actions: Read and write** izni de
-   ekleyin (yoksa panel iş akışını tetikleyemez, “bulunamadı” hatası alır).
+2. **Panelin anahtarına Actions izni.** Fine-grained anahtarda *Contents*
+   yanında **Actions: Read and write** izni de olmalı (yoksa panel iş akışını
+   tetikleyemez, “Resource not accessible by personal access token” hatası
+   alır). Ortak çalışanın classic anahtarındaki `repo` kapsamı bunu zaten
+   içerir.
 
 Güvenlik sınırları:
 
@@ -136,6 +161,59 @@ Güvenlik sınırları:
 Kaydedilmemiş panel değişikliğiniz varken asistan çalıştırılamaz; panel önce
 kaydetmenizi ister (yoksa asistanın commit'i sizin değişikliğinizi kaydedilemez
 hâle getirir).
+
+### Yetki ve denetim
+
+Sitede iki hesap yetkilidir:
+
+| Hesap | Rol | Ne yapabilir |
+|---|---|---|
+| `aligokten` | Depo sahibi (admin) | Her şey; raporları alır, değişiklikleri geri alır |
+| `fatmakocaovamimarlik` | Ortak çalışan (write) | Panelden ve Asistan'dan **onay beklemeden** değişiklik yapar |
+
+Ortak çalışanın her değişikliği **onaya takılmadan yayına girer**, ama aynı
+anda depo sahibine atanmış bir GitHub kaydı (issue) olarak raporlanır:
+
+```
+değişiklik ──► main ──► yayın
+                 └────► "Değişiklik raporu" kaydı ──► sahibe bildirim
+```
+
+Rapor; kimin, ne zaman, hangi yoldan (Yönetim paneli / Asistan / doğrudan)
+neyi değiştirdiğini, değişen dosyaları ve farkın kendisini içerir. Asistan
+değişikliklerinde panele yazılan istek metni de rapordadır. Raporlar
+**Issues** sekmesinde `degisiklik-raporu` etiketiyle listelenir.
+
+Rapor üzerinden müdahale:
+
+- **Sorun yoksa:** kaydı kapatın.
+- **Geri almak için:** kayda `/geri-al` yazın. Değişiklik yeni bir commit ile
+  geri alınır, sayfalar yeniden üretilir, site yeniden yayınlanır ve kayıt
+  `geri-alindi` etiketiyle kapanır. Bu komutu **yalnızca depo sahibi**
+  kullanabilir; başkasının yazdığı `/geri-al` yok sayılır.
+- Sonradan aynı yere dokunan başka bir değişiklik varsa otomatik geri alma
+  çakışır; bu durumda hiçbir şey değiştirilmez ve kayda açıklama yazılır.
+  Önce daha yeni raporu geri almayı deneyin.
+- Ortak çalışanın erişimini tamamen kesmek için: Settings → Collaborators →
+  hesabı kaldırın.
+
+Raporlanmayanlar: depo sahibinin kendi değişiklikleri ve sahibin çalıştırdığı
+Asistan istekleri.
+
+Bilinmesi gerekenler:
+
+- **Bildirim:** kayıtlar size atanır; GitHub bunları e-postayla bildirir.
+  Gelmiyorsa GitHub → Settings → Notifications ayarını kontrol edin.
+- **Görünürlük:** depo herkese açık olduğu için raporlar da herkese açıktır.
+- **Güven sınırı:** sistem kazara yapılan hataları yakalamak için tasarlandı,
+  kötü niyete karşı bir kilit değildir. Ortak çalışan, GitHub web arayüzünden
+  iş akışı dosyalarını değiştirebilir; `.github/` veya `admin/`'e dokunan her
+  değişiklik raporda ⚠️ ile işaretlenir, ama raporlama iş akışının kendisi
+  silinirse o değişiklik raporlanmaz. Kesin zorlama gerekirse değişikliklerin
+  pull request ile onaylanması gerekir — bu da “onay beklemeden” ilkesiyle
+  çelişir.
+- Rapor ve geri alma betikleri `.github/scripts/` altındadır; Asistan bu
+  klasöre yazamaz, yani kendi raporunu değiştiremez.
 
 ### İçerik nasıl üretiliyor?
 

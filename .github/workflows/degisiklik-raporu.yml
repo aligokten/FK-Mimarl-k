@@ -1,0 +1,74 @@
+# Depo sahibi dışındaki birinin main dalına yaptığı her değişiklik için
+# sahibine atanmış bir GitHub kaydı (issue) açar. Kayıtta kimin, ne zaman,
+# hangi yoldan (panel / asistan / doğrudan) neyi değiştirdiği ve farkın
+# kendisi yer alır. Sahibi kaydı kapatarak onaylar ya da `/geri-al` yazarak
+# değişikliği geri alır (bkz. geri-al.yml).
+#
+# Kimin "sahip" sayılacağı depo sahibinden (github.repository_owner) okunur;
+# ayrıca tanımlanması gerekmez.
+
+name: Değişiklik raporu
+
+on:
+  # Panelden (kişisel erişim anahtarıyla) ya da doğrudan yapılan değişiklikler.
+  push:
+    branches: [main]
+  # Asistan değişiklikleri GITHUB_TOKEN ile gönderir; GitHub bu tür
+  # gönderimlerde push tetikleyicisini çalıştırmaz. Bu yüzden asistan iş
+  # akışı raporu buradan açıkça çağırır.
+  workflow_call:
+    inputs:
+      onceki:
+        type: string
+        required: true
+      sonraki:
+        type: string
+        required: true
+      yapan:
+        type: string
+        required: true
+      kaynak:
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  rapor:
+    if: >-
+      (github.event_name == 'push' && github.actor != github.repository_owner) ||
+      (github.event_name != 'push' && inputs.yapan != github.repository_owner)
+    runs-on: ubuntu-latest
+    steps:
+      # Tüm geçmiş gerekir: aralığın iki ucu da yerelde bulunmalı.
+      - name: Depoyu al
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Raporu hazırla
+        env:
+          ONCEKI: ${{ github.event_name == 'push' && github.event.before || inputs.onceki }}
+          SONRAKI: ${{ github.event_name == 'push' && github.event.after || inputs.sonraki }}
+          YAPAN: ${{ github.event_name == 'push' && github.actor || inputs.yapan }}
+          KAYNAK: ${{ github.event_name == 'push' && '' || inputs.kaynak }}
+          ZORLA: ${{ github.event_name == 'push' && github.event.forced || false }}
+          DEPO: ${{ github.repository }}
+          SUNUCU: ${{ github.server_url }}
+        run: python3 .github/scripts/rapor.py
+
+      - name: Kaydı aç
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SAHIP: ${{ github.repository_owner }}
+        run: |
+          gh label create degisiklik-raporu --repo "$GITHUB_REPOSITORY" \
+            --color FBCA04 --description "Sahip dışındaki birinin yaptığı değişiklik" \
+            2>/dev/null || true
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "$(cat /tmp/rapor-baslik.txt)" \
+            --body-file /tmp/rapor-govde.md \
+            --assignee "$SAHIP" \
+            --label degisiklik-raporu

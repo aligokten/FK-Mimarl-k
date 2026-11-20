@@ -35,6 +35,8 @@ jobs:
     timeout-minutes: 15
     outputs:
       sonuc: ${{ steps.isle.outputs.sonuc }}
+      onceki: ${{ steps.isle.outputs.onceki }}
+      sonraki: ${{ steps.isle.outputs.sonraki }}
     steps:
       - name: Depoyu al
         uses: actions/checkout@v4
@@ -122,8 +124,11 @@ jobs:
             printf 'Bu değişiklik yönetim panelindeki asistan tarafından yapıldı.\n'
           } > /tmp/asistan-mesaj.txt
 
+          ONCEKI=$(git rev-parse HEAD)
           git commit -F /tmp/asistan-mesaj.txt
           git push origin HEAD:main
+          echo "onceki=$ONCEKI" >> "$GITHUB_OUTPUT"
+          echo "sonraki=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           echo "sonuc=islendi" >> "$GITHUB_OUTPUT"
 
   # Yayın. Push GITHUB_TOKEN ile yapıldığı için pages.yml kendiliğinden
@@ -136,3 +141,19 @@ jobs:
       pages: write
       id-token: write
     uses: ./.github/workflows/pages.yml
+
+  # Değişiklik raporu. Aynı nedenle (GITHUB_TOKEN ile push) push tetikleyicili
+  # rapor çalışmaz; burada açıkça çağrılır. Asistanı depo sahibi
+  # çalıştırdıysa rapor iş akışı kendisi atlar.
+  rapor:
+    needs: duzenle
+    if: needs.duzenle.outputs.sonuc == 'islendi'
+    permissions:
+      contents: read
+      issues: write
+    uses: ./.github/workflows/degisiklik-raporu.yml
+    with:
+      onceki: ${{ needs.duzenle.outputs.onceki }}
+      sonraki: ${{ needs.duzenle.outputs.sonraki }}
+      yapan: ${{ github.actor }}
+      kaynak: Asistan

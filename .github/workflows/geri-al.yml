@@ -1,0 +1,61 @@
+# Bir değişiklik raporuna depo sahibi `/geri-al` yazınca o değişikliği geri
+# alır ve siteyi yeniden yayınlar (bkz. degisiklik-raporu.yml).
+#
+# Yalnızca şu koşulların hepsi sağlanırsa çalışır:
+#   - kayıt bir değişiklik raporudur (etiket + açan github-actions[bot]),
+#   - yorumu yazan depo sahibidir,
+#   - yorum `/geri-al` ile başlar.
+# Ortak çalışanlar ya da başkaları bu komutu kullanamaz.
+
+name: Geri al
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  geri-al:
+    if: >-
+      !github.event.issue.pull_request &&
+      github.event.issue.user.login == 'github-actions[bot]' &&
+      contains(github.event.issue.labels.*.name, 'degisiklik-raporu') &&
+      github.event.comment.user.login == github.repository_owner &&
+      startsWith(github.event.comment.body, '/geri-al')
+    runs-on: ubuntu-latest
+    # Asistanla aynı grup: ikisi de main'e yazar, aynı anda çalışmamalı.
+    # Grup iş düzeyindedir; iş akışı düzeyinde olsaydı her kayıt yorumu bu
+    # gruba girip bekleyen bir asistan çalışmasını iptal edebilirdi.
+    concurrency:
+      group: asistan
+      cancel-in-progress: false
+    outputs:
+      sonuc: ${{ steps.al.outputs.sonuc }}
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Değişikliği geri al
+        id: al
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # Kayıt gövdesi kabuğa gömülmez, ortamdan okunur.
+          GOVDE: ${{ github.event.issue.body }}
+          KAYIT: ${{ github.event.issue.number }}
+        run: bash .github/scripts/geri_al.sh
+
+  # Push GITHUB_TOKEN ile yapıldığı için pages.yml kendiliğinden tetiklenmez.
+  yayinla:
+    needs: geri-al
+    if: needs.geri-al.outputs.sonuc == 'geri-alindi'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml
