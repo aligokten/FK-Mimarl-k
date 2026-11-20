@@ -62,11 +62,23 @@
       },
       {
         "tip": "p",
-        "metin": "Restorasyon projesi, rölöve ve restitüsyon verilerine dayanarak yapıya yapılacak her müdahaleyi tanımlar: korunacak öğeler, onarılacak ve yenilenecek bölümler, kullanılacak malzeme ve teknikler, yeni işlev için gereken düzenlemeler. Proje, raporları ve analizleriyle birlikte yetkili koruma bölge kurulu müdürlüğüne sunulur. Başvuru dosyası genel olarak şu belgelerden oluşur:"
+        "metin": "Restorasyon projesi, rölöve ve restitüsyon verilerine dayanarak yapıya yapılacak her müdahaleyi tanımlar: korunacak öğeler, onarılacak ve yenilenecek bölümler, kullanılacak malzeme ve teknikler, yeni işlev için gereken düzenlemeler. Proje, raporları ve analizleriyle birlikte yetkili koruma bölge kurulu müdürlüğüne sunulur. Başvuru dosyası, mal sahibinin sağladığı evraklar ve mimarın hazırladığı proje dosyasından oluşur."
+      },
+      {
+        "tip": "altbaslik",
+        "metin": "Mal sahibinin sağladığı evraklar"
       },
       {
         "tip": "liste",
-        "metin": "Başvuru dilekçesi ve malik muvafakatleri\nTapu kaydı ve kadastro bilgileri\nRölöve, restitüsyon ve restorasyon projeleri\nProje raporları\nMalzeme ve bozulma analizleri\nGüncel fotoğraflar"
+        "metin": "Başvuru dilekçesi ve malik muvafakatleri\nTapu kaydı ve kadastro bilgileri"
+      },
+      {
+        "tip": "altbaslik",
+        "metin": "Mimarın hazırladığı proje dosyası"
+      },
+      {
+        "tip": "liste",
+        "metin": "Rölöve projesi\nRestitüsyon projesi\nRestorasyon projesi\nMalzeme analizi\nBozulma analizi\nÖzgünlük analizi\nMüdahale analizi\nFotoğraf albümü\nRölöve raporu\nRestitüsyon raporu\nRestorasyon raporu\nSanat tarihi raporu"
       },
       {
         "tip": "p",
