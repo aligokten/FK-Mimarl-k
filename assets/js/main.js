@@ -604,6 +604,17 @@
       modal.querySelector("[data-modal-yer]").textContent = p.yer || "";
       modal.querySelector("[data-modal-metin]").textContent = p.metin || "";
 
+      // Projenin kendi sayfasına bağlantı (bkz. tools/build.py → proje_sayfasi)
+      var sayfa = modal.querySelector("[data-modal-sayfa]");
+      if (sayfa) {
+        if (p.sayfa) {
+          sayfa.href = p.sayfa;
+          sayfa.hidden = false;
+        } else {
+          sayfa.hidden = true;
+        }
+      }
+
       var kap = modal.querySelector("[data-modal-gorseller]");
       kap.textContent = "";
       if (p.gorseller && p.gorseller.length) {

@@ -15,8 +15,8 @@ Kullanım:
     python3 tools/build.py            # üret
     python3 tools/build.py --kontrol  # üretilen çıktı güncel mi (CI için)
 
-Blog yazıları için ayrıca blog-<slug>.html sayfaları ve sitemap.xml
-yeniden üretilir.
+Blog yazıları için ayrıca blog-<slug>.html sayfaları, projeler için
+proje-<slug>.html sayfaları ve sitemap.xml yeniden üretilir.
 """
 
 from __future__ import annotations
@@ -505,7 +505,7 @@ def parca_is_serit(projeler):
             ek = f' srcset="{kacis(seti)}" sizes="(min-width: 900px) 30rem, 78vw"' if seti else ""
             oynat = ('<span class="is-karti__oynat" aria-hidden="true"></span>'
                      if ilk["video"] else "")
-            yuzey = (f'<img class="is-karti__gorsel" src="{kacis(adres)}" alt=""{ek} '
+            yuzey = (f'<img class="is-karti__gorsel" src="{kacis(adres)}" alt="{kacis(p["baslik"])}"{ek} '
                      f'loading="lazy" decoding="async">{oynat}')
         else:
             yuzey = ('<span class="is-karti__yer-tutucu" aria-hidden="true">'
@@ -528,8 +528,9 @@ def parca_is_serit(projeler):
 def parca_proje_verisi(projeler):
     """Modalın okuduğu veri. Öznitelik yerine JSON blok: kaçış derdi yok."""
     sade = []
-    for p in projeler:
+    for p, slug in zip(projeler, proje_sluglari(projeler)):
         sade.append({
+            "sayfa": f"proje-{slug}.html",
             "baslik": p["baslik"],
             "yil": p["yil"],
             "tur": p["tur"],
@@ -602,6 +603,7 @@ def parca_proje_galerisi(projeler):
     modal indeksleri sıralanmış listeye göre verilir.
     """
     parcalar = []
+    sluglar = proje_sluglari(projeler)
     for sira, p in enumerate(projeler):
         gorseller = medya_listesi(p)
         if gorseller:
@@ -611,7 +613,7 @@ def parca_proje_galerisi(projeler):
                   f'(min-width: 700px) 50vw, 92vw"' if seti else "")
             oynat = ('<span class="proje-karti__oynat" aria-hidden="true"></span>'
                      if ilk["video"] else "")
-            yuzey = (f'<img src="{kacis(gorsel_adresi(ilk["adres"], 1200))}" alt=""{ek} '
+            yuzey = (f'<img src="{kacis(gorsel_adresi(ilk["adres"], 1200))}" alt="{kacis(p["baslik"])}"{ek} '
                      f'loading="lazy" decoding="async">{oynat}')
         else:
             yuzey = (f'<span class="proje-karti__yer-tutucu" aria-hidden="true">'
@@ -633,6 +635,7 @@ def parca_proje_galerisi(projeler):
             </span>
             <span class="proje-karti__yer">{kacis(p['yer'])}</span>
           </button>
+          <a class="proje-karti__sayfa" href="proje-{kacis(sluglar[sira])}.html">Proje sayfası <span aria-hidden="true">→</span></a>
         </li>""")
     return "\n".join(parcalar) + "\n"
 
@@ -872,6 +875,142 @@ def blog_sayfasi(y, kalip):
     return s
 
 
+# =========================================================== proje sayfası
+VARSAYILAN_PAYLASIM_GORSELI = f"{ALAN_ADI}/assets/img/hero-projeler.svg"
+
+
+def proje_sluglari(projeler):
+    """Her projeye bir sayfa adı verir (proje-<slug>.html).
+
+    Panelde ayrı bir alan yoktur; ad başlıktan üretilir. JSON'a elle
+    "slug" yazılırsa o kullanılır (başlık değişse de adres sabit kalsın
+    istenirse). Aynı adı taşıyan iki proje olursa sona -2, -3 eklenir."""
+    goruldu = {}
+    sonuc = []
+    for p in projeler:
+        temel = slugla(p.get("slug") or p.get("baslik") or "proje")
+        n = goruldu.get(temel, 0) + 1
+        goruldu[temel] = n
+        sonuc.append(temel if n == 1 else f"{temel}-{n}")
+    return sonuc
+
+
+def proje_paragraflari(p):
+    """Proje metni panelde satır satır yazılıyor; her satır bir paragraftır
+    (modal da metni bu satırlarla gösterir)."""
+    metin = p.get("metin") or p.get("not") or ""
+    return [x.strip() for x in metin.split("\n") if x.strip()]
+
+
+def proje_ozeti(p, sinir=155):
+    """Arama sonucunda görünecek açıklama: metnin başı, kelime sınırında
+    kesilir. Metin yoksa künyeden kurulur."""
+    metin = " ".join(proje_paragraflari(p))
+    if not metin:
+        return f"{p['baslik']} — {p['tur']}, {p['yer']}. Fatma Kocaova Mimarlık."
+    if len(metin) <= sinir:
+        return metin
+    kesik = metin[:sinir].rsplit(" ", 1)[0].rstrip(" ,.;:–—")
+    return kesik + "…"
+
+
+def proje_paylasim_gorseli(p):
+    """Paylaşım kartı (og:image) için ilk fotoğraf. SVG'yi sosyal ağlar
+    göstermediğinden Drive görseli varsa o kullanılır."""
+    for g in medya_listesi(p):
+        if not g["video"]:
+            return gorsel_adresi(g["adres"], 1200)
+    return VARSAYILAN_PAYLASIM_GORSELI
+
+
+def parca_proje_sayfa_galerisi(p):
+    ogeler = []
+    for i, g in enumerate(medya_listesi(p), 1):
+        if g["video"]:
+            ogeler.append(f"""        <figure class="modal__video">
+          <iframe src="{kacis(drive_onizleme_adresi(g['adres']))}" title="{kacis(p['baslik'])} — video {i}"
+                  loading="lazy" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+        </figure>""")
+            continue
+        seti = gorsel_seti(g["adres"])
+        ek = f' srcset="{kacis(seti)}" sizes="(min-width: 1100px) 60rem, 100vw"' if seti else ""
+        yukleme = "eager" if i == 1 else "lazy"
+        ogeler.append(f"""        <figure>
+          <img src="{kacis(gorsel_adresi(g['adres'], 1600))}"{ek}
+               alt="{kacis(p['baslik'])} — görsel {i}" loading="{yukleme}" decoding="async">
+        </figure>""")
+    if not ogeler:
+        return ""
+    return ('\n      <div class="proje-sayfa__galeri" data-reveal>\n'
+            + "\n".join(ogeler) + "\n      </div>\n")
+
+
+def proje_sayfasi(p, slug, kalip):
+    paragraflar = "\n".join(f"        <p>{kacis(x)}</p>" for x in proje_paragraflari(p))
+    adres = f"{ALAN_ADI}/proje-{slug}.html"
+    kirinti = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Anasayfa", "item": f"{ALAN_ADI}/"},
+            {"@type": "ListItem", "position": 2, "name": "Projeler", "item": f"{ALAN_ADI}/projeler.html"},
+            {"@type": "ListItem", "position": 3, "name": p["baslik"], "item": adres},
+        ],
+    }, ensure_ascii=False, indent=1).replace("</", "<\\/")
+    govde = f"""
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow eyebrow--invert">{kacis(p['tur'])}</span>
+      <h1 class="page-hero__title">{kacis(p['baslik'])}</h1>
+      <p class="page-hero__text">{kacis(p['yer'])} · {kacis(p['yil'])}</p>
+      <ol class="breadcrumb">
+        <li><a href="index.html">Anasayfa</a></li>
+        <li><a href="projeler.html">Projeler</a></li>
+        <li aria-current="page">{kacis(p['baslik'])}</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <article class="makale" data-reveal>
+
+        <div class="makale-kunye">
+          <span>{kacis(p['yil'])}</span>
+          <span>{kacis(p['tur'])}</span>
+          <span>{kacis(p['yer'])}</span>
+          <span>Fatma Kocaova Mimarlık</span>
+        </div>
+
+{paragraflar}
+
+      </article>
+{parca_proje_sayfa_galerisi(p)}
+      <div class="makale proje-sayfa__cta" data-reveal>
+        <p>Benzer bir proje için bizimle görüşmek ister misiniz?</p>
+        <a class="btn btn--ghost" href="iletisim.html">Bize ulaşın</a>
+      </div>
+
+      <nav class="pager" aria-label="Proje gezinmesi" style="margin-top:clamp(2.5rem,5vw,4rem)">
+        <a class="link-underline" href="projeler.html">← Tüm projeler</a>
+        <a class="link-underline" href="iletisim.html">Soru sorun →</a>
+      </nav>
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+{kirinti}
+  </script>
+"""
+    s = kalip
+    s = s.replace("@@BASLIK@@", kacis(p["baslik"]))
+    s = s.replace("@@ACIKLAMA@@", kacis(proje_ozeti(p)))
+    s = s.replace("@@SLUG@@", kacis(slug))
+    s = s.replace("@@GORSEL@@", kacis(proje_paylasim_gorseli(p)))
+    s = s.replace("@@GOVDE@@", govde)
+    return s
+
+
 # ==================================================================== ana
 def uret():
     s = veri("site")
@@ -949,6 +1088,32 @@ def uret():
             os.remove(os.path.join(KOK, f))
             degisen.append(f + " (silindi)")
 
+    # ---- proje sayfaları
+    proje_kalip_yolu = os.path.join(KOK, "tools", "kalip-proje.html")
+    sluglar = proje_sluglari(projeler)
+    gecerli_projeler = set()
+    if os.path.exists(proje_kalip_yolu):
+        with open(proje_kalip_yolu, encoding="utf-8") as f:
+            proje_kalip = f.read()
+        for p, slug in zip(projeler, sluglar):
+            ad = f"proje-{slug}.html"
+            gecerli_projeler.add(ad)
+            hedef = os.path.join(KOK, ad)
+            icerik = proje_sayfasi(p, slug, proje_kalip)
+            for bolge, parca in bolgeler.items():
+                icerik, _ = bolge_yaz(icerik, bolge, parca)
+            eski = open(hedef, encoding="utf-8").read() if os.path.exists(hedef) else None
+            if eski != icerik:
+                with open(hedef, "w", encoding="utf-8") as f:
+                    f.write(icerik)
+                degisen.append(ad)
+
+    # panelden silinen ya da adı değişen projelerin eski sayfalarını temizle
+    for f in os.listdir(KOK):
+        if f.startswith("proje-") and f.endswith(".html") and f not in gecerli_projeler:
+            os.remove(os.path.join(KOK, f))
+            degisen.append(f + " (silindi)")
+
     # ---- web uygulaması künyesi
     # Sekme simgesi panelden değiştiğinde telefona eklenen kısayolun simgesi
     # de onunla birlikte güncellensin diye künye burada yeniden üretilir.
@@ -968,8 +1133,9 @@ def uret():
             degisen.append("site.webmanifest")
 
     # ---- sitemap
-    adresler = ["", "hakkimizda.html", "hizmetler.html", "projeler.html",
-                "haberler.html", "blog.html"]
+    adresler = ["", "hakkimizda.html", "hizmetler.html", "projeler.html"]
+    adresler += sorted(gecerli_projeler)
+    adresler += ["haberler.html", "blog.html"]
     adresler += [f"blog-{y['slug']}.html" for y in yazilar]
     adresler.append("iletisim.html")
     satirlar = ['<?xml version="1.0" encoding="UTF-8"?>',
