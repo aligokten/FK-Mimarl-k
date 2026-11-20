@@ -70,7 +70,11 @@
       },
       {
         "tip": "liste",
-        "metin": "Başvuru dilekçesi\nTapu kaydı (mümkünse vukuatlı tapu örneği) ve kadastro bilgileri"
+        "metin": "Başvuru dilekçesi\nTapu kaydı (mümkünse vukuatlı tapu örneği) ve kadastro bilgileri\nAplikasyon krokisi (LİHKAB lisanslı harita mühendisince hazırlanır)\nÇizili imar durumu (ilgili belediyeden alınır)"
+      },
+      {
+        "tip": "p",
+        "metin": "Restorasyon projesi, çizili imar durumunda belirtilen kurallara uygun olarak çizilir. Aplikasyon krokisinin ücreti doğrudan harita mühendisine, çizili imar durumunun harcı belediye veznesine mal sahibi tarafından ödenir. Mimari proje fiyat tekliflerimiz bu ücret ve harçlar hariç hesaplanır."
       },
       {
         "tip": "p",
