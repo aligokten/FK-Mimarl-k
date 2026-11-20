@@ -3201,15 +3201,23 @@ body.hero-gorunur .to-top {
   height: 22px;
 }
 
-/* Telefonda: biraz daha küçük ve köşeye yakın; aşağı kaydırırken gizlenir
+/* Telefonda: WhatsApp ve "yukarı çık" düğmeleri aynı ölçüde (44 px) ve
+   köşelere aynı uzaklıkta; WhatsApp aşağı kaydırırken gizlenir
    (bkz. main.js → initWaFloat) */
 @media (max-width: 700px) {
-  .wa-float {
-    left: 0.75rem;
+  .wa-float,
+  .to-top {
     bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
     width: 44px;
     height: 44px;
-    opacity: 0.92;
+  }
+
+  .wa-float {
+    left: 0.75rem;
+  }
+
+  .to-top {
+    right: 0.75rem;
   }
 
   .wa-float svg {
