@@ -25,8 +25,20 @@
         "metin": "Ölçüm ekibi: yapıyı ölçer ve çizime esas olacak veriyi hazırlar\nMimari çizim ekibi: rölöve, restitüsyon ve restorasyon projelerini çizer, analizleri ve raporları hazırlar\nHarita mühendisi: LİHKAB lisanslı harita mühendisi aplikasyon krokisini hazırlar\nSanat tarihçi: yapının tarihsel ve mimari değerlendirmesini içeren sanat tarihi raporunu yazar"
       },
       {
+        "tip": "baslik",
+        "metin": "Süreyi neler belirler?"
+      },
+      {
         "tip": "p",
-        "metin": "Çizimin kendisi zaten zaman ve emek isteyen, hassas bir iştir. Yapının her duvarı, açıklığı, malzemesi ve bozulması tek tek belgelenir. Ancak süreyi asıl belirleyen, bu uzmanların işlerinin birbirine bağlı olmasıdır."
+        "metin": "Çizimin kendisi zaman ve emek isteyen, hassas bir iştir. Yapının her duvarı, açıklığı, malzemesi ve bozulması tek tek belgelenir. Bu işin süresini yapının kendisi belirler:"
+      },
+      {
+        "tip": "liste",
+        "metin": "Büyüklük: kat sayısı, mekân sayısı ve cephe uzunluğu arttıkça çizilecek alan da büyür.\nYüzey dokusu: taş duvarlarda her taşı tek tek çizeriz, hazır tarama kullanmayız. Taş dokulu bir yapı, sıvalı bir yapıdan daha uzun sürer.\nBozulma düzeyi: yapı ne kadar bozulmuşsa bozulmaların çizimi ve analizi o kadar uzun sürer."
+      },
+      {
+        "tip": "p",
+        "metin": "Bunlara ek olarak süreyi asıl uzatan, projede çalışan uzmanların işlerinin birbirine bağlı olmasıdır."
       },
       {
         "tip": "baslik",
