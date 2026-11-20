@@ -1529,16 +1529,23 @@
       .catch(function (e) {
         var m = String(e.message || e);
         asistanYaz("Hata: " + m, "hata");
-        if (/bulunamadı|Not Found|404/i.test(m)) {
+        /* GitHub izin eksikliğini 403 ve "Resource not accessible by personal
+           access token" mesajıyla bildirir; durum kodu mesajda geçmez. Bu
+           yüzden izin kontrolü, daha genel olan "bulunamadı" kontrolünden önce
+           ve mesaj metnine bakılarak yapılır. */
+        if (/not accessible|personal access token|forbidden|403|izin|permission/i.test(m)) {
+          asistanKurulumUyarisi(
+            "<strong>Erişim anahtarının Actions izni yok.</strong> GitHub → Settings → " +
+            "Developer settings → Fine-grained tokens bölümünde bu panelde kullandığınız " +
+            "anahtarı açın, <em>Repository permissions</em> altında " +
+            "<strong>Actions</strong> iznini <strong>Read and write</strong> yapıp " +
+            "kaydedin. Anahtarın kendisi değişmez; panele yeniden girmeniz gerekmez, " +
+            "kaydettikten sonra burada tekrar Gönder'e basmanız yeterli.");
+        } else if (/bulunamadı|Not Found|404/i.test(m)) {
           asistanKurulumUyarisi(
             "<strong>Asistan iş akışı tetiklenemedi.</strong> İki şeyi kontrol edin: " +
             "(1) erişim anahtarınızda <em>Actions: Read and write</em> izni olmalı; " +
             "(2) depoda <code>.github/workflows/asistan.yml</code> dosyası bulunmalı.");
-        } else if (/403/.test(m) || /izin|permission/i.test(m)) {
-          asistanKurulumUyarisi(
-            "<strong>Yetki yetersiz.</strong> Erişim anahtarına (PAT) " +
-            "<em>Actions: Read and write</em> izni ekleyip paneli yeniden " +
-            "kurmanız gerekiyor.");
         }
       })
       .then(function () {
