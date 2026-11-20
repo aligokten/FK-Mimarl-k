@@ -3201,6 +3201,29 @@ body.hero-gorunur .to-top {
   height: 22px;
 }
 
+/* Telefonda: biraz daha küçük ve köşeye yakın; aşağı kaydırırken gizlenir
+   (bkz. main.js → initWaFloat) */
+@media (max-width: 700px) {
+  .wa-float {
+    left: 0.75rem;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    width: 44px;
+    height: 44px;
+    opacity: 0.92;
+  }
+
+  .wa-float svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  body.wa-gizli .wa-float {
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+  }
+}
+
 /* --------------------------------------------------------------------------
    17. Kaydırma animasyonları
    -------------------------------------------------------------------------- */
