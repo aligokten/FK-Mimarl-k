@@ -11,8 +11,8 @@
     {
       "src": "/assets/img/favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any",
+      "type": "image/svg+xml"
     }
   ]
 }
