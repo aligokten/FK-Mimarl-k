@@ -43,6 +43,7 @@ assets/
 tools/
   build.py                   data/*.json -> HTML üretir
   kalip-yazi.html            Blog yazısı sayfa kalıbı
+  kalip-proje.html           Proje sayfası kalıbı (proje-<slug>.html)
   generate-placeholders.py   Geçici görselleri yeniden üretir
 .github/
   workflows/pages.yml               Derleyip GitHub Pages'e yayınlar
@@ -234,6 +235,13 @@ python3 tools/build.py --kontrol  # çıktı güncel mi (CI kullanır)
 
 Blog yazıları için ayrıca `blog-<slug>.html` sayfaları ve `sitemap.xml`
 otomatik üretilir; yayından kaldırılan yazının sayfası silinir.
+
+Her proje için de `tools/kalip-proje.html` kalıbından `proje-<slug>.html`
+sayfası üretilir (künye, açıklama, tüm görseller). Sayfa adı proje
+başlığından türetilir; başlık değişse de adres sabit kalsın istenirse
+`projeler.json` içindeki kayda `"slug"` alanı yazılabilir. Panelden silinen
+projenin sayfası bir sonraki derlemede kaldırılır. Bu sayfalar da üretilir,
+elle düzenlemeyin.
 
 ### Mesajlar
 
