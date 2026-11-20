@@ -73,6 +73,10 @@
         "metin": "Başvuru dilekçesi ve malik muvafakatleri\nTapu kaydı ve kadastro bilgileri"
       },
       {
+        "tip": "p",
+        "metin": "Mal sahibi bize vekaletname vererek süreci tamamen bize bırakabilir. Bu durumda dilekçelerden başvurulara kadar her türlü evrak takibini biz yürütürüz."
+      },
+      {
         "tip": "altbaslik",
         "metin": "Mimarın hazırladığı proje dosyası"
       },
