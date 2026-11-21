@@ -876,7 +876,7 @@ def blog_sayfasi(y, kalip):
 
 
 # =========================================================== proje sayfası
-VARSAYILAN_PAYLASIM_GORSELI = f"{ALAN_ADI}/assets/img/hero-projeler.svg"
+VARSAYILAN_PAYLASIM_GORSELI = f"{ALAN_ADI}/assets/img/paylasim.jpg"
 
 
 def proje_sluglari(projeler):
