@@ -376,8 +376,16 @@
         "metin": "Hassas bir rölöve, restitüsyon çalışmasında yapının izlerini doğru okumayı, restorasyon projesinde de müdahaleleri doğru tanımlamayı sağlar. Eksik ya da hatalı bir rölöve sonraki bütün aşamalara taşınır."
       },
       {
+        "tip": "baslik",
+        "metin": "Basit rölöve"
+      },
+      {
         "tip": "p",
-        "metin": "Tarihi yapınızın rölövesini hazırlatmak istiyorsanız bizimle iletişime geçebilirsiniz."
+        "metin": "Her rölöve koruma kurulu için hazırlanmaz. Koruma kuruluna gitmeyecek yapılarda tadilat için istenen rölövelerde de lazer taramayı kullanırız. Basit rölöve, kurul rölövesindeki analizleri içermez; yapının mevcut durumunun çizimi olarak hazırlanır ve hızlı teslim edilir. Tarihi bir yapının rölövesine göre daha az maliyetlidir."
+      },
+      {
+        "tip": "p",
+        "metin": "Tarihi yapınızın rölövesini ya da tadilat için basit rölöve hazırlatmak istiyorsanız bizimle iletişime geçebilirsiniz."
       }
     ]
   },
