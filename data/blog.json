@@ -101,7 +101,7 @@
       },
       {
         "tip": "liste",
-        "metin": "Malzeme analizi: yapıda hangi malzemenin nerede kullanıldığını gösterir.\nBozulma analizi: çatlak, nem, kirlenme, renk değişimi ve malzeme kaybı gibi bozulmaları türleriyle haritalar.\nÖzgünlük analizi: yapının özgün bölümlerini sonradan yapılan değişikliklerden ayırır.\nMüdahale analizi: yapının zaman içinde gördüğü müdahaleleri belgeler."
+        "metin": "Malzeme analizi: yapıda hangi malzemenin nerede kullanıldığını gösterir.\nBozulma analizi: çatlak, nem, kirlenme, renk değişimi ve malzeme kaybı gibi bozulmaları türleriyle haritalar.\nÖzgünlük analizi: yapının özgün yapı elemanlarını, nitelikli kabul edilebilecek erken dönem eklerini ve niteliksiz ilaveleri gösterir."
       },
       {
         "tip": "p",
@@ -122,6 +122,10 @@
       {
         "tip": "p",
         "metin": "Restorasyon projesi, rölöve ve restitüsyonun ortaya koyduğu bilgilere dayanarak yapıya yapılacak bütün müdahaleleri tanımlar: hangi öğelerin korunacağını, hangilerinin onarılacağını ya da aslına uygun yenileneceğini, sonradan yapılmış hangi eklerin kaldırılacağını, hangi malzeme ve tekniklerin kullanılacağını ve yeni işlev için gereken düzenlemeleri. Restorasyon projesi, raporuyla birlikte koruma bölge kuruluna sunulur ve kurul onayıyla uygulanabilir hâle gelir."
+      },
+      {
+        "tip": "p",
+        "metin": "Bu aşamanın analizi müdahale analizidir. Müdahale analizi, bozulma analizinde belirlenen her bozulmaya restorasyonda nasıl cevap verileceğini, yeni işlev için yapılacak ilave ve düzenlemeleri gösterir. Geçmişe değil, yapıya gelecekte yapılacak müdahalelere yönelik bir analizdir."
       },
       {
         "tip": "baslik",
