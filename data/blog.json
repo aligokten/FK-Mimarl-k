@@ -116,6 +116,10 @@
         "metin": "Restitüsyon, yapının özgün hâlinin ve zaman içinde geçirdiği dönemlerin kaynaklara dayanarak çizilmesidir. Rölövedeki izler, sanat tarihi raporundaki tarihsel bilgiler, eski fotoğraflar, yazılı ve görsel belgeler ve aynı dönem ve tipteki yapılarla yapılan karşılaştırmalar bu çalışmanın veri kaynaklarıdır. Restitüsyon bir tahmin değildir; çizimlerin her biri incelenen verilere dayanır."
       },
       {
+        "tip": "p",
+        "metin": "Restitüsyon tek bir dönemle sınırlı değildir; yapının bugünkü hâlinden farklı olduğu bütün dönemleri ele alır. Yapının geçirdiği değişikliklere göre restitüsyon iki ya da üç dönem üzerinden anlatılabilir: ilk inşa dönemi, nitelikli bir ekin yapıldığı dönem ve gerekiyorsa bunu izleyen bir dönem. Her dönem bu etüt kapsamında incelenir ve ayrı ayrı çizime aktarılır."
+      },
+      {
         "tip": "baslik",
         "metin": "Restorasyon: Yapıya ne yapılacak?"
       },
