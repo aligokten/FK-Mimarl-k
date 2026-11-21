@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_tekrar.outputs.page_url }}
     steps:
       - name: Depoyu al
         uses: actions/checkout@v4
@@ -51,6 +51,42 @@ jobs:
         with:
           path: .
 
+      # Paket yüklendikten hemen sonra GitHub'ın paket listeleme API'si onu
+      # bazen birkaç saniye göstermiyor; deploy-pages da tam o anda bu API'ye
+      # sorup "No artifacts named github-pages were found" hatasıyla düşüyordu.
+      # Burada aynı API, paket görünene kadar (en çok 60 sn) sorulur. Süre
+      # dolarsa adım hata vermez; yayın denenir, düşerse aşağıda bir kez
+      # daha denenir.
+      - name: Paketin görünmesini bekle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 20); do
+            SAYI=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=github-pages" \
+                     --jq '.total_count' 2>/dev/null || echo 0)
+            if [ "${SAYI:-0}" -ge 1 ]; then
+              echo "Paket görünür durumda ($i. sorgu)."
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "::warning::Paket 60 sn içinde listede görünmedi; yayın yine de deneniyor."
+
       - name: Yayınla
         id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      # İlk deneme düştüyse kısa bir bekleme sonrası bir kez daha denenir.
+      # deploy-pages paketi bulamadığında yayın kaydı oluşturmadan durduğu
+      # için ikinci deneme güvenlidir. Bu adım da düşerse iş başarısız olur.
+      - name: Yayını yeniden dene
+        if: steps.deployment.outcome == 'failure'
+        run: |
+          echo "::warning::İlk yayın denemesi başarısız oldu; 20 sn sonra yeniden deneniyor."
+          sleep 20
+
+      - name: Yayınla (ikinci deneme)
+        id: deployment_tekrar
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
