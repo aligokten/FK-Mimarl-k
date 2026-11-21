@@ -193,6 +193,65 @@
     ]
   },
   {
+    "slug": "levanten-koskleri-izmir",
+    "baslik": "İzmir'in Levanten Köşkleri",
+    "ay": "Kasım",
+    "yil": "2026",
+    "kategori": "Rehber",
+    "sure": "3 dk okuma",
+    "ozet": "Bornova, Buca ve Karşıyaka'daki Levanten köşkleri İzmir'in Avrupalı ailelerinden kalan miras. Tarihlerini, özelliklerini ve bugünkü kullanımlarını anlatıyoruz.",
+    "pdf": "",
+    "link": "",
+    "yayinda": true,
+    "slugKilit": true,
+    "bloklar": [
+      {
+        "tip": "p",
+        "metin": "İzmir'in kozmopolit geçmişinin en görünür izlerinden biri Levanten köşkleridir. Bornova, Buca ve Karşıyaka'da yükselen bu yapılar, kentte kuşaklar boyunca yaşamış Avrupalı ailelerin hem yaşam biçimini hem de İzmir'le kurdukları ilişkiyi bugüne taşır."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Levantenler kimdir?"
+      },
+      {
+        "tip": "p",
+        "metin": "Levanten adı, Osmanlı liman kentlerine Batı Avrupa'dan gelip yerleşen ve kuşaklar boyunca burada yaşayan aileler için kullanılır. Kapitülasyonlarla ticari ayrıcalıklar kazanan bu aileler, 18. ve 19. yüzyıllarda İzmir'in ekonomik hayatında önemli roller üstlendi. Kentteki yaşam alanları, Frenk mahallesi olarak bilinen bugünkü Alsancak ve çevresiydi. Zamanla Bornova ve Buca gibi kentin dışındaki yerleşimlerde, geniş bahçeler içinde köşkler inşa ettiler. Buca'nın bu yöndeki gelişimi, 17. yüzyılın sonunda Fransız konsolosluğunun buraya taşınmasıyla başladı."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Köşklerin özellikleri"
+      },
+      {
+        "tip": "p",
+        "metin": "Bugün İzmir'de büyük bölümü 19. yüzyıla tarihlenen otuz kadar Levanten köşkü bulunur. Bornova'daki köşklerin çoğu 19. yüzyılın sonu ile 20. yüzyılın başı arasındaki kısa bir dönemde inşa edilmiştir. Bu yapılar plan kurguları ve mimari özellikleriyle kökleri Anadolu dışına uzanan bir mimari anlayışın ürünleridir; Osmanlı ve Batı kültürlerini bir araya getirir. Çevrelerindeki sade ve işlevsel sivil mimariye göre daha gösterişli, üslup arayışı belirgin yapılardır. Taş, ahşap, alçı ve çakıl mozaik süslemeler dönemin zevkini ve tekniklerini yansıtır."
+      },
+      {
+        "tip": "p",
+        "metin": "Köşklerin ayrılmaz parçası bahçeleridir. Levanten aileler kendi kültürlerini peyzaja da taşımış, köşk ile bahçe birlikte bir bütün oluşturmuştur."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Bugün"
+      },
+      {
+        "tip": "p",
+        "metin": "Köşklerin önemli bir kısmı restore edilerek bugün de kullanılıyor; müze, restoran, sanat galerisi ve kültür evi gibi yeni işlevlerle kent yaşamına katılıyor. Bazıları ise başka işlevlere dönüştürülürken özgün mimari özelliklerini yitirdi ya da zamanla harap oldu."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Yeniden işlevlendirmede önemli olan"
+      },
+      {
+        "tip": "p",
+        "metin": "Bir Levanten köşküne yeni bir işlev verirken köşkü değerli kılan yalnızca cephesi değildir. Mekân kurgusu, iç mekân süslemeleri ve bahçeyle kurduğu ilişki yapının bütünlüğünü oluşturur. Yeni işlevin bu bütünlüğe uyması, taşıyıcı sisteme ve mekân kurgusuna zarar vermemesi gerekir. Bu dengeyi kurmanın yolu, yapıyı rölöve ve restitüsyon çalışmalarıyla doğru okumaktan geçer."
+      },
+      {
+        "tip": "p",
+        "metin": "Levanten köşkleri ve diğer tescilli yapılar için rölöve, restitüsyon ve restorasyon projeleri hazırlıyoruz. Bizimle iletişime geçebilirsiniz."
+      }
+    ]
+  },
+  {
     "slug": "tarihi-ev-almadan-once",
     "baslik": "Tarihi Bir Ev Almadan Önce Bilmeniz Gerekenler",
     "ay": "Kasım",
