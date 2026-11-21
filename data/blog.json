@@ -1,5 +1,399 @@
 [
   {
+    "slug": "kentsel-sitte-basit-onarim",
+    "baslik": "Kentsel Sitte Basit Onarım: Hangi İşler İçin İzin Gerekir?",
+    "ay": "Kasım",
+    "yil": "2026",
+    "kategori": "Rehber",
+    "sure": "3 dk okuma",
+    "ozet": "Çatı aktarımı, cephe boyası, doğrama yenileme… Tescilli yapılarda küçük işler de izne tabidir. Basit onarımın kapsamını ve izin sürecini anlatıyoruz.",
+    "pdf": "",
+    "link": "",
+    "yayinda": true,
+    "slugKilit": true,
+    "bloklar": [
+      {
+        "tip": "p",
+        "metin": "Tescilli bir yapıda ya da kentsel sit alanındaki bir binada yapılacak her iş izne tabidir; küçük görünen bir tadilat da buna dahildir. Fark yalnızca iznin nereden ve hangi kapsamda alınacağındadır. Yapının özgün niteliğini değiştirmeyen bakım ve onarım işleri basit onarım olarak değerlendirilir ve restorasyon projesi gerektirmez."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Hangi işler basit onarım sayılır?"
+      },
+      {
+        "tip": "p",
+        "metin": "Taşıyıcı sisteme, plan şemasına ve cephe düzenine dokunmayan, mevcut olanı aynı malzeme ve biçimle onaran işler bu kapsamdadır:"
+      },
+      {
+        "tip": "liste",
+        "metin": "Çatı aktarımı, oluk ve dere onarımı\nSıva, badana ve dış cephe boyası\nDerz onarımı\nDoğrama ve döşemelerin onarımı ya da aslına uygun yenilenmesi\nTesisat onarımı"
+      },
+      {
+        "tip": "p",
+        "metin": "Burada ölçüt işin büyüklüğü değil, yapıya etkisidir. Ahşap bir doğramanın yerine farklı malzemeden bir doğrama takmak ya da cepheyi özgün olmayan bir malzemeyle kaplamak basit onarım kapsamında değerlendirilmez; yapının özgün niteliğini değiştirir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Hangi işler restorasyon projesi gerektirir?"
+      },
+      {
+        "tip": "p",
+        "metin": "Taşıyıcı sistemi etkileyen müdahaleler, plan şemasındaki değişiklikler, yeni bölüm eklenmesi, cephedeki açıklıkların değiştirilmesi ve yapıya yeni bir işlev verilmesi esaslı onarım kapsamındadır. Bu işler için rölöve, restitüsyon ve restorasyon projeleri hazırlanır ve koruma bölge kurulunun onayı alınır. Bu süreci Tescilli Yapıda Koruma Kurulu Süreci yazımızda adım adım anlattık."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Basit onarım izni nasıl alınır?"
+      },
+      {
+        "tip": "p",
+        "metin": "Başvuru, yapının bulunduğu yerde yetkili Koruma Uygulama ve Denetim Bürosuna (KUDEB), KUDEB bulunmayan yerlerde koruma bölge kurulu müdürlüğüne yapılır. Başvuruya mülkiyet belgesi, yapının mevcut durumunu gösteren fotoğraflar ve yapılmak istenen onarımların maddeler hâlinde listesi eklenir."
+      },
+      {
+        "tip": "p",
+        "metin": "Uzmanlar yapıyı inceler ve uygun bulunan işler için onarım ön izin belgesi düzenlenir. Uygulama bu belgede tanımlanan işlerle sınırlı kalır. İş bitince uygulama yerinde incelenir; izne uygun tamamlandıysa onarım uygunluk belgesi verilir. I. grup yapılarda izin verilmeden önce koruma bölge kurulunun görüşü alınır."
+      },
+      {
+        "tip": "p",
+        "metin": "Onarım sırasında yapının kapsamlı bir müdahaleye ihtiyaç duyduğu anlaşılırsa, örneğin çatı açıldığında taşıyıcı ahşapların çürüdüğü görülürse, çalışma durdurulur ve konu kurula taşınır."
+      },
+      {
+        "tip": "baslik",
+        "metin": "İzinsiz onarım"
+      },
+      {
+        "tip": "p",
+        "metin": "Tescilli yapılarda izin alınmadan yapılan uygulamalar 2863 sayılı Kültür ve Tabiat Varlıklarını Koruma Kanunu kapsamında suçtur. Kanun, izinsiz basit onarım için altı aydan üç yıla, izinsiz esaslı müdahale için iki yıldan beş yıla kadar hapis cezası öngörür. İzinsiz bir uygulama tespit edildiğinde konu ayrıca koruma bölge kurulunun gündemine alınır. Küçük bir işi izinsiz yapmanın bedeli, izni almanın zahmetinden çok daha ağırdır."
+      },
+      {
+        "tip": "p",
+        "metin": "Tescilli yapıların rölöve, restitüsyon ve restorasyon projelerini hazırlıyor, kurul sürecini baştan sona yürütüyoruz. Bizimle iletişime geçebilirsiniz."
+      }
+    ]
+  },
+  {
+    "slug": "rolove-restitusyon-restorasyon-farki",
+    "baslik": "Rölöve, Restitüsyon, Restorasyon: Farkları ve Sırası",
+    "ay": "Kasım",
+    "yil": "2026",
+    "kategori": "Rehber",
+    "sure": "3 dk okuma",
+    "ozet": "Tescilli yapı projelerinin üç temel aşaması neyi belgeler, neden bu sırayla hazırlanır? Proje dosyasındaki analiz ve raporlarla birlikte anlatıyoruz.",
+    "pdf": "",
+    "link": "",
+    "yayinda": true,
+    "slugKilit": true,
+    "bloklar": [
+      {
+        "tip": "p",
+        "metin": "Tescilli bir yapı için proje hazırlatmak isteyen mal sahiplerinin ilk karşılaştığı kavramlar bu üçüdür. Üçü de aynı yapı için hazırlanır, ama her biri farklı bir soruya cevap verir: Yapı bugün nasıl? Geçmişte nasıldı? Bundan sonra ona ne yapılacak?"
+      },
+      {
+        "tip": "baslik",
+        "metin": "Rölöve: Yapı bugün nasıl?"
+      },
+      {
+        "tip": "p",
+        "metin": "Rölöve, yapının bugünkü hâlinin ölçülü çizimlerle belgelenmesidir. Planlar, kesitler, cepheler ve detaylar, yapının ölçülmesiyle elde edilen verilerden çizilir. Rölövede yorum yoktur: duvarlar, açıklıklar, malzemeler, sonradan yapılmış eklemeler ve bozulmalar olduğu gibi gösterilir. Taş duvarlarda her taş tek tek çizilir."
+      },
+      {
+        "tip": "p",
+        "metin": "Rölöveyle birlikte hazırlanan analizler yapıyı farklı açılardan okur:"
+      },
+      {
+        "tip": "liste",
+        "metin": "Malzeme analizi: yapıda hangi malzemenin nerede kullanıldığını gösterir.\nBozulma analizi: çatlak, nem, kirlenme, renk değişimi ve malzeme kaybı gibi bozulmaları türleriyle haritalar.\nÖzgünlük analizi: yapının özgün yapı elemanlarını, nitelikli kabul edilebilecek erken dönem eklerini ve niteliksiz ilaveleri gösterir."
+      },
+      {
+        "tip": "p",
+        "metin": "Fotoğraf albümü ve rölöve raporu bu aşamanın diğer belgeleridir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Restitüsyon: Yapı geçmişte nasıldı?"
+      },
+      {
+        "tip": "p",
+        "metin": "Restitüsyon, yapının özgün hâlinin ve zaman içinde geçirdiği dönemlerin kaynaklara dayanarak çizilmesidir. Rölövedeki izler, sanat tarihi raporundaki tarihsel bilgiler, eski fotoğraflar, yazılı ve görsel belgeler ve aynı dönem ve tipteki yapılarla yapılan karşılaştırmalar bu çalışmanın veri kaynaklarıdır. Restitüsyon bir tahmin değildir; çizimlerin her biri incelenen verilere dayanır."
+      },
+      {
+        "tip": "p",
+        "metin": "Restitüsyon tek bir dönemle sınırlı değildir; yapının bugünkü hâlinden farklı olduğu bütün dönemleri ele alır. Yapının geçirdiği değişikliklere göre restitüsyon iki ya da üç dönem üzerinden anlatılabilir: ilk inşa dönemi, nitelikli bir ekin yapıldığı dönem ve gerekiyorsa bunu izleyen bir dönem. Her dönem bu etüt kapsamında incelenir ve ayrı ayrı çizime aktarılır."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Restorasyon: Yapıya ne yapılacak?"
+      },
+      {
+        "tip": "p",
+        "metin": "Restorasyon projesi, rölöve ve restitüsyonun ortaya koyduğu bilgilere dayanarak yapıya yapılacak bütün müdahaleleri tanımlar: hangi öğelerin korunacağını, hangilerinin onarılacağını ya da aslına uygun yenileneceğini, sonradan yapılmış hangi eklerin kaldırılacağını, hangi malzeme ve tekniklerin kullanılacağını ve yeni işlev için gereken düzenlemeleri. Restorasyon projesi, raporuyla birlikte koruma bölge kuruluna sunulur ve kurul onayıyla uygulanabilir hâle gelir."
+      },
+      {
+        "tip": "p",
+        "metin": "Bu aşamanın analizi müdahale analizidir. Müdahale analizi, bozulma analizinde belirlenen her bozulmaya restorasyonda nasıl cevap verileceğini, yeni işlev için yapılacak ilave ve düzenlemeleri gösterir. Geçmişe değil, yapıya gelecekte yapılacak müdahalelere yönelik bir analizdir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Neden bu sırayla?"
+      },
+      {
+        "tip": "p",
+        "metin": "Her aşama bir öncekinin verisine dayanır. Yapıyı doğru belgelemeden geçmişini okumak, geçmişini okumadan da ona doğru müdahale etmek mümkün değildir. Bu yüzden rölöve, restitüsyon ve restorasyon birbirinin yerine geçmez ve sıraları değişmez. Sürecin takvimini Restorasyon Projesi Ne Kadar Sürer? yazımızda anlattık."
+      },
+      {
+        "tip": "p",
+        "metin": "Tescilli yapınızın rölöve, restitüsyon ve restorasyon projelerini hazırlıyor, kurul sürecini baştan sona yürütüyoruz. Bizimle iletişime geçebilirsiniz."
+      }
+    ]
+  },
+  {
+    "slug": "sakiz-tipi-evler-izmir",
+    "baslik": "Sakız Tipi Evler: İzmir'in Kozmopolit Konut Mirası",
+    "ay": "Kasım",
+    "yil": "2026",
+    "kategori": "Rehber",
+    "sure": "3 dk okuma",
+    "ozet": "Kemeraltı'ndan Karataş'a, Foça'dan Alaçatı'ya Ege kıyısının karakteristik konutları. Sakız tipi evlerin özelliklerini ve korunmasında önemli olanları anlatıyoruz.",
+    "pdf": "",
+    "link": "",
+    "yayinda": true,
+    "slugKilit": true,
+    "bloklar": [
+      {
+        "tip": "p",
+        "metin": "İzmir, 19. yüzyılda Müslüman, Rum, Ermeni, Yahudi ve Levanten toplulukların birlikte yaşadığı kozmopolit bir liman kentiydi. Bu çeşitlilik konut mimarisine de yansıdı. Kentin geleneksel konut dokusundaki en tanıdık tiplerden biri, bugün sakız tipi ev olarak andığımız konutlardır. Günümüze ulaşan örneklerin büyük bölümü 19. yüzyıla, bir kısmı 20. yüzyılın ilk çeyreğine tarihlenir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Adı nereden geliyor?"
+      },
+      {
+        "tip": "p",
+        "metin": "“Sakız” adının nereden geldiği kesin değildir; Sakız Adası'na mı, yoksa adanın ünlü reçinesine mi işaret ettiği tartışmalıdır. Araştırmacılar bu konutlar için Batı Anadolu konutu ya da geçiş konutu gibi adlar da kullanır. Bazı çalışmalar bu evleri, 19. yüzyılın son çeyreğinde Punta'da, bugünkü Alsancak'ta ortaya çıkıp hızla kente yayılan ve modern konutun niteliklerini taşıyan yeni bir konut türü olarak değerlendirir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Nerelerde görülür?"
+      },
+      {
+        "tip": "p",
+        "metin": "Sakız tipi evler Ege kıyısı boyunca yaygındır. Bergama, Foça, İzmir merkezi ve Karşıyaka, Çeşme ve Alaçatı en yoğun görüldükleri yerlerdir. İzmir'de Kemeraltı, Karataş ve Göztepe gibi semtlerde örnekleri hâlâ ayaktadır."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Tanıdık özellikleri"
+      },
+      {
+        "tip": "p",
+        "metin": "Bu evlerin en belirgin öğesi, sokak cephesinde üst katta yer alan çıkmadır. Çıkma çoğu zaman girişin üzerinde konumlanır, ahşap konstrüksiyonludur ve altında süslü dökme demir konsollarla taşınır. Çıkmadaki pencereler giyotin tiptedir. Cephe düzeni, pencere söveleri, saçaklar ve konsollar her yapıda küçük farklarla tekrarlanan ortak bir dil oluşturur."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Korurken önemli olan"
+      },
+      {
+        "tip": "p",
+        "metin": "Sakız tipi evlerin değeri tek tek öğelerinde olduğu kadar bu öğelerin bir arada oluşturduğu bütünlüktedir. Ahşap çıkmanın, demir konsolların, giyotin pencerelerin ve sövelerin aslına uygun korunması yapının karakterini belirler. Pek çok örnekte bu öğeler zamanla değiştirilmiş, söveler kaldırılmış, doğramalar yenilenmiştir. Restitüsyon çalışmasında aynı tipteki yapılarla yapılan karşılaştırmalar, kaybolan öğelerin özgün hâlini ortaya koymak için en değerli verilerden biridir."
+      },
+      {
+        "tip": "p",
+        "metin": "Sakız tipi evler ve diğer tescilli yapılar için rölöve, restitüsyon ve restorasyon projeleri hazırlıyoruz. Bizimle iletişime geçebilirsiniz."
+      }
+    ]
+  },
+  {
+    "slug": "levanten-koskleri-izmir",
+    "baslik": "İzmir'in Levanten Köşkleri",
+    "ay": "Kasım",
+    "yil": "2026",
+    "kategori": "Rehber",
+    "sure": "3 dk okuma",
+    "ozet": "Bornova, Buca ve Karşıyaka'daki Levanten köşkleri İzmir'in Avrupalı ailelerinden kalan miras. Tarihlerini, özelliklerini ve bugünkü kullanımlarını anlatıyoruz.",
+    "pdf": "",
+    "link": "",
+    "yayinda": true,
+    "slugKilit": true,
+    "bloklar": [
+      {
+        "tip": "p",
+        "metin": "İzmir'in kozmopolit geçmişinin en görünür izlerinden biri Levanten köşkleridir. Bornova, Buca ve Karşıyaka'da yükselen bu yapılar, kentte kuşaklar boyunca yaşamış Avrupalı ailelerin hem yaşam biçimini hem de İzmir'le kurdukları ilişkiyi bugüne taşır."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Levantenler kimdir?"
+      },
+      {
+        "tip": "p",
+        "metin": "Levanten adı, Osmanlı liman kentlerine Batı Avrupa'dan gelip yerleşen ve kuşaklar boyunca burada yaşayan aileler için kullanılır. Kapitülasyonlarla ticari ayrıcalıklar kazanan bu aileler, 18. ve 19. yüzyıllarda İzmir'in ekonomik hayatında önemli roller üstlendi. Kentteki yaşam alanları, Frenk mahallesi olarak bilinen bugünkü Alsancak ve çevresiydi. Zamanla Bornova ve Buca gibi kentin dışındaki yerleşimlerde, geniş bahçeler içinde köşkler inşa ettiler. Buca'nın bu yöndeki gelişimi, 17. yüzyılın sonunda Fransız konsolosluğunun buraya taşınmasıyla başladı."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Köşklerin özellikleri"
+      },
+      {
+        "tip": "p",
+        "metin": "Bugün İzmir'de büyük bölümü 19. yüzyıla tarihlenen otuz kadar Levanten köşkü bulunur. Bornova'daki köşklerin çoğu 19. yüzyılın sonu ile 20. yüzyılın başı arasındaki kısa bir dönemde inşa edilmiştir. Bu yapılar plan kurguları ve mimari özellikleriyle kökleri Anadolu dışına uzanan bir mimari anlayışın ürünleridir; Osmanlı ve Batı kültürlerini bir araya getirir. Çevrelerindeki sade ve işlevsel sivil mimariye göre daha gösterişli, üslup arayışı belirgin yapılardır. Taş, ahşap, alçı ve çakıl mozaik süslemeler dönemin zevkini ve tekniklerini yansıtır."
+      },
+      {
+        "tip": "p",
+        "metin": "Köşklerin ayrılmaz parçası bahçeleridir. Levanten aileler kendi kültürlerini peyzaja da taşımış, köşk ile bahçe birlikte bir bütün oluşturmuştur."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Bugün"
+      },
+      {
+        "tip": "p",
+        "metin": "Köşklerin önemli bir kısmı restore edilerek bugün de kullanılıyor; müze, restoran, sanat galerisi ve kültür evi gibi yeni işlevlerle kent yaşamına katılıyor. Bazıları ise başka işlevlere dönüştürülürken özgün mimari özelliklerini yitirdi ya da zamanla harap oldu."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Yeniden işlevlendirmede önemli olan"
+      },
+      {
+        "tip": "p",
+        "metin": "Bir Levanten köşküne yeni bir işlev verirken köşkü değerli kılan yalnızca cephesi değildir. Mekân kurgusu, iç mekân süslemeleri ve bahçeyle kurduğu ilişki yapının bütünlüğünü oluşturur. Yeni işlevin bu bütünlüğe uyması, taşıyıcı sisteme ve mekân kurgusuna zarar vermemesi gerekir. Bu dengeyi kurmanın yolu, yapıyı rölöve ve restitüsyon çalışmalarıyla doğru okumaktan geçer."
+      },
+      {
+        "tip": "p",
+        "metin": "Levanten köşkleri ve diğer tescilli yapılar için rölöve, restitüsyon ve restorasyon projeleri hazırlıyoruz. Bizimle iletişime geçebilirsiniz."
+      }
+    ]
+  },
+  {
+    "slug": "tarihi-ev-almadan-once",
+    "baslik": "Tarihi Bir Ev Almadan Önce Bilmeniz Gerekenler",
+    "ay": "Kasım",
+    "yil": "2026",
+    "kategori": "Rehber",
+    "sure": "3 dk okuma",
+    "ozet": "Tescilli bir ev satın almadan önce neleri kontrol etmelisiniz? Tescil durumu, kurul dosyası, imar durumu, yapının hasarı ve proje süreci üzerine notlar.",
+    "pdf": "",
+    "link": "",
+    "yayinda": true,
+    "slugKilit": true,
+    "bloklar": [
+      {
+        "tip": "p",
+        "metin": "Tarihi bir evin hikâyesi, malzemesi ve konumu insanı kolayca etkiler. Ama tescilli bir yapı satın almak sıradan bir ev almaktan farklıdır. Yapıya ne yapılabileceğini koruma mevzuatı, kurul kararları ve yapının kendi durumu belirler. Satın almadan önce aşağıdaki konuları netleştirmek, sonradan yaşanabilecek sürprizlerin önüne geçer."
+      },
+      {
+        "tip": "baslik",
+        "metin": "1. Tescil durumu ve koruma grubu"
+      },
+      {
+        "tip": "p",
+        "metin": "Yapının tek yapı ölçeğinde tescilli olup olmadığı, sit alanı içinde kalıp kalmadığı ve koruma grubu öğrenilmelidir. Bu bilgi tapu kaydının beyanlar hanesinde yer alır. Koruma grubu yapıda nelere izin verileceğini doğrudan belirler; I. grup bir yapıda iç mekânda yapılabilecek değişiklikler çok sınırlıdır."
+      },
+      {
+        "tip": "baslik",
+        "metin": "2. Yapının kurul dosyası"
+      },
+      {
+        "tip": "p",
+        "metin": "Koruma bölge kurulu müdürlüğündeki yapı dosyası, yapı hakkında daha önce alınmış kararları gösterir. Onaylı bir proje olup olmadığı, varsa ne zaman onaylandığı önemlidir. Uzun süre uygulanmadan bekleyen bir projede, yapının bu süre içinde gördüğü hasar nedeniyle kurul yeni bir proje isteyebilir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "3. İzinsiz müdahaleler"
+      },
+      {
+        "tip": "p",
+        "metin": "Önceki sahiplerin izinsiz yaptığı değişiklikler yeni sahibin sorunu hâline gelir. Kurula yapılan başvurularda izinsiz uygulama olup olmadığı incelenir ve varsa konu kurul gündemine alınır. Sonradan eklenmiş bölümler, kapatılmış balkonlar, değiştirilmiş doğramalar ve cephe kaplamaları dikkatle değerlendirilmelidir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "4. İmar durumu"
+      },
+      {
+        "tip": "p",
+        "metin": "Parselin çizili imar durumu, yapıya uygulanacak kuralları gösterir. Planladığınız kullanım, örneğin konutun pansiyona ya da ofise dönüştürülmesi, bu kurallara ve yapının koruma grubuna uygun olmalıdır."
+      },
+      {
+        "tip": "baslik",
+        "metin": "5. Yapının fiziksel durumu"
+      },
+      {
+        "tip": "p",
+        "metin": "Çatısı açık kalmış, taşıyıcı ahşapları çürümüş ya da bölümleri çökmüş bir yapıda hem proje hem uygulama daha uzun sürer ve daha maliyetlidir. Yapının fiziksel durumu, satın aldıktan sonra karşılaşacağınız işin büyüklüğünü doğrudan belirler."
+      },
+      {
+        "tip": "baslik",
+        "metin": "6. Süreç ve bütçe"
+      },
+      {
+        "tip": "p",
+        "metin": "Tescilli bir yapıda uygulamaya geçmeden önce rölöve, restitüsyon ve restorasyon projeleri hazırlanır, kurul onayı alınır ve ardından mühendislik projeleriyle uygulama ruhsatına başvurulur. Bu süreç zaman alır. Bütçede proje bedelleri, harita mühendisi ücreti, belediye harçları ve uygulama maliyeti ayrı ayrı yer alır. Satın alma kararını bu takvimi ve bütçeyi bilerek vermek gerekir."
+      },
+      {
+        "tip": "p",
+        "metin": "Tescilli yapıların rölöve, restitüsyon ve restorasyon projelerini hazırlıyor, kurul sürecini baştan sona yürütüyoruz. Bizimle iletişime geçebilirsiniz."
+      }
+    ]
+  },
+  {
+    "slug": "lazer-tarama-nokta-bulutu-rolove",
+    "baslik": "Lazer Tarama ve Nokta Bulutuyla Rölöve",
+    "ay": "Kasım",
+    "yil": "2026",
+    "kategori": "Rehber",
+    "sure": "3 dk okuma",
+    "ozet": "Rölövede şerit metrenin yerini lazer tarama aldı. Nokta bulutundan ölçülü çizime uzanan süreci ve taş taş çizimin neden önemli olduğunu anlatıyoruz.",
+    "pdf": "",
+    "link": "",
+    "yayinda": true,
+    "slugKilit": true,
+    "bloklar": [
+      {
+        "tip": "p",
+        "metin": "Rölöve, restorasyon projesinin temelidir. Ondan sonra gelen bütün çizimler ve müdahaleler rölövenin doğruluğuna dayanır. Bugün tarihi yapıların rölöveleri büyük ölçüde lazer taramayla elde edilen verilerden çizilir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Lazer tarama nedir?"
+      },
+      {
+        "tip": "p",
+        "metin": "Lazer tarayıcı, bulunduğu noktadan çevresindeki yüzeylere çok sayıda ölçüm yapar. Yapının içinde ve dışında farklı noktalardan yapılan taramalar birleştirilerek yapının üç boyutlu bir kaydı elde edilir. Her biri konumu bilinen milyonlarca noktadan oluşan bu kayda nokta bulutu denir. Tarama sırasında alınan fotoğraflar sayesinde noktalar gerçek renkleriyle görüntülenir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Nokta bulutundan çizime"
+      },
+      {
+        "tip": "p",
+        "metin": "Nokta bulutu tek başına bir rölöve değildir; ham bir veridir. Bu veriden istenen kotlarda plan kesitleri, cephe ve kesit görünüşleri ve ortofotolar üretilir. Rölöve çizimleri bu görüntüler üzerinden, her çizgi verinin üzerine oturtularak hazırlanır. Verisi olmayan bir öğe tipik değerlerle tamamlanmaz; yerinde doğrulanmadan çizilmez."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Taş taş çizim"
+      },
+      {
+        "tip": "p",
+        "metin": "Taş duvarlı yapılarda her taşı tek tek çizeriz; hazır tarama desenleri kullanmayız. Taşların boyutu, dizilişi ve derzleri yapının yapım tekniğini, onarım izlerini ve dönemlerini gösterir. Bozulma analizinde de çatlak, malzeme kaybı ve kirlenme gibi bozulmalar gerçek biçimlerini izleyen çizgilerle tek tek işlenir. Bu yöntem çizimi uzatır, ama rölöveyi gerçek bir belge hâline getirir."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Neden önemli?"
+      },
+      {
+        "tip": "p",
+        "metin": "Hassas bir rölöve, restitüsyon çalışmasında yapının izlerini doğru okumayı, restorasyon projesinde de müdahaleleri doğru tanımlamayı sağlar. Eksik ya da hatalı bir rölöve sonraki bütün aşamalara taşınır."
+      },
+      {
+        "tip": "baslik",
+        "metin": "Basit rölöve"
+      },
+      {
+        "tip": "p",
+        "metin": "Her rölöve koruma kurulu için hazırlanmaz. Mevcut bir yapıda yapılacak tadilat da, kurul süreci gerektirmese bile, doğru bir rölöveyle başlamalıdır. İç mekânı yenilenecek bir fabrika, alanı en verimli şekilde kullanılmak istenen küçük bir iş yeri ya da bir daire için ilk adım, mevcut durumun ölçülü çizimidir. Bu basit rölövelerde de lazer taramayı kullanırız. Basit rölöve, kurul rölövesindeki analizleri içermez; yapının mevcut durumunun çizimi olarak hazırlanır ve kısa sürede teslim edilir. Tarihi yapı rölövesine göre daha hızlı ve daha ekonomik bir hizmettir."
+      },
+      {
+        "tip": "p",
+        "metin": "Tarihi yapınızın rölövesini ya da tadilat için basit rölöve hazırlatmak istiyorsanız bizimle iletişime geçebilirsiniz."
+      }
+    ]
+  },
+  {
     "slug": "restorasyon-projesi-ne-kadar-surer",
     "baslik": "Restorasyon Projesi Ne Kadar Sürer?",
     "ay": "Kasım",
@@ -74,7 +468,7 @@
       },
       {
         "tip": "p",
-        "metin": "Yapınız için gerçekçi bir takvimi, yapıyı yerinde gördükten sonra çıkarırız. Ön görüşme için bizimle iletişime geçebilirsiniz."
+        "metin": "Her yapının takvimi kendi büyüklüğüne, dokusuna ve durumuna göre belirlenir; proje sürecini planlarken bu takvimi mal sahibiyle birlikte netleştiririz. Bizimle iletişime geçebilirsiniz."
       }
     ]
   },
@@ -113,7 +507,7 @@
       },
       {
         "tip": "p",
-        "metin": "Her müdahale aynı süreçten geçmez. Çatı onarımı, dış cephe boyası, doğramaların yenilenmesi ve derz onarımı gibi yapının özgün niteliğini değiştirmeyen işler basit bakım ve onarım kapsamında değerlendirilir. İzmir'de bu başvurular yapının konumuna göre Büyükşehir Belediyesi bünyesindeki Koruma Uygulama ve Denetim Bürosuna (KUDEB) ya da koruma bölge kurulu müdürlüğüne yapılır ve uygulama yerinde denetlenir."
+        "metin": "Her müdahale aynı süreçten geçmez. Çatı onarımı, dış cephe boyası, doğramaların yenilenmesi ve derz onarımı gibi yapının özgün niteliğini değiştirmeyen işler basit bakım ve onarım kapsamında değerlendirilir. Bu başvurular yapının bulunduğu yerde yetkili Koruma Uygulama ve Denetim Bürosuna (KUDEB), KUDEB bulunmayan yerlerde koruma bölge kurulu müdürlüğüne yapılır ve uygulama yerinde denetlenir."
       },
       {
         "tip": "p",
@@ -177,7 +571,7 @@
       },
       {
         "tip": "p",
-        "metin": "Kurul onayı tek başına uygulamaya başlamak için yeterli değildir. Uygulama aşamasına geçmek için ilgili belediyeden kesin onay, yani uygulama ruhsatı alınır. Bu başvuruda kurul onaylı restorasyon projesi, statik, mekanik ve elektrik tesisat projelerinden oluşan mühendislik projeleriyle birlikte sunulur. Uygulama, onaylı projeye bağlı kalınarak ve yetkin bir teknik sorumlunun denetiminde yürütülür; İzmir'de restorasyon uygulamaları KUDEB tarafından da denetlenir. Uygulama sırasında projede öngörülmeyen bir durum ortaya çıkarsa, örneğin sıva altından özgün bir öğe çıkarsa, çalışma durdurulur, durum belgelenir ve gerekirse proje revize edilerek yeniden kurula sunulur."
+        "metin": "Kurul onayı tek başına uygulamaya başlamak için yeterli değildir. Uygulama aşamasına geçmek için ilgili belediyeden kesin onay, yani uygulama ruhsatı alınır. Bu başvuruda kurul onaylı restorasyon projesi, statik, mekanik ve elektrik tesisat projelerinden oluşan mühendislik projeleriyle birlikte sunulur. Uygulama, onaylı projeye bağlı kalınarak ve yetkin bir teknik sorumlunun denetiminde yürütülür; Restorasyon uygulamaları yetkili KUDEB tarafından da denetlenir. Uygulama sırasında projede öngörülmeyen bir durum ortaya çıkarsa, örneğin sıva altından özgün bir öğe çıkarsa, çalışma durdurulur, durum belgelenir ve gerekirse proje revize edilerek yeniden kurula sunulur."
       },
       {
         "tip": "p",
@@ -185,7 +579,7 @@
       },
       {
         "tip": "p",
-        "metin": "Doğru başlayan bir dosya kurulda daha hızlı ilerler. Fatma Kocaova Mimarlık olarak İzmir ve çevresinde tescilli yapıların rölöve, restitüsyon ve restorasyon projelerini hazırlıyor, kurul sürecini baştan sona yürütüyoruz. Yapınızın durumunu birlikte değerlendirmek için bizimle iletişime geçebilirsiniz."
+        "metin": "Doğru başlayan bir dosya kurulda daha hızlı ilerler. Fatma Kocaova Mimarlık olarak İzmir ve çevresinde tescilli yapıların rölöve, restitüsyon ve restorasyon projelerini hazırlıyor, kurul sürecini baştan sona yürütüyoruz. Bizimle iletişime geçebilirsiniz."
       }
     ]
   },
