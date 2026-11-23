@@ -862,6 +862,9 @@ body.is-locked .site-header .logo__img--tersle,
 /* --- Büyük başlık / küçük metin kontrastı --- */
 .hero__title {
   font-size: var(--fs-4xl);
+  /* Kısa ekranlarda (ör. 1366x768 dizüstü) başlık menünün altına
+     taşmasın: boyut ekran yüksekliğine göre de sınırlanır. */
+  font-size: max(2.5rem, min(var(--fs-4xl), calc((100svh - max(10rem, 17svh) - 360px) / 2.4)));
   text-transform: uppercase;
   letter-spacing: var(--ls-display);
   line-height: var(--lh-display);
