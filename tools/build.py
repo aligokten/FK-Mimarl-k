@@ -275,7 +275,9 @@ def parca_sayaclar(s):
         if m:
             sayi, ek = m.group(1).replace(",", "."), m.group(2).strip()
             ekOz = f' data-suffix="{kacis(ek)}"' if ek else ""
-            deger = f'<span data-count="{kacis(sayi)}"{ekOz}>0</span>'
+            # Kodda gerçek değer yazılı kalır (arama motorları ve yapay zekâ
+            # araçları animasyonu çalıştırmadan okur); ekranda main.js sıfırdan sayar.
+            deger = f'<span data-count="{kacis(sayi)}"{ekOz}>{kacis(m.group(1) + ek)}</span>'
         else:
             # Sayı ile başlamıyorsa (ör. "2013—") olduğu gibi yazılır
             deger = kacis(ham)
