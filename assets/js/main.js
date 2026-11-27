@@ -144,6 +144,11 @@
   function initCounters() {
     var counters = document.querySelectorAll("[data-count]");
     if (!counters.length) return;
+    if (!reduceMotion) {
+      counters.forEach(function (el) {
+        el.textContent = "0" + (el.getAttribute("data-suffix") || "");
+      });
+    }
 
     function run(el) {
       var target = parseFloat(el.getAttribute("data-count")) || 0;
