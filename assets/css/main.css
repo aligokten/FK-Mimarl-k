@@ -2374,7 +2374,6 @@ a.kayit:hover .kayit__tarih,
 a.kayit:hover .kayit__tur,
 a.kayit:hover .kayit__yer,
 a.kayit:hover .kayit__ozet {
-  overflow-wrap: anywhere;
   color: inherit;
 }
 
@@ -2386,6 +2385,7 @@ a.kayit:hover .kayit__ozet {
 }
 
 .kayit__ozet {
+  overflow-wrap: anywhere;
   margin-top: 0.5rem;
   max-width: 62ch;
   font-size: var(--fs-sm);
