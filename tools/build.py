@@ -830,6 +830,64 @@ def parca_pdf_modali(y):
   </div>"""
 
 
+AYLAR = {"ocak": 1, "şubat": 2, "mart": 3, "nisan": 4, "mayıs": 5, "haziran": 6,
+         "temmuz": 7, "ağustos": 8, "eylül": 9, "ekim": 10, "kasım": 11, "aralık": 12}
+
+
+def blog_tarihi(y):
+    """Sayfada yazan ay ve yıldan ISO tarih (ör. "2026-11"); ay yoksa yalnızca yıl."""
+    yil = str(y.get("yil", "")).strip()
+    if not re.match(r"^\d{4}$", yil):
+        return None
+    ay = AYLAR.get(str(y.get("ay", "")).strip().lower())
+    return f"{yil}-{ay:02d}" if ay else yil
+
+
+def blog_etiketi(y):
+    """Blog yazısının künyesi (schema.org BlogPosting) ve gezinti izi.
+    Bilgiler yalnızca sayfada görünenlerden alınır."""
+    adres = f"{ALAN_ADI}/blog-{y['slug']}.html"
+    yazi = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": y["baslik"],
+        "description": y.get("ozet", ""),
+        "url": adres,
+        "mainEntityOfPage": adres,
+        "inLanguage": "tr",
+        "image": f"{ALAN_ADI}/assets/img/paylasim.jpg",
+        "author": {
+            "@type": "Person",
+            "name": "Fatma Kocaova",
+            "jobTitle": "Yüksek Mimar, Restorasyon Uzmanı",
+            "url": f"{ALAN_ADI}/hakkimizda.html",
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Fatma Kocaova Mimarlık",
+            "url": f"{ALAN_ADI}/",
+            "logo": {"@type": "ImageObject", "url": f"{ALAN_ADI}/assets/img/logo-koyu.png"},
+        },
+    }
+    tarih = blog_tarihi(y)
+    if tarih:
+        yazi["datePublished"] = tarih
+    if y.get("kategori"):
+        yazi["articleSection"] = y["kategori"]
+    kirinti = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Anasayfa", "item": f"{ALAN_ADI}/"},
+            {"@type": "ListItem", "position": 2, "name": "Blog", "item": f"{ALAN_ADI}/blog.html"},
+            {"@type": "ListItem", "position": 3, "name": y["baslik"], "item": adres},
+        ],
+    }
+    j = lambda o: json.dumps(o, ensure_ascii=False, indent=1).replace("</", "<\\/")
+    return (f'\n  <script type="application/ld+json">\n{j(yazi)}\n  </script>'
+            f'\n  <script type="application/ld+json">\n{j(kirinti)}\n  </script>\n')
+
+
 def blog_sayfasi(y, kalip):
     govde = f"""
   <section class="page-hero">
@@ -868,7 +926,7 @@ def blog_sayfasi(y, kalip):
     </div>
   </section>
 {parca_pdf_modali(y)}
-"""
+{blog_etiketi(y)}"""
     s = kalip
     s = s.replace("@@BASLIK@@", kacis(y["baslik"]))
     s = s.replace("@@ACIKLAMA@@", kacis(y["ozet"]))
