@@ -606,6 +606,11 @@ body.is-locked .site-header .logo__img--tersle,
   color: var(--accent);
 }
 
+/* Koyu kahraman üzerindeyken seçili menü öğesi de açık renkte kalır */
+.site-header[data-theme="light"]:not(.is-scrolled) .nav__link[aria-current="page"] {
+  color: inherit;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
