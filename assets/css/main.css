@@ -2289,6 +2289,7 @@ main > .cta:last-child {
 
 .kayit {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.5rem 1.5rem;
   padding: clamp(1.5rem, 3vw, 2.25rem) clamp(0.75rem, 2vw, 1.5rem);
   border-bottom: 1px solid var(--line);
@@ -2384,6 +2385,7 @@ a.kayit:hover .kayit__ozet {
 }
 
 .kayit__ozet {
+  overflow-wrap: anywhere;
   margin-top: 0.5rem;
   max-width: 62ch;
   font-size: var(--fs-sm);
